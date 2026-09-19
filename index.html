@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Клешневар — раки та креветки з доставкою</title>
+  <meta name="description" content="Клешневар — гарячі раки та креветки в авторських бульйонах. Том Ям, BBQ, вершкові. Доставка та самовивіз. Тел. +38 096 044 47 65." />
+  <meta name="theme-color" content="#070708" />
+
+  <!-- Open Graph / шаринг -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="og:site_name" content="Клешневар" />
+  <meta property="og:title" content="Клешневар — раки та креветки" />
+  <meta property="og:description" content="Гарячі раки M–XXL та креветки в бульйонах Том Ям, BBQ, вершкових і гострих. Замовляйте онлайн." />
+  <meta property="og:image" content="assets/og.jpg" />
+  <meta property="og:url" content="" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Клешневар — раки та креветки" />
+  <meta name="twitter:description" content="Гарячі раки та креветки в авторських бульйонах. Доставка." />
+  <meta name="twitter:image" content="assets/og.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Permanent+Marker&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/logo.png" />
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="swipe-edge" id="swipeEdge" aria-hidden="true"></div>
+
+  <header class="header" id="header">
+    <a class="brand" href="#top" data-scroll="top" aria-label="Kleshnevar">
+      <img class="brand-logo" src="assets/logo-word.png" alt="Kleshnevar" />
+    </a>
+    <div class="header-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="Кошик">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="drawer" id="menu" aria-label="Навігація">
+    <button class="icon-btn" id="closeMenu" aria-label="Закрити" style="align-self:flex-end">✕</button>
+    <nav>
+      <a href="#top" data-scroll="top">Головна</a>
+      <a href="#krevetky" data-scroll="krevetky">Креветки</a>
+      <a href="#raky" data-scroll="raky">Раки</a>
+      <a href="#dostavka" data-scroll="dostavka">Доставка</a>
+    </nav>
+    <button class="btn btn-primary" id="showMapBtn" style="margin-top:22px">Показати на карті</button>
+    <div class="drawer-bottom">
+      <h4>Наші сторінки</h4>
+      <div class="socials">
+        <a id="igLink" target="_blank" rel="noopener">Instagram</a>
+        <a id="ttLink" target="_blank" rel="noopener">TikTok</a>
+        <a id="tgLink" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer cart-drawer" id="cartPanel" aria-label="Кошик">
+    <div class="row-between">
+      <h2 style="font-family:Unbounded,sans-serif">Кошик</h2>
+      <button class="icon-btn" id="closeCart" aria-label="Закрити">✕</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-total"><span>Разом</span><span id="cartSum">0 грн</span></div>
+    <form class="checkout" id="orderForm">
+      <input name="name" required placeholder="Імʼя" autocomplete="name" />
+      <input name="phone" required placeholder="Телефон" autocomplete="tel" inputmode="tel" />
+      <select name="type" required>
+        <option value="delivery">Доставка</option>
+        <option value="pickup">Самовивіз</option>
+      </select>
+      <input name="address" placeholder="Адреса доставки" />
+      <textarea name="comment" placeholder="Коментар до замовлення"></textarea>
+      <p class="hint" id="minHint"></p>
+      <button class="btn btn-primary" type="submit" id="submitBtn">Оформити замовлення</button>
+    </form>
+  </aside>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Клішня.<br>Вогонь.<br>Бульйон.</h1>
+        <p>Свіжі раки M–XXL і креветки в авторських бульйонах. Гарячими — до дверей.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#krevetky" data-scroll="krevetky">Дивитись меню</a>
+          <a class="btn btn-ghost" id="callBtn" href="tel:+380960444765">Зателефонувати</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="krevetky">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Креветки</h2>
+          <p>999 грн/кг · обирайте бульйон</p>
+        </div>
+        <div class="grid" id="shrimpGrid"></div>
+      </div>
+    </section>
+
+    <section id="raky">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Раки</h2>
+          <p>Розмір, кількість штук на кілограм і бульйон на ваш смак</p>
+        </div>
+        <div class="grid" id="crayGrid"></div>
+      </div>
+    </section>
+
+    <section id="dostavka">
+      <div class="wrap info-grid">
+        <article class="info-card">
+          <h3>Доставка</h3>
+          <p id="deliveryText"></p>
+          <p style="margin-top:10px" id="hoursText"></p>
+        </article>
+        <article class="info-card">
+          <h3>Контакти</h3>
+          <div class="contact-list">
+            <a id="phoneLink"></a>
+            <span id="addressText"></span>
+            <span id="hoursText2"></span>
+          </div>
+          <div class="cta-row" style="justify-content:flex-start;margin-top:18px">
+            <a class="btn btn-primary" id="routeBtn" target="_blank" rel="noopener">Побудувати маршрут</a>
+            <button class="btn btn-ghost" id="mapBtn2">Показати на карті</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> Клешневар. Смачного.</footer>
+  <div class="toast" id="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="config.secrets.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

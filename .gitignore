@@ -1,0 +1,16 @@
+node_modules/
+.firebase/
+.firebaserc
+firebase-debug.log
+ui-debug.log
+functions/node_modules/
+functions/.env
+functions/.env.local
+.env
+.env.local
+config.secrets.js
+*.pem
+*.p12
+serviceAccount*.json
+google-services.json
+.DS_Store
