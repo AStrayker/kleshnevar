@@ -1,5 +1,5 @@
 (() => {
-  const C = window.KLESHNEVAR;
+  const C = window.KLESHNEVAR || {};
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -192,9 +192,9 @@
         <p class="meta">Оберіть бульйон і вагу</p>
         <select class="select" id="shrimpFlavor">${flavorOptions(SHRIMP_FLAVORS)}</select>
         <div class="qty">
-          <button type="button" data-step="-0.5">−</button>
-          <input id="shrimpQty" type="number" min="0.5" step="0.5" value="1" />
-          <button type="button" data-step="0.5">+</button>
+          <button type="button" data-step="-1">−</button>
+          <input id="shrimpQty" type="number" min="1" step="1" value="1" />
+          <button type="button" data-step="1">+</button>
           <span class="meta">кг</span>
         </div>
         <button class="add-btn" id="addShrimp">Додати в кошик</button>
@@ -214,9 +214,9 @@
         <p class="meta">${s.pcs}</p>
         <select class="select broth">${flavorOptions(BROTHS)}</select>
         <div class="qty">
-          <button type="button" data-step="-0.5">−</button>
-          <input class="kg" type="number" min="0.5" step="0.5" value="1" />
-          <button type="button" data-step="0.5">+</button>
+          <button type="button" data-step="-1">−</button>
+          <input class="kg" type="number" min="1" step="1" value="1" />
+          <button type="button" data-step="1">+</button>
           <span class="meta">кг</span>
         </div>
         <button class="add-btn add-cray">Додати в кошик</button>
@@ -228,14 +228,14 @@
     const stepBtn = e.target.closest(".qty [data-step]");
     if (stepBtn) {
       const input = stepBtn.parentElement.querySelector("input");
-      const next = Math.max(0.5, (+input.value || 1) + +stepBtn.dataset.step);
-      input.value = next.toFixed(1).replace(/\.0$/, "");
+      const next = Math.max(1, Math.round((+input.value || 1) + +stepBtn.dataset.step));
+      input.value = String(next);
     }
   });
 
   $("#addShrimp").addEventListener("click", () => {
     const flavor = $("#shrimpFlavor").value;
-    const kg = Math.max(0.5, +$("#shrimpQty").value || 1);
+    const kg = Math.max(1, Math.round(+$("#shrimpQty").value || 1));
     addItem({
       id: "shrimp-" + flavor,
       title: "Креветки",
@@ -257,7 +257,7 @@
       const card = btn.closest(".card");
       const size = SIZES.find((s) => s.id === card.dataset.size);
       const broth = card.querySelector(".broth").value;
-      const kg = Math.max(0.5, +card.querySelector(".kg").value || 1);
+      const kg = Math.max(1, Math.round(+card.querySelector(".kg").value || 1));
       addItem({
         id: "cray-" + size.id + "-" + broth,
         title: "Раки " + size.label,
@@ -270,7 +270,7 @@
 
   function addItem(item) {
     const found = cart.find((x) => x.id === item.id);
-    if (found) found.kg = +(found.kg + item.kg).toFixed(2);
+    if (found) found.kg = found.kg + item.kg;
     else cart.push(item);
     saveCart();
     toast("Додано в кошик");
