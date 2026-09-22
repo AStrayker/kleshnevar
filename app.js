@@ -11,6 +11,14 @@
     "Часниково-гострі",
     "Томатний",
   ];
+  const SHRIMP_PHOTOS = {
+    "Том Ям": "assets/shrimp-tomyum.jpg",
+    "Том Кха": "assets/shrimp-tomkha.jpg",
+    "Класичні": "assets/shrimp-classic.jpg",
+    "Вершкові": "assets/shrimp-cream.jpg",
+    "Часниково-гострі": "assets/shrimp-garlic.jpg",
+    "Томатний": "assets/shrimp-tomato.jpg",
+  };
   const BROTHS = ["BBQ", "Вершкові", "Класика", "Томатний", "Пікантний / HOT"];
   const BROTH_PHOTOS = {
     BBQ: "assets/cray-bbq.jpg",
@@ -181,26 +189,26 @@
     return list.map((f) => `<option value="${f}">${f}</option>`).join("");
   }
 
-  $("#shrimpGrid").innerHTML = `
-    <article class="card">
-      <div class="card-photo" style="background-image:url('assets/shrimp.jpg')"></div>
+  $("#shrimpGrid").innerHTML = SHRIMP_FLAVORS.map(
+    (f) => `
+    <article class="card" data-shrimp="${f}">
+      <div class="card-photo" style="background-image:url('${SHRIMP_PHOTOS[f]}')"></div>
       <div class="card-body">
         <div class="row-between">
           <h3>Креветки</h3>
           <div class="price">999 грн/кг</div>
         </div>
-        <p class="meta">Оберіть бульйон і вагу</p>
-        <select class="select" id="shrimpFlavor">${flavorOptions(SHRIMP_FLAVORS)}</select>
+        <p class="meta">${f}</p>
         <div class="qty">
           <button type="button" data-step="-1">−</button>
-          <input id="shrimpQty" type="number" min="1" step="1" value="1" />
+          <input class="kg" type="number" min="1" step="1" value="1" />
           <button type="button" data-step="1">+</button>
           <span class="meta">кг</span>
         </div>
-        <button class="add-btn" id="addShrimp">Додати в кошик</button>
+        <button class="add-btn add-shrimp">Додати в кошик</button>
       </div>
-    </article>
-  `.repeat(1);
+    </article>`
+  ).join("");
 
   $("#crayGrid").innerHTML = SIZES.map(
     (s) => `
@@ -233,15 +241,18 @@
     }
   });
 
-  $("#addShrimp").addEventListener("click", () => {
-    const flavor = $("#shrimpFlavor").value;
-    const kg = Math.max(1, Math.round(+$("#shrimpQty").value || 1));
-    addItem({
-      id: "shrimp-" + flavor,
-      title: "Креветки",
-      extra: flavor,
-      kg,
-      price: 999,
+  $$(".add-shrimp").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest(".card");
+      const flavor = card.dataset.shrimp;
+      const kg = Math.max(1, Math.round(+card.querySelector(".kg").value || 1));
+      addItem({
+        id: "shrimp-" + flavor,
+        title: "Креветки",
+        extra: flavor,
+        kg,
+        price: 999,
+      });
     });
   });
 
