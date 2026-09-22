@@ -80,6 +80,28 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   height: 44px;
 }
 
+@media (max-width: 720px) {
+  .header {
+    padding: 0 10px;
+  }
+  .brand-logo {
+    height: 46px;
+    max-width: calc(100vw - 132px);
+  }
+  .header.scrolled .brand-logo {
+    height: 34px;
+    max-width: calc(100vw - 128px);
+  }
+  .header-actions {
+    right: 8px;
+    gap: 6px;
+  }
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+}
+
 .header-actions {
   position: absolute;
   right: 16px;
@@ -88,6 +110,8 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   display: flex;
   gap: 10px;
   align-items: center;
+  z-index: 3;
+  flex-shrink: 0;
 }
 .icon-btn {
   width: 46px;
@@ -403,5 +427,3 @@ footer {
   color: var(--muted);
   font-size: 13px;
 }
-
-.empty { color: var(--muted); text-align: center; padding: 30px 10px; }
