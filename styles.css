@@ -226,18 +226,55 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
   font-size: 14px;
 }
 .qty {
-  display: flex; align-items: center; gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .qty button {
-  width: 36px; height: 36px; border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--line);
   font-size: 18px;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  padding: 0;
+  flex: 0 0 36px;
+}
+.qty-val {
+  width: 48px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  background: #0d0d0f;
+  color: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
 }
 .qty input {
-  width: 58px; height: 36px; text-align: center;
-  background: #0d0d0f; color: #fff; border: 1px solid var(--line);
+  width: 48px;
+  height: 36px;
+  text-align: center;
+  background: #0d0d0f;
+  color: #fff;
+  border: 1px solid var(--line);
   border-radius: 10px;
+  padding: 0;
+  line-height: 36px;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.qty input::-webkit-outer-spin-button,
+.qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .add-btn {
   width: 100%;
