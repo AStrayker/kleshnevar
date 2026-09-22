@@ -201,7 +201,7 @@
         <p class="meta">${f}</p>
         <div class="qty">
           <button type="button" data-step="-1">−</button>
-          <input class="kg" type="number" min="1" step="1" value="1" />
+          <span class="qty-val">1</span>
           <button type="button" data-step="1">+</button>
           <span class="meta">кг</span>
         </div>
@@ -210,20 +210,26 @@
     </article>`
   ).join("");
 
-  $("#crayGrid").innerHTML = SIZES.map(
-    (s) => `
-    <article class="card" data-size="${s.id}">
-      <div class="card-photo" style="background-image:url('${BROTH_PHOTOS.BBQ}')"></div>
+  function sizeOptions() {
+    return SIZES.map(
+      (s) => `<option value="${s.id}">${s.label} · ${s.pcs} · ${money(s.price)}/кг</option>`
+    ).join("");
+  }
+
+  $("#crayGrid").innerHTML = BROTHS.map(
+    (b) => `
+    <article class="card" data-broth="${b}">
+      <div class="card-photo" style="background-image:url('${BROTH_PHOTOS[b]}')"></div>
       <div class="card-body">
         <div class="row-between">
-          <h3>Раки ${s.label}</h3>
-          <div class="price">${money(s.price)}/кг</div>
+          <h3>Раки</h3>
+          <div class="price">${money(SIZES[0].price)}/кг</div>
         </div>
-        <p class="meta">${s.pcs}</p>
-        <select class="select broth">${flavorOptions(BROTHS)}</select>
+        <p class="meta">${b}</p>
+        <select class="select size">${sizeOptions()}</select>
         <div class="qty">
           <button type="button" data-step="-1">−</button>
-          <input class="kg" type="number" min="1" step="1" value="1" />
+          <span class="qty-val">1</span>
           <button type="button" data-step="1">+</button>
           <span class="meta">кг</span>
         </div>
@@ -232,12 +238,13 @@
     </article>`
   ).join("");
 
+
   document.addEventListener("click", (e) => {
     const stepBtn = e.target.closest(".qty [data-step]");
     if (stepBtn) {
-      const input = stepBtn.parentElement.querySelector("input");
-      const next = Math.max(1, Math.round((+input.value || 1) + +stepBtn.dataset.step));
-      input.value = String(next);
+      const valEl = stepBtn.parentElement.querySelector(".qty-val");
+      const next = Math.max(1, Math.round((+valEl.textContent || 1) + +stepBtn.dataset.step));
+      valEl.textContent = String(next);
     }
   });
 
@@ -245,7 +252,7 @@
     btn.addEventListener("click", () => {
       const card = btn.closest(".card");
       const flavor = card.dataset.shrimp;
-      const kg = Math.max(1, Math.round(+card.querySelector(".kg").value || 1));
+      const kg = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
       addItem({
         id: "shrimp-" + flavor,
         title: "Креветки",
@@ -256,19 +263,19 @@
     });
   });
 
-  $$("#crayGrid .broth").forEach((sel) => {
+  $$("#crayGrid .size").forEach((sel) => {
     sel.addEventListener("change", () => {
-      const photo = sel.closest(".card").querySelector(".card-photo");
-      photo.style.backgroundImage = `url('${BROTH_PHOTOS[sel.value] || BROTH_PHOTOS.BBQ}')`;
+      const size = SIZES.find((s) => s.id === sel.value) || SIZES[0];
+      sel.closest(".card").querySelector(".price").textContent = money(size.price) + "/кг";
     });
   });
 
   $$(".add-cray").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".card");
-      const size = SIZES.find((s) => s.id === card.dataset.size);
-      const broth = card.querySelector(".broth").value;
-      const kg = Math.max(1, Math.round(+card.querySelector(".kg").value || 1));
+      const broth = card.dataset.broth;
+      const size = SIZES.find((s) => s.id === card.querySelector(".size").value) || SIZES[0];
+      const kg = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
       addItem({
         id: "cray-" + size.id + "-" + broth,
         title: "Раки " + size.label,
