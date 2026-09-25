@@ -1,12 +1,10 @@
-/* Скопіюйте файл як config.secrets.js і заповніть.
-   config.secrets.js у git НЕ потрапляє. */
 window.KLESHNEVAR_SECRETS = {
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
+    apiKey: "AIzaSyC3M3fAESlBMSSKEdoZBAcGrLwa8ltW7WU",
+    authDomain: "k1eshnevar.firebaseapp.com",
+    projectId: "k1eshnevar",
+    storageBucket: "k1eshnevar.firebasestorage.app",
+    messagingSenderId: "641049603347",
+    appId: "1:641049603347:web:1326872c5c482cc548fee6",
   },
 };
