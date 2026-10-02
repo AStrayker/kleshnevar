@@ -7,7 +7,7 @@ window.KLESHNEVAR = {
   address: "просп. Шевченко, 31/32",
   mapsQuery: "просп. Шевченко, 31/32, Каменское, Днепропетровская область, Украина, 51909",
   instagram: "https://www.instagram.com/kleshnevar_km_/",
-  tiktok: "https://www.tiktok.com/",
+  tiktok: "https://www.tiktok.com/@kleshnevar",
   telegram: "https://t.me/",
   workHours: "будні 10-21, у вихідні 11-22",
   minOrder: 999,
