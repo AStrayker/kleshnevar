@@ -13,4 +13,5 @@ window.KLESHNEVAR = {
   minOrder: 999,
   deliveryNote:
     "Доставка згідно з тарифами перевізника.",
+  orderBotUrl: "https://kleshnevartelegrambot-production.up.railway.app"
 };
