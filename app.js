@@ -358,19 +358,26 @@
     btn.disabled = true;
     btn.textContent = "Надсилаємо…";
     try {
-      if (db) {
+      if (C.orderBotUrl) {
+        const res = await fetch(String(C.orderBotUrl).replace(/\/$/, "") + "/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(order),
+        });
+        if (!res.ok) throw new Error("bot " + res.status);
+      } else if (db) {
         await db.collection("orders").add(order);
       } else {
         const all = JSON.parse(localStorage.getItem("kv-orders") || "[]");
         all.push(order);
         localStorage.setItem("kv-orders", JSON.stringify(all));
-        console.log("ORDER (локально, підключіть Firebase):", order);
+        console.log("ORDER (локально):", order);
       }
       cart = [];
       saveCart();
       e.target.reset();
       closeAll();
-      toast(db ? "Замовлення прийнято" : "Замовлення збережено локально (Firebase ще не підключено)");
+      toast(C.orderBotUrl || db ? "Замовлення прийнято" : "Замовлення збережено локально");
     } catch (err) {
       console.error(err);
       toast("Не вдалося надіслати. Зателефонуйте нам.");
