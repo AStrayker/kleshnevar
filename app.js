@@ -386,6 +386,16 @@
       btn.textContent = "Оформити замовлення";
     }
   });
+    const orderType = $("#orderForm [name=type]");
+  const addressInput = $("#orderForm [name=address]");
+  function syncAddress() {
+    const pickup = orderType.value === "pickup";
+    addressInput.hidden = pickup;
+    addressInput.required = !pickup;
+    if (pickup) addressInput.value = "";
+  }
+  orderType.addEventListener("change", syncAddress);
+  syncAddress();
 
   initFirebase();
   renderCart();
