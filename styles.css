@@ -367,6 +367,38 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
   letter-spacing: 0.2em; text-transform: uppercase;
   margin: 18px 0 10px;
 }
+#adminIdsInput {
+  width: 100%;
+  min-height: 72px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #121214;
+  color: #fff;
+  padding: 10px;
+  font: inherit;
+}
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0,0,0,0.72);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.welcome[hidden] { display: none; }
+.welcome-card {
+  width: min(420px, 100%);
+  background: #141416;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+}
+.welcome-card h2 { font-family: Unbounded, sans-serif; }
+.welcome-card p { color: var(--muted); line-height: 1.5; }
+
 .socials { display: flex; gap: 8px; flex-wrap: wrap; }
 .socials a {
   color: #fff; text-decoration: none;
@@ -427,3 +459,5 @@ footer {
   color: var(--muted);
   font-size: 13px;
 }
+
+.empty { color: var(--muted); text-align: center; padding: 30px 10px; }
