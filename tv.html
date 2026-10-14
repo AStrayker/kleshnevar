@@ -49,45 +49,97 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      width: min(92vw, 86rem);
+      gap: clamp(0.7rem, 2vh, 1.5rem);
+      width: min(96vw, 96rem);
       margin: 0 auto;
-      padding: 0.5rem 0 calc(26vh + 1rem);
+      padding: 0.2rem clamp(0.8rem, 2vw, 2rem) calc(28vh + 0.4rem);
       overflow: auto;
     }
-    .headings, .line {
+    .board-chips { display: flex; flex-wrap: wrap; gap: 0.2rem 1.35rem; align-items: baseline; }
+    .board-chips .board-title, .board-cards .board-title { width: 100%; grid-column: 1 / -1; }
+    .board-chips .dish { display: flex; gap: 0.55rem; align-items: baseline; padding: 0.12rem 0; }
+    .board-chips .dish-name { font-size: clamp(1rem, 1.55vw, 1.45rem); }
+    .board-chips .dish-meta { display: none; }
+    .board-chips .dish-price { font-size: clamp(1rem, 1.45vw, 1.35rem); }
+    .board-cards {
       display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(7.5rem, 1.15fr) minmax(4.2rem, 0.45fr) minmax(7.5rem, 0.95fr);
-      column-gap: clamp(0.4rem, 1.6vw, 1.6rem);
-      align-items: baseline;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(0.45rem, 1.2vw, 1.1rem);
     }
-    .headings {
-      margin-bottom: 0.35rem;
+    .board-cards .dish, .board-cards .dish-stack { display: block; padding: 0.1rem 0 0.35rem; }
+    .board-cards .dish-name { font-size: clamp(1.05rem, 1.55vw, 1.5rem); }
+    .board-cards .size-grid { grid-template-columns: 1fr; gap: 0.18rem; margin-top: 0.35rem; }
+    .board-cards .size-grid > div {
+      display: grid;
+      grid-template-columns: 2.3rem minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: 0.2rem 0.35rem;
+    }
+    .board-cards .size-grid i {
+      color: var(--ash);
+      font-style: normal;
+      font-weight: 600;
+      font-size: clamp(0.68rem, 0.9vw, 0.88rem);
+      white-space: nowrap;
+    }
+    .board-cards .size-grid b { display: inline; color: var(--paper); font-size: clamp(0.85rem, 1.15vw, 1.1rem); }
+    .board-cards .size-grid span { font-size: clamp(0.85rem, 1.2vw, 1.15rem); }
+    .board-title {
+      margin: 0 0 0.35rem;
       color: var(--ember);
-      font-size: clamp(0.72rem, 1.5vw, 1.15rem);
+      font-size: clamp(0.78rem, 1.35vw, 1.05rem);
       font-weight: 800;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
     }
-    .line {
-      padding: clamp(0.28rem, 0.7vh, 0.55rem) 0;
-      border-bottom: 1px solid color-mix(in srgb, var(--ember) 35%, transparent);
+    .dish {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 1rem;
+      align-items: center;
+      padding: clamp(0.35rem, 0.9vh, 0.7rem) 0;
+    }
+    .dish-name {
+      color: var(--paper);
+      font-size: clamp(1.15rem, 2.15vw, 2.15rem);
+      font-weight: 800;
+      line-height: 1.05;
+    }
+    .dish-meta {
+      margin-top: 0.18rem;
+      color: var(--ash);
+      font-size: clamp(0.78rem, 1.15vw, 1.05rem);
+      font-weight: 600;
+    }
+    .dish-price {
       color: var(--ember);
-      font-size: clamp(1rem, 2.5vw, 2.35rem);
-      font-weight: 700;
-      line-height: 1.15;
+      font-size: clamp(1.05rem, 1.7vw, 1.65rem);
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
     }
-    .menu-tight .line {
-      font-size: clamp(0.92rem, 2vw, 1.7rem);
-      padding-block: clamp(0.16rem, 0.4vh, 0.35rem);
+    .dish-stack { display: block; }
+    .dish-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+    .size-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.15rem 0.6rem;
+      margin-top: 0.28rem;
     }
-    .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .price { text-align: right; }
-    .line span:nth-child(2),
-    .line span:nth-child(3),
-    .headings span:nth-child(2),
-    .headings span:nth-child(3) { text-align: center; }
-    .headings span:last-child, .price { text-align: right; }
-    .demo-note { margin: 0.8rem 0 0; color: var(--ash); font-size: clamp(0.75rem, 1.2vw, 0.95rem); }
+    .size-grid b {
+      display: block;
+      color: var(--ash);
+      font-size: clamp(0.72rem, 1.05vw, 0.95rem);
+      letter-spacing: 0.08em;
+    }
+    .size-grid span {
+      color: var(--ember);
+      font-size: clamp(0.92rem, 1.35vw, 1.3rem);
+      font-weight: 800;
+    }
+    .menu-tight .dish-name { font-size: clamp(1rem, 1.7vw, 1.55rem); }
+    .menu-tight .dish-price { font-size: clamp(0.92rem, 1.35vw, 1.3rem); }
+    .demo-note { grid-column: 1 / -1; margin: 0.4rem 0 0; color: var(--ash); font-size: clamp(0.75rem, 1.2vw, 0.95rem); }
     .qr {
       position: absolute;
       z-index: 4;
@@ -156,11 +208,10 @@
     }
     @media (max-width: 720px) {
       .logo { height: 2.6rem; max-width: 62vw; }
-      .menu { justify-content: flex-start; width: min(94vw, 86rem); padding: 0.4rem 0 7.2rem; }
-      .headings { font-size: 0.62rem; letter-spacing: 0.02em; }
-      .headings span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .line { font-size: 0.92rem; }
-      .name { white-space: normal; }
+      .menu { padding: 0.4rem 0.8rem 8rem; }
+      .board-cards { grid-template-columns: 1fr 1fr; }
+      .board-chips .dish { width: 100%; justify-content: space-between; }
+      .dish-price { font-size: 1rem; white-space: normal; }
       .qr { width: 4.1rem; }
       .flame { height: 28vh; }
     }
@@ -173,16 +224,8 @@
         <img src="logo-word.png" alt="Kleshnevar" class="logo" />
       </button>
     </header>
-    <main class="menu" id="menu">
-      <div class="headings">
-        <span>Найменування</span>
-        <span>Розмір</span>
-        <span>Вага</span>
-        <span>Ціна</span>
-      </div>
-      <div class="rows" id="rows"></div>
-      <p class="demo-note" id="note"></p>
-    </main>
+    <main class="menu" id="menu"></main>
+    <p class="demo-note" id="note" hidden></p>
     <img class="qr" src="menu-qr.svg" alt="QR-код меню на сайті" />
     <video class="flame" id="flameA" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video>
     <video class="flame" id="flameB" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video>
@@ -190,25 +233,141 @@
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
-    const rowsEl = document.getElementById("rows");
     const menuEl = document.getElementById("menu");
     const noteEl = document.getElementById("note");
 
-    function paint(rows, problem) {
-      rowsEl.replaceChildren();
-      rows.forEach((row) => {
-        const line = document.createElement("div");
-        line.className = "line";
-        row.forEach((text, i) => {
-          const span = document.createElement("span");
-          if (i === 0) span.className = "name";
-          if (i === 3) span.className = "price";
-          span.textContent = text;
-          line.appendChild(span);
+    function shortName(name) {
+      const cut = name.replace(/^креветки\s+/i, "").replace(/^раки\s+/i, "");
+      return cut.charAt(0).toUpperCase() + cut.slice(1);
+    }
+    function metaLine(size, weight) {
+      return [size, weight].filter((part) => part && part !== "-" && part !== "—").join(" · ");
+    }
+    function offersFor(row) {
+      const chunks = (value) => String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—" && part !== "–");
+      const counts = { m: "30–35 шт", l: "23–25 шт", xl: "15–18 шт", xxl: "10–14 шт" };
+      const money = (value) => /грн/i.test(value) ? value : (/^\d+$/.test(value) ? value + " грн" : value);
+      const pack = (sizes, weights, prices) => {
+        const perSize = weights.length === sizes.length;
+        const portion = perSize ? "" : (weights[0] || "");
+        return sizes.map((size, index) => {
+          const explicit = perSize ? weights[index] : "";
+          const count = explicit && !/кг/i.test(explicit) ? (/шт/i.test(explicit) ? explicit : explicit + " шт") : (counts[size.toLowerCase()] || "");
+          return { size, count, portion, price: prices[index] };
         });
-        rowsEl.appendChild(line);
+      };
+      const sizes = chunks(row[1]);
+      if (sizes.length < 2) return [];
+      const weights = chunks(row[2]);
+      const written = chunks(row[3]);
+      if (written.length === sizes.length) return pack(sizes, weights, written.map(money));
+      const nums = String(row[3]).match(/\d+/g) || [];
+      if (nums.length === sizes.length) return pack(sizes, weights, nums.map((num) => num + " грн"));
+      const ladder = { m: "1300 грн", l: "1750 грн", xl: "2300 грн", xxl: "2800 грн" };
+      const priced = sizes.map((size) => ladder[size.toLowerCase()]);
+      if (priced.every(Boolean) && nums[0] === "1300" && nums[1] === "2800") return pack(sizes, weights, priced);
+      return [];
+    }
+    function addDish(board, row, lines) {
+      const dish = document.createElement("article");
+      if (!lines.length) {
+        dish.className = "dish";
+        const copy = document.createElement("div");
+        const name = document.createElement("div");
+        name.className = "dish-name";
+        name.textContent = shortName(row[0]);
+        copy.appendChild(name);
+        const meta = metaLine(row[1], row[2]);
+        if (meta) {
+          const sub = document.createElement("div");
+          sub.className = "dish-meta";
+          sub.textContent = meta;
+          copy.appendChild(sub);
+        }
+        const price = document.createElement("div");
+        price.className = "dish-price";
+        price.textContent = row[3];
+        dish.append(copy, price);
+        board.appendChild(dish);
+        return;
+      }
+      dish.className = "dish dish-stack";
+      const head = document.createElement("div");
+      head.className = "dish-head";
+      const name = document.createElement("div");
+      name.className = "dish-name";
+      name.textContent = shortName(row[0]);
+      head.appendChild(name);
+      const portion = lines.every((line) => line.portion === lines[0].portion) ? lines[0].portion : "";
+      if (portion) {
+        const sub = document.createElement("div");
+        sub.className = "dish-meta";
+        sub.textContent = portion;
+        head.appendChild(sub);
+      }
+      const grid = document.createElement("div");
+      grid.className = "size-grid";
+      lines.forEach((line) => {
+        const cell = document.createElement("div");
+        const label = document.createElement("b");
+        label.textContent = line.size;
+        const price = document.createElement("span");
+        price.textContent = line.price;
+        cell.append(label);
+        if (line.count) {
+          const count = document.createElement("i");
+          count.textContent = line.count;
+          cell.append(count);
+        }
+        cell.append(price);
+        grid.appendChild(cell);
       });
-      menuEl.classList.toggle("menu-tight", rows.length > 9);
+      dish.append(head, grid);
+      board.appendChild(dish);
+    }
+    function addBoard(title, items) {
+      if (!items.length) return;
+      const board = document.createElement("section");
+      board.className = title === "Раки" ? "board board-cards" : "board board-chips";
+      const heading = document.createElement("h2");
+      heading.className = "board-title";
+      heading.textContent = title;
+      board.appendChild(heading);
+      const groups = [];
+      items.forEach((row) => {
+        const last = groups[groups.length - 1];
+        if (last && last[0][0] === row[0]) last.push(row);
+        else groups.push([row]);
+      });
+      groups.forEach((group) => {
+        const counts = { m: "30–35 шт", l: "23–25 шт", xl: "15–18 шт", xxl: "10–14 шт" };
+          const lines = group.length > 1
+          ? group.map((row) => {
+              const explicit = row[2] && !/кг/i.test(row[2]) ? row[2] : "";
+              const count = explicit ? (/шт/i.test(explicit) ? explicit : explicit + " шт") : (counts[String(row[1]).toLowerCase()] || "");
+              return { size: row[1], count, portion: /кг/i.test(row[2]) ? row[2] : "", price: row[3] };
+            })
+          : offersFor(group[0]);
+        addDish(board, group[0], lines);
+      });
+      menuEl.appendChild(board);
+    }
+    function paint(rows, problem) {
+      const shrimp = [];
+      const cray = [];
+      const rest = [];
+      rows.forEach((row) => {
+        const name = row[0].toLowerCase();
+        if (name.includes("кревет")) shrimp.push(row);
+        else if (name.includes("рак")) cray.push(row);
+        else rest.push(row);
+      });
+      menuEl.replaceChildren();
+      addBoard("Креветки", shrimp);
+      addBoard("Раки", cray);
+      addBoard("Меню", rest);
+      menuEl.classList.toggle("menu-tight", rows.length > 16);
+      noteEl.hidden = !problem;
       noteEl.textContent = problem || "";
     }
 
@@ -231,14 +390,36 @@
       return rows;
     }
 
+    let shown = "";
+    let pending = "";
+    let hits = 0;
     function pull() {
       fetch(CSV + "&_=" + Date.now(), { cache: "no-store" })
         .then((res) => { if (!res.ok) throw new Error(String(res.status)); return res.text(); })
         .then((text) => {
           const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || ""]).filter((r) => r.some(Boolean));
-          paint(next, next.length ? "" : "У таблиці немає рядків.");
+          const key = JSON.stringify(next);
+          const problem = next.length ? "" : "У таблиці немає рядків.";
+          if (!shown) {
+            shown = key;
+            paint(next, problem);
+            return;
+          }
+          if (key === shown) {
+            pending = "";
+            hits = 0;
+            return;
+          }
+          if (key === pending) hits += 1;
+          else { pending = key; hits = 1; }
+          if (hits >= 2) {
+            shown = key;
+            pending = "";
+            hits = 0;
+            paint(next, problem);
+          }
         })
-        .catch(() => { noteEl.textContent = "Не вдалося прочитати таблицю."; });
+        .catch(() => { noteEl.hidden = false; noteEl.textContent = "Не вдалося прочитати таблицю."; });
     }
 
     document.getElementById("logoBtn").addEventListener("click", () => {
@@ -252,7 +433,7 @@
     });
 
     pull();
-    setInterval(pull, 4000);
+    setInterval(pull, 5000);
     document.addEventListener("visibilitychange", pull);
   </script>
   <script>
