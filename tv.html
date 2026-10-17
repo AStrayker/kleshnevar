@@ -27,7 +27,7 @@
     .screen {
       position: relative;
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto minmax(0, 1fr) 26vh;
       height: 100dvh;
       min-height: 100vh;
       overflow: hidden;
@@ -44,76 +44,80 @@
       object-position: left center;
     }
     .menu {
+      --fit: 28;
       position: relative;
       z-index: 2;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: clamp(0.7rem, 2vh, 1.5rem);
-      width: min(96vw, 96rem);
+      gap: 0.45em;
+      width: min(98vw, 120rem);
+      height: 100%;
+      min-height: 0;
       margin: 0 auto;
-      padding: 0.2rem clamp(0.8rem, 2vw, 2rem) calc(28vh + 0.4rem);
-      overflow: auto;
+      padding: 0.25em 0.7em 0.15em;
+      overflow: hidden;
+      font-size: calc(var(--fit) * 1px);
     }
-    .board-chips { display: flex; flex-wrap: wrap; gap: 0.2rem 1.35rem; align-items: baseline; }
+    .board-chips { display: flex; flex-wrap: wrap; gap: 0.2em 0.9em; align-items: baseline; }
     .board-chips .board-title, .board-cards .board-title { width: 100%; grid-column: 1 / -1; }
-    .board-chips .dish { display: flex; gap: 0.55rem; align-items: baseline; padding: 0.12rem 0; }
-    .board-chips .dish-name { font-size: clamp(1rem, 1.55vw, 1.45rem); }
+    .board-chips .dish { display: flex; gap: 0.4em; align-items: baseline; padding: 0.06em 0; }
+    .board-chips .dish-name { font-size: 1.15em; color: #fff; }
     .board-chips .dish-meta { display: none; }
-    .board-chips .dish-price { font-size: clamp(1rem, 1.45vw, 1.35rem); }
+    .board-chips .dish-price { font-size: 1.15em; }
     .board-cards {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: clamp(0.45rem, 1.2vw, 1.1rem);
+      gap: 0.35em 0.7em;
     }
-    .board-cards .dish, .board-cards .dish-stack { display: block; padding: 0.1rem 0 0.35rem; }
-    .board-cards .dish-name { font-size: clamp(1.05rem, 1.55vw, 1.5rem); }
-    .board-cards .size-grid { grid-template-columns: 1fr; gap: 0.18rem; margin-top: 0.35rem; }
+    .board-cards .dish, .board-cards .dish-stack { display: block; padding: 0.05em 0 0.1em; }
+    .board-cards .dish-name { font-size: 1.05em; color: #fff; }
+    .board-cards .size-grid { grid-template-columns: 1fr; gap: 0.08em; margin-top: 0.16em; }
     .board-cards .size-grid > div {
       display: grid;
-      grid-template-columns: 2.3rem minmax(0, 1fr) auto;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: baseline;
-      gap: 0.2rem 0.35rem;
+      gap: 0.15em 0.35em;
     }
     .board-cards .size-grid i {
-      color: var(--ash);
+      color: #ffe6cc;
       font-style: normal;
-      font-weight: 600;
-      font-size: clamp(0.68rem, 0.9vw, 0.88rem);
+      font-weight: 700;
+      font-size: 0.68em;
       white-space: nowrap;
     }
-    .board-cards .size-grid b { display: inline; color: var(--paper); font-size: clamp(0.85rem, 1.15vw, 1.1rem); }
-    .board-cards .size-grid span { font-size: clamp(0.85rem, 1.2vw, 1.15rem); }
+    .board-cards .size-grid b { display: inline; color: #fff; font-size: 0.84em; }
+    .board-cards .size-grid span { font-size: 0.84em; }
     .board-title {
-      margin: 0 0 0.35rem;
+      margin: 0 0 0.2em;
       color: var(--ember);
-      font-size: clamp(0.78rem, 1.35vw, 1.05rem);
+      font-size: 0.55em;
       font-weight: 800;
-      letter-spacing: 0.32em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
     }
     .dish {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      column-gap: 1rem;
+      column-gap: 0.6em;
       align-items: center;
-      padding: clamp(0.35rem, 0.9vh, 0.7rem) 0;
+      padding: 0.08em 0;
     }
     .dish-name {
-      color: var(--paper);
-      font-size: clamp(1.15rem, 2.15vw, 2.15rem);
+      color: #fff;
+      font-size: 1em;
       font-weight: 800;
       line-height: 1.05;
     }
     .dish-meta {
-      margin-top: 0.18rem;
-      color: var(--ash);
-      font-size: clamp(0.78rem, 1.15vw, 1.05rem);
-      font-weight: 600;
+      margin-top: 0.1em;
+      color: #ffe6cc;
+      font-size: 0.7em;
+      font-weight: 700;
     }
     .dish-price {
-      color: var(--ember);
-      font-size: clamp(1.05rem, 1.7vw, 1.65rem);
+      color: #ff7a22;
+      font-size: 1em;
       font-weight: 800;
       text-align: right;
       white-space: nowrap;
@@ -137,8 +141,8 @@
       font-size: clamp(0.92rem, 1.35vw, 1.3rem);
       font-weight: 800;
     }
-    .menu-tight .dish-name { font-size: clamp(1rem, 1.7vw, 1.55rem); }
-    .menu-tight .dish-price { font-size: clamp(0.92rem, 1.35vw, 1.3rem); }
+    .menu-tight .dish-name { font-size: 1em; }
+    .menu-tight .dish-price { font-size: 1em; }
     .demo-note { grid-column: 1 / -1; margin: 0.4rem 0 0; color: var(--ash); font-size: clamp(0.75rem, 1.2vw, 0.95rem); }
     .qr {
       position: absolute;
@@ -151,69 +155,29 @@
       background: var(--paper);
       box-shadow: 0 0 0 0.35rem var(--paper);
     }
+    .stage {
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+    }
     .flame {
       position: absolute;
-      z-index: 1;
       left: 0;
       right: 0;
-      bottom: -2vh;
-      width: 100%;
-      height: 42vh;
-      object-fit: cover;
-      object-position: center 86%;
-      pointer-events: none;
-      mask-image: linear-gradient(to top, #000 58%, transparent 100%);
-    }
-    .embers {
-      position: absolute;
-      z-index: 3;
-      inset: 0;
+      bottom: 0;
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
       pointer-events: none;
-    }
-    .sheet-panel {
-      position: absolute;
-      z-index: 5;
-      top: clamp(4.5rem, 14vh, 8rem);
-      left: clamp(0.8rem, 2.4vw, 2rem);
-      width: min(28rem, calc(100vw - 1.6rem));
-      display: none;
-      gap: 0.7rem;
-      padding: 1rem;
-      border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
-      border-radius: 0.9rem;
-      background: color-mix(in srgb, var(--ink) 92%, black);
-    }
-    .sheet-panel.open { display: grid; }
-    .panel-title { margin: 0; font-weight: 800; }
-    .panel-copy { margin: 0; color: var(--ash); font-size: 0.92rem; line-height: 1.45; }
-    .sheet-panel input {
-      width: 100%;
-      border: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
-      border-radius: 0.6rem;
-      padding: 0.75rem 0.8rem;
-      background: transparent;
-      color: var(--paper);
-      font: inherit;
-    }
-    .panel-go {
-      border: 0;
-      border-radius: 0.6rem;
-      padding: 0.75rem 0.9rem;
-      background: var(--ember);
-      color: var(--ink);
-      font: inherit;
-      font-weight: 800;
     }
     @media (max-width: 720px) {
       .logo { height: 2.6rem; max-width: 62vw; }
-      .menu { padding: 0.4rem 0.8rem 8rem; }
+      .menu { padding: 0.3em 0.5em 0.4em; }
       .board-cards { grid-template-columns: 1fr 1fr; }
       .board-chips .dish { width: 100%; justify-content: space-between; }
-      .dish-price { font-size: 1rem; white-space: normal; }
       .qr { width: 4.1rem; }
-      .flame { height: 28vh; }
+      .screen { grid-template-rows: auto minmax(0, 1fr) 18vh; }
     }
   </style>
 </head>
@@ -227,9 +191,9 @@
     <main class="menu" id="menu"></main>
     <p class="demo-note" id="note" hidden></p>
     <img class="qr" src="menu-qr.svg" alt="QR-код меню на сайті" />
-    <video class="flame" id="flameA" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video>
-    <video class="flame" id="flameB" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video>
-    <canvas class="embers" id="embers" aria-hidden="true"></canvas>
+    <div class="stage">
+      <video class="flame" id="flame" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video>
+    </div>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
@@ -341,7 +305,7 @@
       });
       groups.forEach((group) => {
         const counts = { m: "30–35 шт", l: "23–25 шт", xl: "15–18 шт", xxl: "10–14 шт" };
-          const lines = group.length > 1
+        const lines = group.length > 1
           ? group.map((row) => {
               const explicit = row[2] && !/кг/i.test(row[2]) ? row[2] : "";
               const count = explicit ? (/шт/i.test(explicit) ? explicit : explicit + " шт") : (counts[String(row[1]).toLowerCase()] || "");
@@ -391,33 +355,21 @@
     }
 
     let shown = "";
-    let pending = "";
-    let hits = 0;
+    let previous = "";
+    let switchedAt = 0;
     function pull() {
       fetch(CSV + "&_=" + Date.now(), { cache: "no-store" })
         .then((res) => { if (!res.ok) throw new Error(String(res.status)); return res.text(); })
         .then((text) => {
           const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || ""]).filter((r) => r.some(Boolean));
           const key = JSON.stringify(next);
-          const problem = next.length ? "" : "У таблиці немає рядків.";
-          if (!shown) {
-            shown = key;
-            paint(next, problem);
-            return;
-          }
-          if (key === shown) {
-            pending = "";
-            hits = 0;
-            return;
-          }
-          if (key === pending) hits += 1;
-          else { pending = key; hits = 1; }
-          if (hits >= 2) {
-            shown = key;
-            pending = "";
-            hits = 0;
-            paint(next, problem);
-          }
+          if (key === shown) return;
+          if (previous && key === previous && Date.now() - switchedAt < 12000) return;
+          previous = shown;
+          shown = key;
+          switchedAt = Date.now();
+          paint(next, next.length ? "" : "У таблиці немає рядків.");
+          fitMenu();
         })
         .catch(() => { noteEl.hidden = false; noteEl.textContent = "Не вдалося прочитати таблицю."; });
     }
@@ -432,97 +384,37 @@
       (document.exitFullscreen || document.webkitExitFullscreen).call(document);
     });
 
+    function fitMenu() {
+      const menu = menuEl;
+      const max = Math.round(window.innerHeight * 0.08);
+      let lo = 16;
+      let hi = Math.max(lo + 2, max);
+      let best = lo;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        menu.style.setProperty("--fit", String(mid));
+        if (menu.scrollHeight <= menu.clientHeight + 2) {
+          best = mid;
+          lo = mid + 1;
+        } else hi = mid - 1;
+      }
+      menu.style.setProperty("--fit", String(best));
+    }
+
     pull();
-    setInterval(pull, 5000);
+    setInterval(pull, 2000);
     document.addEventListener("visibilitychange", pull);
+    window.addEventListener("resize", fitMenu);
   </script>
   <script>
     (function () {
-      const a = document.getElementById("flameA");
-      const b = document.getElementById("flameB");
-      const embers = document.getElementById("embers");
-      const ectx = embers.getContext("2d");
-      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const rand = (min, max) => min + Math.random() * (max - min);
-      const fade = 0.85;
-      function cover(time, duration) {
-        if (time < fade) return time / fade;
-        if (time > duration - fade) return (duration - time) / fade;
-        return 1;
-      }
-      function makeEmber(w, h) {
-        const angle = rand(0, Math.PI * 2);
-        const speed = rand(6, 28);
-        return {
-          x: Math.random() * w, y: Math.random() * h,
-          vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - rand(0, 8),
-          r: rand(0.35, 1.6),
-          a: Math.random() < 0.16 ? rand(0.14, 0.28) : rand(0.035, 0.1),
-          phase: rand(0, Math.PI * 2),
-          streak: Math.random() < 0.4
-        };
-      }
-      const sparks = [];
-      function resize() {
-        const dpr = Math.min(devicePixelRatio || 1, 2);
-        embers.width = Math.max(1, embers.clientWidth * dpr);
-        embers.height = Math.max(1, embers.clientHeight * dpr);
-        const count = Math.round((embers.clientWidth * embers.clientHeight) / 18000);
-        while (sparks.length < Math.min(140, Math.max(48, count))) sparks.push(makeEmber(embers.width, embers.height));
-      }
-      resize();
-      new ResizeObserver(resize).observe(embers);
-      if (reduced) { a.pause(); b.pause(); }
-      let last = performance.now();
-      function frame(now) {
-        const dt = Math.min(0.05, (now - last) / 1000);
-        last = now;
-        const time = now / 1000;
-        const duration = a.duration;
-        if (!reduced && duration && isFinite(duration)) {
-          const target = (a.currentTime + duration / 2) % duration;
-          const gap = Math.abs(b.currentTime - target);
-          if (gap > 0.18 && gap < duration - 0.18) b.currentTime = target;
-          const oa = cover(a.currentTime, duration);
-          const ob = cover(target, duration);
-          const sum = oa + ob || 1;
-          a.style.opacity = String(oa / sum);
-          b.style.opacity = String(ob / sum);
-        }
-        const w = embers.width, h = embers.height;
-        ectx.clearRect(0, 0, w, h);
-        sparks.forEach((spark) => {
-          if (!reduced) {
-            spark.x += spark.vx * dt;
-            spark.y += spark.vy * dt;
-            spark.vx += Math.sin(time * 0.7 + spark.phase) * 4 * dt;
-            spark.vy += Math.cos(time * 0.5 + spark.phase) * 4 * dt;
-            const speed = Math.hypot(spark.vx, spark.vy) || 1;
-            if (speed > 32) { spark.vx *= 32 / speed; spark.vy *= 32 / speed; }
-            if (spark.x < -16) spark.x = w + 16;
-            if (spark.x > w + 16) spark.x = -16;
-            if (spark.y < -16) spark.y = h + 16;
-            if (spark.y > h + 16) spark.y = -16;
-          }
-          const alpha = spark.a * (0.65 + 0.35 * Math.sin(time * 1.4 + spark.phase));
-          const color = "rgba(255," + (150 + spark.r * 30) + ",60," + Math.max(0.02, alpha) + ")";
-          if (spark.streak) {
-            ectx.strokeStyle = color;
-            ectx.lineWidth = Math.max(0.5, spark.r * 0.65);
-            ectx.beginPath();
-            ectx.moveTo(spark.x, spark.y);
-            ectx.lineTo(spark.x - spark.vx * 0.12, spark.y - spark.vy * 0.12);
-            ectx.stroke();
-          } else {
-            ectx.fillStyle = color;
-            ectx.beginPath();
-            ectx.arc(spark.x, spark.y, spark.r, 0, Math.PI * 2);
-            ectx.fill();
-          }
-        });
-        if (!reduced) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
+      const flame = document.getElementById("flame");
+      const kick = () => flame.play().catch(function () {});
+      flame.addEventListener("stalled", kick);
+      flame.addEventListener("waiting", kick);
+      flame.addEventListener("ended", function () { flame.currentTime = 0; kick(); });
+      document.addEventListener("visibilitychange", function () { if (!document.hidden) kick(); });
+      kick();
     })();
   </script>
 </body>
