@@ -74,20 +74,26 @@
     .board-cards .dish-name { font-size: 1.05em; color: #fff; }
     .board-cards .size-grid { grid-template-columns: 1fr; gap: 0.08em; margin-top: 0.16em; }
     .board-cards .size-grid > div {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
+      display: flex;
+      justify-content: space-between;
       align-items: baseline;
-      gap: 0.15em 0.35em;
+      gap: 0.55em;
+    }
+    .board-cards .size-left {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4em;
+      flex: none;
     }
     .board-cards .size-grid i {
       color: #ffe6cc;
       font-style: normal;
       font-weight: 700;
-      font-size: 0.68em;
+      font-size: 0.52em;
       white-space: nowrap;
     }
-    .board-cards .size-grid b { display: inline; color: #fff; font-size: 0.84em; }
-    .board-cards .size-grid span { font-size: 0.84em; }
+    .board-cards .size-grid b { color: #fff; font-size: 0.58em; white-space: nowrap; }
+    .board-cards .size-grid span { margin-left: auto; font-size: 0.58em; white-space: nowrap; flex: none; }
     .board-title {
       margin: 0 0 0.2em;
       color: var(--ember);
@@ -103,47 +109,12 @@
       align-items: center;
       padding: 0.08em 0;
     }
-    .dish-name {
-      color: #fff;
-      font-size: 1em;
-      font-weight: 800;
-      line-height: 1.05;
-    }
-    .dish-meta {
-      margin-top: 0.1em;
-      color: #ffe6cc;
-      font-size: 0.7em;
-      font-weight: 700;
-    }
-    .dish-price {
-      color: #ff7a22;
-      font-size: 1em;
-      font-weight: 800;
-      text-align: right;
-      white-space: nowrap;
-    }
+    .dish-name { color: #fff; font-size: 1em; font-weight: 800; line-height: 1.05; }
+    .dish-meta { margin-top: 0.1em; color: #ffe6cc; font-size: 0.7em; font-weight: 700; }
+    .dish-price { color: #ff7a22; font-size: 1em; font-weight: 800; text-align: right; white-space: nowrap; }
     .dish-stack { display: block; }
-    .dish-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
-    .size-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.15rem 0.6rem;
-      margin-top: 0.28rem;
-    }
-    .size-grid b {
-      display: block;
-      color: var(--ash);
-      font-size: clamp(0.72rem, 1.05vw, 0.95rem);
-      letter-spacing: 0.08em;
-    }
-    .size-grid span {
-      color: var(--ember);
-      font-size: clamp(0.92rem, 1.35vw, 1.3rem);
-      font-weight: 800;
-    }
-    .menu-tight .dish-name { font-size: 1em; }
-    .menu-tight .dish-price { font-size: 1em; }
-    .demo-note { grid-column: 1 / -1; margin: 0.4rem 0 0; color: var(--ash); font-size: clamp(0.75rem, 1.2vw, 0.95rem); }
+    .dish-head { display: flex; justify-content: space-between; gap: 0.4em; align-items: baseline; }
+    .size-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.15rem 0.6rem; margin-top: 0.28rem; }
     .qr {
       position: absolute;
       z-index: 4;
@@ -155,18 +126,11 @@
       background: var(--paper);
       box-shadow: 0 0 0 0.35rem var(--paper);
     }
-    .stage {
-      position: relative;
-      overflow: hidden;
-      min-height: 0;
-    }
+    .stage { position: relative; overflow: hidden; min-height: 0; }
     .flame {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
+      left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       object-position: center bottom;
       pointer-events: none;
@@ -189,7 +153,7 @@
       </button>
     </header>
     <main class="menu" id="menu"></main>
-    <p class="demo-note" id="note" hidden></p>
+    <p id="note" hidden></p>
     <img class="qr" src="menu-qr.svg" alt="QR-код меню на сайті" />
     <div class="stage">
       <video class="flame" id="flame" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video>
@@ -277,13 +241,15 @@
         label.textContent = line.size;
         const price = document.createElement("span");
         price.textContent = line.price;
-        cell.append(label);
+        const left = document.createElement("span");
+        left.className = "size-left";
+        left.append(label);
         if (line.count) {
           const count = document.createElement("i");
           count.textContent = line.count;
-          cell.append(count);
+          left.append(count);
         }
-        cell.append(price);
+        cell.append(left, price);
         grid.appendChild(cell);
       });
       dish.append(head, grid);
@@ -330,11 +296,9 @@
       addBoard("Креветки", shrimp);
       addBoard("Раки", cray);
       addBoard("Меню", rest);
-      menuEl.classList.toggle("menu-tight", rows.length > 16);
       noteEl.hidden = !problem;
       noteEl.textContent = problem || "";
     }
-
     function parseCsv(text) {
       const rows = [];
       let row = [], cell = "", quoted = false;
@@ -353,7 +317,6 @@
       if (cell.length || row.length) { row.push(cell.trim()); rows.push(row); }
       return rows;
     }
-
     let shown = "";
     let previous = "";
     let switchedAt = 0;
@@ -373,7 +336,6 @@
         })
         .catch(() => { noteEl.hidden = false; noteEl.textContent = "Не вдалося прочитати таблицю."; });
     }
-
     document.getElementById("logoBtn").addEventListener("click", () => {
       const root = document.documentElement;
       const active = document.fullscreenElement || document.webkitFullscreenElement;
@@ -383,7 +345,15 @@
       }
       (document.exitFullscreen || document.webkitExitFullscreen).call(document);
     });
-
+    function crowded(menu) {
+      if (menu.scrollHeight > menu.clientHeight + 2) return true;
+      if (menu.scrollWidth > menu.clientWidth + 2) return true;
+      const nodes = menu.querySelectorAll(".size-grid > div, .board-chips .dish, .dish-head");
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].scrollWidth > nodes[i].clientWidth + 1) return true;
+      }
+      return false;
+    }
     function fitMenu() {
       const menu = menuEl;
       const max = Math.round(window.innerHeight * 0.08);
@@ -393,14 +363,11 @@
       while (lo <= hi) {
         const mid = (lo + hi) >> 1;
         menu.style.setProperty("--fit", String(mid));
-        if (menu.scrollHeight <= menu.clientHeight + 2) {
-          best = mid;
-          lo = mid + 1;
-        } else hi = mid - 1;
+        if (!crowded(menu)) { best = mid; lo = mid + 1; }
+        else hi = mid - 1;
       }
       menu.style.setProperty("--fit", String(best));
     }
-
     pull();
     setInterval(pull, 2000);
     document.addEventListener("visibilitychange", pull);
