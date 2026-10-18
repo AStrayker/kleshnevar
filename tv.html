@@ -59,7 +59,6 @@
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
     const menuEl = document.getElementById("menu");
     const noteEl = document.getElementById("note");
-    const HALF = { m: "700 грн", l: "950 грн", xl: "1250 грн", xxl: "1500 грн" };
     function shortName(name) {
       const cut = name.replace(/^раки\s+/i, "");
       return cut.charAt(0).toUpperCase() + cut.slice(1);
@@ -68,31 +67,19 @@
       const chunks = (value) => String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—" && part !== "–");
       const counts = { m: "30–35 шт", l: "23–25 шт", xl: "15–18 шт", xxl: "10–14 шт" };
       const money = (value) => /грн/i.test(value) ? value : (/^\d+$/.test(value) ? value + " грн" : value);
-      const pack = (sizes, weights, prices) => {
-        const perSize = weights.length === sizes.length;
-        const portion = perSize ? "" : (weights[0] || "");
-        return sizes.map((size, index) => {
-          const explicit = perSize ? weights[index] : "";
-          const count = explicit && !/кг/i.test(explicit) ? (/шт/i.test(explicit) ? explicit : explicit + " шт") : (counts[size.toLowerCase()] || "");
-          return { size, count, portion, price: prices[index] };
-        });
-      };
       const sizes = chunks(row[1]);
       if (sizes.length < 2) return [];
       const weights = chunks(row[2]);
+      const portion = weights.length === 1 ? weights[0] : "";
       const nums = String(row[3]).match(/\d+/g) || [];
-      if (nums.length === sizes.length * 2) {
-        const lines = pack(sizes, weights, nums.slice(0, sizes.length).map((n) => n + " грн"));
-        lines.forEach((line, index) => { line.half = nums[sizes.length + index] + " грн"; });
-        return lines;
-      }
-      if (nums.length === sizes.length) return pack(sizes, weights, nums.map((n) => n + " грн"));
-      const written = chunks(row[3]);
-      if (written.length === sizes.length) return pack(sizes, weights, written.map(money));
-      const ladder = { m: "1300 грн", l: "1750 грн", xl: "2300 грн", xxl: "2800 грн" };
-      const priced = sizes.map((size) => ladder[size.toLowerCase()]);
-      if (priced.every(Boolean)) return pack(sizes, weights, priced);
-      return [];
+      const prices = nums.length >= sizes.length ? nums.slice(0, sizes.length).map((n) => n + " грн") : chunks(row[3]).map(money);
+      if (prices.length < sizes.length) return [];
+      return sizes.map((size, index) => ({
+        size,
+        count: counts[size.toLowerCase()] || "",
+        portion,
+        price: prices[index]
+      }));
     }
     function addDish(board, row, lines) {
       const dish = document.createElement("article");
@@ -129,19 +116,19 @@
       const half = document.createElement("div");
       half.className = "half-grid";
       lines.forEach((line) => {
-        const value = line.half || HALF[String(line.size).trim().toLowerCase()];
-        if (!value) return;
+        if (!line.half) return;
         const cell = document.createElement("div");
         const kg = document.createElement("small");
-        kg.textContent = "0.5 кг";
+        kg.textContent = line.halfLabel || "0.5 кг";
         const label = document.createElement("b");
         label.textContent = line.size;
         const cost = document.createElement("span");
-        cost.textContent = value;
+        cost.textContent = line.half;
         cell.append(kg, label, cost);
         half.appendChild(cell);
       });
-      dish.append(head, grid, half);
+      if (half.childElementCount) dish.append(head, grid, half);
+      else dish.append(head, grid);
       board.appendChild(dish);
     }
     function paint(rows, problem) {
@@ -155,21 +142,28 @@
       heading.textContent = "Раки";
       board.appendChild(heading);
       const groups = [];
+      const index = {};
       cray.forEach((row) => {
-        const last = groups[groups.length - 1];
-        if (last && last[0][0] === row[0]) last.push(row);
-        else groups.push([row]);
+        if (index[row[0]] == null) { index[row[0]] = groups.length; groups.push([]); }
+        groups[index[row[0]]].push(row);
       });
-      const counts = { m: "30–35 шт", l: "23–25 шт", xl: "15–18 шт", xxl: "10–14 шт" };
+      const isHalf = (row) => /0[.,]\s*5/.test(row[2]);
       groups.forEach((group) => {
-        const lines = group.length > 1
-          ? group.map((row) => {
-              const explicit = row[2] && !/кг/i.test(row[2]) ? row[2] : "";
-              const count = explicit ? (/шт/i.test(explicit) ? explicit : explicit + " шт") : (counts[String(row[1]).toLowerCase()] || "");
-              return { size: row[1], count, portion: /кг/i.test(row[2]) ? row[2] : "", price: row[3] };
-            })
-          : offersFor(group[0]);
-        addDish(board, group[0], lines);
+        const full = group.find((row) => !isHalf(row)) || group[0];
+        const halfRow = group.find(isHalf);
+        const lines = offersFor(full);
+        if (halfRow) {
+          const halves = offersFor(halfRow);
+          const bySize = {};
+          halves.forEach((line) => { bySize[String(line.size).trim().toLowerCase()] = line.price; });
+          lines.forEach((line) => {
+            const value = bySize[String(line.size).trim().toLowerCase()];
+            if (!value) return;
+            line.half = value;
+            line.halfLabel = halfRow[2] || "0.5 кг";
+          });
+        }
+        addDish(board, full, lines);
       });
       menuEl.appendChild(board);
       noteEl.hidden = !problem;
