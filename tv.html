@@ -8,87 +8,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root { --ink: #070707; --paper: #f4efe6; --ember: #ff6a1a; --ash: #9a9084; }
+    :root { --ink: #070707; --paper: #f4efe6; --ember: #ff6a1a; }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: var(--ink); color: var(--paper); font-family: Manrope, system-ui, sans-serif; }
     body { overflow: hidden; }
     button { cursor: pointer; }
-    .screen {
-      position: relative;
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      height: 100dvh;
-      min-height: 100vh;
-      overflow: hidden;
-      background: var(--ink);
-    }
-    .top { position: relative; z-index: 3; padding: clamp(0.6rem, 2vh, 1.4rem) clamp(0.8rem, 2.4vw, 2rem) 0; }
+    .screen { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) 28vh; height: 100dvh; min-height: 100vh; overflow: hidden; background: var(--ink); }
+    .top { position: relative; z-index: 3; display: flex; justify-content: center; padding: clamp(0.35rem, 1.2vh, 0.9rem) 1rem 0; }
     .logo-btn { display: block; border: 0; padding: 0; background: transparent; }
-    .logo { display: block; height: clamp(3.2rem, 12vh, 7.5rem); width: auto; max-width: min(46vw, 28rem); object-fit: contain; object-position: left center; }
+    .logo { display: block; height: clamp(5rem, 17vh, 11rem); width: auto; max-width: min(72vw, 44rem); object-fit: contain; }
     .menu {
-      --fit: 28;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.45em;
-      width: min(98vw, 120rem);
-      height: 100%;
-      min-height: 0;
-      margin: 0 auto;
-      padding: 0.2em 0.7em 20vh;
-      overflow: hidden;
-      font-size: calc(var(--fit) * 1px);
+      --fit: 28; position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center;
+      gap: 0.45em; width: min(98vw, 120rem); height: 100%; min-height: 0; margin: 0 auto;
+      padding: 0.15em 0.7em 0.35em; overflow: hidden; font-size: calc(var(--fit) * 1px);
     }
-    .board-chips { display: flex; flex-wrap: wrap; gap: 0.2em 0.9em; align-items: baseline; }
-    .board-chips .board-title, .board-cards .board-title { width: 100%; grid-column: 1 / -1; }
-    .board-chips .dish { display: flex; gap: 0.4em; align-items: baseline; padding: 0.06em 0; }
-    .board-chips .dish-name { font-size: 1.15em; color: #fff; }
-    .board-chips .dish-meta { display: none; }
-    .board-chips .dish-price { font-size: 1.15em; }
     .board-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.35em 0.7em; }
+    .board-cards .board-title { grid-column: 1 / -1; }
     .board-cards .dish, .board-cards .dish-stack { display: block; padding: 0.05em 0 0.1em; }
-    .board-cards .dish-name { font-size: 1.2em; color: #fff; }
-    .board-cards .dish-meta { font-size: 0.95em; }
-    .board-cards .size-grid { grid-template-columns: 1fr; gap: 0.12em; margin-top: 0.2em; }
-    .board-cards .size-grid > div {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      column-gap: 0.6em;
-      row-gap: 0.02em;
-      align-items: baseline;
-    }
-    .board-cards .size-grid i { color: #ffe6cc; font-style: normal; font-weight: 700; font-size: 0.78em; grid-column: 1 / -1; white-space: nowrap; }
-    .board-cards .size-grid b { color: #fff; font-size: 1.15em; white-space: nowrap; }
-    .board-cards .size-grid span { justify-self: end; color: #ff7a22; font-size: 1.15em; font-weight: 800; white-space: nowrap; }
+    .board-cards .dish-name { font-size: 1.45em; color: #fff; }
+    .board-cards .dish-meta { font-size: 1.1em; }
+    .board-cards .size-grid { display: grid; grid-template-columns: 1fr; gap: 0.28em; margin-top: 0.28em; }
+    .board-cards .size-grid > div { display: grid; grid-template-columns: auto 1fr; column-gap: 0.5em; row-gap: 0.02em; align-items: baseline; }
+    .board-cards .size-grid i { color: #ffe6cc; font-style: normal; font-weight: 700; font-size: 1.15em; grid-column: 1 / -1; grid-row: 2; white-space: nowrap; }
+    .board-cards .size-grid b { color: #fff; font-size: 1.5em; grid-column: 1; grid-row: 1; white-space: nowrap; }
+    .board-cards .size-grid span { justify-self: end; color: #ff7a22; font-size: 1.5em; font-weight: 800; grid-column: 2; grid-row: 1; white-space: nowrap; }
     .board-title { margin: 0 0 0.2em; color: var(--ember); font-size: 0.55em; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
-    .dish { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0.6em; align-items: center; padding: 0.08em 0; }
-    .dish-name { color: #fff; font-size: 1em; font-weight: 800; line-height: 1.05; }
-    .dish-meta { margin-top: 0.1em; color: #ffe6cc; font-size: 0.7em; font-weight: 700; }
-    .dish-price { color: #ff7a22; font-size: 1em; font-weight: 800; text-align: right; white-space: nowrap; }
-    .dish-stack { display: block; }
+    .dish-name { color: #fff; font-weight: 800; line-height: 1.05; }
+    .dish-meta { color: #ffe6cc; font-weight: 700; }
     .dish-head { display: flex; justify-content: space-between; gap: 0.4em; align-items: baseline; }
-    .size-grid { display: grid; gap: 0.12em; margin-top: 0.2em; }
-    .qr {
-      position: absolute; z-index: 4;
-      right: clamp(0.7rem, 2vw, 1.6rem); bottom: clamp(0.7rem, 2vh, 1.4rem);
-      width: clamp(4.6rem, 12vh, 8.5rem); height: auto;
-      border-radius: 0.7rem; background: var(--paper); box-shadow: 0 0 0 0.35rem var(--paper);
-    }
-    .stage {
-      position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 44vh; pointer-events: none;
-      -webkit-mask-image: linear-gradient(to top, #000 0%, #000 34%, transparent 100%);
-      mask-image: linear-gradient(to top, #000 0%, #000 34%, transparent 100%);
-    }
-    .flame { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 78%; pointer-events: none; }
-    @media (max-width: 720px) {
-      .logo { height: 2.6rem; max-width: 62vw; }
-      .menu { padding: 0.3em 0.5em 8rem; }
-      .board-cards { grid-template-columns: 1fr 1fr; }
-      .board-chips .dish { width: 100%; justify-content: space-between; }
-      .qr { width: 4.1rem; }
-    }
+    .qr { position: absolute; z-index: 4; right: clamp(0.7rem, 2vw, 1.6rem); bottom: clamp(0.7rem, 2vh, 1.4rem); width: clamp(4.6rem, 12vh, 8.5rem); height: auto; border-radius: 0.7rem; background: var(--paper); box-shadow: 0 0 0 0.35rem var(--paper); }
+    .stage { position: relative; z-index: 1; min-height: 0; overflow: hidden; }
+    .flame { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 64%; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -110,11 +60,8 @@
     const menuEl = document.getElementById("menu");
     const noteEl = document.getElementById("note");
     function shortName(name) {
-      const cut = name.replace(/^креветки\s+/i, "").replace(/^раки\s+/i, "");
+      const cut = name.replace(/^раки\s+/i, "");
       return cut.charAt(0).toUpperCase() + cut.slice(1);
-    }
-    function metaLine(size, weight) {
-      return [size, weight].filter((part) => part && part !== "-" && part !== "—").join(" · ");
     }
     function offersFor(row) {
       const chunks = (value) => String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—" && part !== "–");
@@ -143,27 +90,6 @@
     }
     function addDish(board, row, lines) {
       const dish = document.createElement("article");
-      if (!lines.length) {
-        dish.className = "dish";
-        const copy = document.createElement("div");
-        const name = document.createElement("div");
-        name.className = "dish-name";
-        name.textContent = shortName(row[0]);
-        copy.appendChild(name);
-        const meta = metaLine(row[1], row[2]);
-        if (meta) {
-          const sub = document.createElement("div");
-          sub.className = "dish-meta";
-          sub.textContent = meta;
-          copy.appendChild(sub);
-        }
-        const price = document.createElement("div");
-        price.className = "dish-price";
-        price.textContent = row[3];
-        dish.append(copy, price);
-        board.appendChild(dish);
-        return;
-      }
       dish.className = "dish dish-stack";
       const head = document.createElement("div");
       head.className = "dish-head";
@@ -171,7 +97,7 @@
       name.className = "dish-name";
       name.textContent = shortName(row[0]);
       head.appendChild(name);
-      const portion = lines.every((line) => line.portion === lines[0].portion) ? lines[0].portion : "";
+      const portion = lines.length && lines.every((line) => line.portion === lines[0].portion) ? lines[0].portion : "";
       if (portion) {
         const sub = document.createElement("div");
         sub.className = "dish-meta";
@@ -197,16 +123,22 @@
       dish.append(head, grid);
       board.appendChild(dish);
     }
-    function addBoard(title, items) {
-      if (!items.length) return;
+    function paint(rows, problem) {
+      const cray = rows.filter((row) => row[0].toLowerCase().includes("рак"));
+      menuEl.replaceChildren();
+      if (!cray.length) {
+        noteEl.hidden = false;
+        noteEl.textContent = problem || "У таблиці немає раків.";
+        return;
+      }
       const board = document.createElement("section");
-      board.className = title === "Раки" ? "board board-cards" : "board board-chips";
+      board.className = "board-cards";
       const heading = document.createElement("h2");
       heading.className = "board-title";
-      heading.textContent = title;
+      heading.textContent = "Раки";
       board.appendChild(heading);
       const groups = [];
-      items.forEach((row) => {
+      cray.forEach((row) => {
         const last = groups[groups.length - 1];
         if (last && last[0][0] === row[0]) last.push(row);
         else groups.push([row]);
@@ -223,19 +155,6 @@
         addDish(board, group[0], lines);
       });
       menuEl.appendChild(board);
-    }
-    function paint(rows, problem) {
-      const shrimp = [], cray = [], rest = [];
-      rows.forEach((row) => {
-        const name = row[0].toLowerCase();
-        if (name.includes("кревет")) shrimp.push(row);
-        else if (name.includes("рак")) cray.push(row);
-        else rest.push(row);
-      });
-      menuEl.replaceChildren();
-      addBoard("Креветки", shrimp);
-      addBoard("Раки", cray);
-      addBoard("Меню", rest);
       noteEl.hidden = !problem;
       noteEl.textContent = problem || "";
     }
@@ -245,10 +164,8 @@
       for (let i = 0; i < text.length; i++) {
         const ch = text[i];
         if (quoted) {
-          if (ch === '"') {
-            if (text[i + 1] === '"') { cell += '"'; i += 1; }
-            else quoted = false;
-          } else cell += ch;
+          if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i += 1; } else quoted = false; }
+          else cell += ch;
         } else if (ch === '"') quoted = true;
         else if (ch === ",") { row.push(cell.trim()); cell = ""; }
         else if (ch === "\n") { row.push(cell.trim()); rows.push(row); row = []; cell = ""; }
@@ -266,11 +183,11 @@
           const key = JSON.stringify(next);
           if (key === shown) return;
           if (previous && key === previous && Date.now() - switchedAt < 12000) return;
-          previous = shown;
-          shown = key;
-          switchedAt = Date.now();
+          previous = shown; shown = key; switchedAt = Date.now();
           paint(next, next.length ? "" : "У таблиці немає рядків.");
-          fitMenu();
+          requestAnimationFrame(fitMenu);
+          setTimeout(fitMenu, 60);
+          setTimeout(fitMenu, 500);
         })
         .catch(() => { noteEl.hidden = false; noteEl.textContent = "Не вдалося прочитати таблицю."; });
     }
@@ -283,12 +200,13 @@
     function crowded(menu) {
       if (menu.scrollHeight > menu.clientHeight + 2) return true;
       if (menu.scrollWidth > menu.clientWidth + 2) return true;
-      const rows = menu.querySelectorAll(".board-cards .size-grid > div");
+      const block = menu.querySelector(".board-cards");
+      if (block && block.getBoundingClientRect().bottom > menu.getBoundingClientRect().bottom - 6) return true;
+      const rows = menu.querySelectorAll(".size-grid > div");
       for (let i = 0; i < rows.length; i++) {
         const label = rows[i].querySelector("b");
-        const price = rows[i].querySelector("span");
-        if (!label || !price) continue;
-        if (label.getBoundingClientRect().right + 8 > price.getBoundingClientRect().left) return true;
+        const price = rows[i].querySelector(":scope > span");
+        if (label && price && label.getBoundingClientRect().right + 8 > price.getBoundingClientRect().left) return true;
       }
       return false;
     }
@@ -303,11 +221,13 @@
         else hi = mid - 1;
       }
       menu.style.setProperty("--fit", String(best));
+      while (best > 16 && crowded(menu)) { best -= 1; menu.style.setProperty("--fit", String(best)); }
     }
     pull();
     setInterval(pull, 2000);
     document.addEventListener("visibilitychange", pull);
     window.addEventListener("resize", fitMenu);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setTimeout(fitMenu, 50));
   </script>
   <script>
     (function () {
