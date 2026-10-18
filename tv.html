@@ -33,11 +33,7 @@
     .size-grid b { color: #fff; font-size: 1.55em; line-height: 1; grid-column: 1; grid-row: 1; }
     .size-grid i { color: #f4f4f4; font-style: normal; font-weight: 700; font-size: 1.2em; line-height: 1.05; grid-column: 1; grid-row: 2; white-space: nowrap; }
     .size-grid span { justify-self: end; align-self: start; color: #ff7a22; font-size: 1.55em; font-weight: 800; line-height: 1; grid-column: 2; grid-row: 1; white-space: nowrap; }
-    .half-grid { display: grid; gap: 0.08em; margin-top: 0.14em; padding-top: 0.12em; border-top: 2px solid rgba(255,255,255,0.35); }
-    .half-grid > div { display: grid; grid-template-columns: auto 1fr; align-items: baseline; }
-    .half-grid small { grid-column: 1; color: #fff; font-size: 1.05em; font-weight: 700; line-height: 1; }
-    .half-grid b { grid-column: 1; color: #fff; font-size: 1.4em; line-height: 1; }
-    .half-grid span { grid-column: 2; grid-row: 1 / span 2; justify-self: end; align-self: center; color: #ff7a22; font-size: 1.5em; font-weight: 800; line-height: 1; white-space: nowrap; }
+    .half-block { margin-top: 0.16em; padding-top: 0.12em; border-top: 2px solid rgba(255,255,255,0.35); }
     .qr { position: absolute; z-index: 4; right: clamp(0.7rem, 2vw, 1.6rem); bottom: clamp(0.7rem, 2vh, 1.4rem); width: clamp(4.2rem, 10vh, 7rem); border-radius: 0.7rem; background: var(--paper); box-shadow: 0 0 0 0.35rem var(--paper); }
     .stage { position: relative; z-index: 1; min-height: 0; overflow: hidden; }
     .flame { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 170%; object-fit: cover; object-position: center bottom; pointer-events: none; }
@@ -76,6 +72,11 @@
       if (prices.length < sizes.length) return [];
       return sizes.map((size, index) => ({ size, count: counts[size.toLowerCase()] || "", portion, price: prices[index] }));
     }
+    function halfCount(text) {
+      const match = String(text || "").match(/(\d+)\s*[–-]\s*(\d+)/);
+      if (!match) return "";
+      return Math.round(Number(match[1]) / 2) + "–" + Math.round(Number(match[2]) / 2) + " шт";
+    }
     function addDish(board, row, lines) {
       const dish = document.createElement("article");
       dish.className = "dish-stack";
@@ -109,21 +110,38 @@
         grid.appendChild(cell);
       });
       const half = document.createElement("div");
-      half.className = "half-grid";
+      half.className = "half-block";
+      const halfHead = document.createElement("div");
+      halfHead.className = "dish-head";
+      const halfName = document.createElement("div");
+      halfName.className = "dish-name";
+      halfName.textContent = shortName(row[0]);
+      const halfKg = document.createElement("div");
+      halfKg.className = "dish-meta";
+      halfKg.textContent = lines.find((line) => line.halfLabel)?.halfLabel || "0.5 кг";
+      halfHead.append(halfName, halfKg);
+      const halfGrid = document.createElement("div");
+      halfGrid.className = "size-grid";
       lines.forEach((line) => {
         if (!line.half) return;
         const cell = document.createElement("div");
-        const kg = document.createElement("small");
-        kg.textContent = line.halfLabel || "0.5 кг";
         const label = document.createElement("b");
         label.textContent = line.size;
-        const cost = document.createElement("span");
-        cost.textContent = line.half;
-        cell.append(kg, label, cost);
-        half.appendChild(cell);
+        const price = document.createElement("span");
+        price.textContent = line.half;
+        cell.append(label, price);
+        const countText = halfCount(line.count);
+        if (countText) {
+          const count = document.createElement("i");
+          count.textContent = countText;
+          cell.append(count);
+        }
+        halfGrid.appendChild(cell);
       });
-      if (half.childElementCount) dish.append(head, grid, half);
-      else dish.append(head, grid);
+      if (halfGrid.childElementCount) {
+        half.append(halfHead, halfGrid);
+        dish.append(head, grid, half);
+      } else dish.append(head, grid);
       board.appendChild(dish);
     }
     function paint(rows, problem) {
