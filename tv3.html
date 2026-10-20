@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
   <style>
-    :root { --red: #ff2a18; --ink: #070707; --line: rgba(255,255,255,.16); }
+    :root { --red: #ff2a18; --ink: #070707; }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: var(--ink); color: #fff; font-family: Manrope, system-ui, sans-serif; }
     body { overflow: hidden; }
@@ -34,7 +34,7 @@
     .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; grid-template-columns: repeat(4, 1fr) 1.15fr 1.15fr; grid-template-rows: 1fr 1fr; padding: .2em 1.2vw .35em; font-size: calc(var(--fit) * 1px); }
     .card { min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 .5em .15em; overflow: hidden; }
     .card.split { border-left: 1px solid rgba(255,255,255,.16); padding-left: .7em; }
-    .card h2 { margin: 0 0 .1em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1.02; }
+    .card h2 { margin: 0 0 .1em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1; white-space: nowrap; }
     .cost { display: flex; align-items: baseline; gap: .35em; white-space: nowrap; }
     .cost i { font-style: normal; color: #fff; font-weight: 700; font-size: .72em; }
     .cost b { font-size: 1.35em; line-height: 1; }
@@ -91,6 +91,18 @@
       if (!nums.length) return String(value || "");
       return /грн/i.test(value) ? value : nums.join(" ") + " грн";
     }
+    function weightOf(value) {
+      const text = String(value || "").trim();
+      if (/^\d+$/.test(text)) return text + " г";
+      return text;
+    }
+    function labelOf(name) {
+      const n = name.toLowerCase();
+      if (n.includes("vip")) return "Морський мікс VIP";
+      if (n.includes("мікс") || n.includes("микс")) return "Морський мікс";
+      if (n.includes("соус")) return "Соус вершковий";
+      return name;
+    }
     function paint(rows) {
       const shrimp = rows.filter((row) => groupOf(row[0]) === "Креветки");
       const rest = rows.filter((row) => groupOf(row[0]) !== "Креветки");
@@ -105,12 +117,12 @@
         card.style.gridRow = String(line);
         card.style.gridColumn = String(col);
         const title = document.createElement("h2");
-        title.textContent = row[0];
+        title.textContent = labelOf(row[0]);
         const cost = document.createElement("div");
         cost.className = "cost";
         if (row[2]) {
           const weight = document.createElement("i");
-          weight.textContent = row[2];
+          weight.textContent = weightOf(row[2]);
           cost.appendChild(weight);
         }
         const price = document.createElement("b");
@@ -155,13 +167,7 @@
         .catch(() => {});
     }
     function crowded(menu) {
-      return [...menu.querySelectorAll(".card")].some((card) => {
-        const title = card.querySelector("h2");
-        const cost = card.querySelector(".cost");
-        const cardBox = card.getBoundingClientRect();
-        const titleBox = title.getBoundingClientRect();
-        return cost.scrollWidth > cost.clientWidth + 2 || titleBox.top < cardBox.top - 1 || titleBox.left < cardBox.left - 1 || titleBox.right > cardBox.right + 1;
-      });
+      return [...menu.querySelectorAll("h2, .cost")].some((node) => node.scrollWidth > node.clientWidth + 1);
     }
     function fitMenu() {
       const menu = menuEl;
