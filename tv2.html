@@ -31,25 +31,19 @@
     .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .15rem; color: #f2f2f2; font-family: Oswald, sans-serif; font-size: clamp(.85rem, 1.7vh, 1.25rem); letter-spacing: .18em; }
     .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
     .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
-    .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: 1fr 1fr; gap: .2em 0; padding: .15em 1vw .4em; font-size: calc(var(--fit) * 1px); }
-    .card { min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 .55em; border-left: 1px solid rgba(255,255,255,.1); overflow: hidden; }
-    .card:nth-child(5n + 1) { border-left: 0; }
-    .kind { color: #cfcfcf; font-family: Oswald, sans-serif; font-size: .7em; letter-spacing: .14em; line-height: 1; }
-    .card h2 { margin: .12em 0 0; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.7em; line-height: 1.05; }
-    .sub { color: #eee; font-size: .78em; font-weight: 700; line-height: 1.05; min-height: 1.05em; }
-    .rule { height: .1em; width: 100%; margin: .28em 0 .3em; background: var(--red); }
-    .cost { display: flex; align-items: baseline; gap: .4em; }
-    .cost i { font-style: normal; color: #ddd; font-weight: 700; font-size: .85em; }
-    .cost b { font-size: 1.65em; line-height: 1; }
+    .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; grid-template-columns: repeat(4, 1fr) 1.15fr 1.15fr; grid-template-rows: 1fr 1fr; padding: .2em 1.2vw .35em; font-size: calc(var(--fit) * 1px); }
+    .card { min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 .5em .15em; overflow: hidden; }
+    .card.split { border-left: 1px solid rgba(255,255,255,.16); padding-left: .7em; }
+    .card h2 { margin: 0 0 .1em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.45em; line-height: 1; white-space: nowrap; }
+    .cost { display: flex; align-items: baseline; gap: .35em; white-space: nowrap; }
+    .cost i { font-style: normal; color: #fff; font-weight: 700; font-size: .72em; }
+    .cost b { font-size: 1.35em; line-height: 1; }
+    .rule { height: .12em; width: 100%; margin: .28em 0 0; background: var(--red); }
     .food { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; display: block; }
-    .foot { display: grid; grid-template-columns: 1.15fr 1.35fr 1fr auto 1.15fr; align-items: center; gap: .6rem; padding: 0 1.4vw; background: #050505; border-top: 3px solid #2a0604; }
+    .foot { display: grid; grid-template-columns: 1fr 1.3fr 1fr 1.2fr; align-items: center; gap: .6rem; padding: 0 1.4vw; background: #050505; border-top: 3px solid #2a0604; }
     .bit { display: flex; align-items: center; gap: .55rem; min-width: 0; }
     .bit svg { width: 2.1rem; height: 2.1rem; flex: none; }
     .bit p { margin: 0; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .04em; font-size: clamp(.85rem, 1.9vh, 1.35rem); line-height: 1.05; }
-    .scan { display: flex; align-items: center; gap: .45rem; }
-    .qrbox { background: var(--red); padding: .22rem; border-radius: .45rem; line-height: 0; }
-    .qrbox img { width: clamp(3.1rem, 6.6vh, 4.6rem); height: auto; display: block; background: #111; border-radius: .18rem; }
-    .plane { width: 1.3rem; height: 1.3rem; }
     .tag { justify-content: flex-end; text-align: right; }
     .tag strong { display: block; font-family: "Rubik Wet Paint", system-ui, sans-serif; color: var(--red); font-size: clamp(1.15rem, 2.8vh, 2rem); font-weight: 400; line-height: .9; }
     .tag em { font-style: normal; font-family: Oswald, sans-serif; letter-spacing: .04em; font-size: clamp(.8rem, 1.7vh, 1.15rem); }
@@ -79,14 +73,12 @@
       <div class="bit"><svg viewBox="0 0 48 48" fill="none" stroke="#ff2a18" stroke-width="2.4"><path d="M16 16c-6-5-12 0-9 6 2 4 7 4 9 0M14 14c1-5 8-5 8 0M32 16c6-5 12 0 9 6-2 4-7 4-9 0M34 14c-1-5-8-5-8 0"/><ellipse cx="24" cy="22" rx="5" ry="7" fill="#ff2a18" stroke="none"/><path d="M19 28h10l-2 4h-6zM20 32h8l-2 4h-4zM22 36h4l-2 5-2-5z" fill="#ff2a18" stroke="none"/></svg><p>СВІЖІ<br>МОРЕПРОДУКТИ</p></div>
       <div class="bit"><svg viewBox="0 0 48 48"><path fill="#ff2a18" d="M24 6c2 6-2 8-2 14 0 3 2 4 2 4s2-1 2-4c0-6-4-8-2-14zm-8 14c2 5-1 7-1 12 0 4 3 6 5 7-6 0-12-4-12-11 0-5 5-8 8-8zm16 0c3 0 8 3 8 8 0 7-6 11-12 11 2-1 5-3 5-7 0-5-3-7-1-12z"/></svg><p>ПРИГОТОВЛЕННЯ<br>ПІД ВАШ СМАК</p></div>
       <div class="bit"><svg viewBox="0 0 48 48" fill="#ff2a18"><path d="M16 10h10c6 0 10 4 10 10v2H18v-2c0-2-1-4-2-6V10z"/><path d="M14 22h24v4c0 6-5 12-12 12S14 32 14 26v-4z"/><rect x="20" y="38" width="8" height="3" rx="1"/></svg><p>ПИВО<br>НА РОЗЛИВ</p></div>
-      <div class="scan"><div class="qrbox"><img src="menu-qr.svg" alt="QR" /></div><svg class="plane" viewBox="0 0 24 24" fill="#7ec8ff"><path d="M2 11.5 22 3l-7.2 18-3.3-7.2L2 11.5z"/></svg><p style="margin:0;font-family:Oswald,sans-serif;font-size:clamp(.8rem,1.7vh,1.15rem);line-height:1.05;letter-spacing:.03em">СКАНУЙ<br>ТА СЛІДКУЙ<br>ЗА НОВИНАМИ</p></div>
       <div class="tag"><strong>KLESHNEVAR</strong><em>— ЦЕ БІЛЬШЕ, НІЖ ЇЖА!</em></div>
     </footer>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=1124262152&single=true&output=csv";
     const menuEl = document.getElementById("menu");
-    const ORDER = ["Креветки", "Мікс", "Мідії", "Раки"];
     function groupOf(name) {
       const n = name.toLowerCase();
       if (n.includes("міді") || n.includes("миди")) return "Мідії";
@@ -101,38 +93,43 @@
     }
     function labelOf(name) {
       const n = name.toLowerCase();
-      if (n.includes("vip")) return { title: "Морський мікс VIP", sub: "вершково-Том Ям соус" };
-      if (n.includes("мікс") || n.includes("микс")) return { title: "Морський мікс", sub: "вершково-Том Ям соус" };
-      if (n.includes("соус")) return { title: "Соус вершковий", sub: "креветка" };
-      return { title: name, sub: "" };
+      if (n.includes("vip")) return "Морський мікс VIP";
+      if (n.includes("мікс") || n.includes("микс")) return "Морський мікс";
+      if (n.includes("соус")) return "Соус вершковий";
+      return name;
     }
     function paint(rows) {
+      const shrimp = rows.filter((row) => groupOf(row[0]) === "Креветки");
+      const rest = rows.filter((row) => groupOf(row[0]) !== "Креветки");
+      const shrimpCols = Math.max(1, Math.ceil(shrimp.length / 2));
+      const restCols = Math.max(1, Math.ceil(rest.length / 2));
+      menuEl.style.gridTemplateColumns = "repeat(" + shrimpCols + ", 1fr) " + Array(restCols).fill("1.15fr").join(" ");
+      menuEl.style.gridTemplateRows = "1fr 1fr";
       menuEl.replaceChildren();
-      rows.forEach((row) => {
+      const add = (row, line, col, split) => {
         const card = document.createElement("article");
-        card.className = "card";
-        const kind = document.createElement("div");
-        kind.className = "kind";
-        kind.textContent = groupOf(row[0]).toUpperCase();
-        const shown = labelOf(row[0]);
+        card.className = "card" + (split ? " split" : "");
+        card.style.gridRow = String(line);
+        card.style.gridColumn = String(col);
         const title = document.createElement("h2");
-        title.textContent = shown.title;
-        const sub = document.createElement("div");
-        sub.className = "sub";
-        sub.textContent = shown.sub;
-        const rule = document.createElement("div");
-        rule.className = "rule";
+        title.textContent = labelOf(row[0]);
         const cost = document.createElement("div");
         cost.className = "cost";
-        const weight = document.createElement("i");
-        weight.textContent = row[2] || "";
+        if (row[2]) {
+          const weight = document.createElement("i");
+          weight.textContent = row[2];
+          cost.appendChild(weight);
+        }
         const price = document.createElement("b");
         price.textContent = money(row[3]);
-        if (row[2]) cost.appendChild(weight);
         cost.appendChild(price);
-        card.append(kind, title, sub, rule, cost);
+        const rule = document.createElement("div");
+        rule.className = "rule";
+        card.append(title, cost, rule);
         menuEl.appendChild(card);
-      });
+      };
+      shrimp.forEach((row, index) => add(row, Math.floor(index / shrimpCols) + 1, (index % shrimpCols) + 1, false));
+      rest.forEach((row, index) => add(row, Math.floor(index / restCols) + 1, shrimpCols + (index % restCols) + 1, index % restCols === 0));
     }
     function parseCsv(text) {
       const rows = [];
@@ -165,8 +162,7 @@
         .catch(() => {});
     }
     function crowded(menu) {
-      if (menu.scrollWidth > menu.clientWidth + 2) return true;
-      return [...menu.querySelectorAll(".card")].some((card) => card.scrollHeight > card.clientHeight + 4);
+      return [...menu.querySelectorAll("h2, .cost")].some((node) => node.scrollWidth > node.clientWidth + 2);
     }
     function fitMenu() {
       const menu = menuEl;
