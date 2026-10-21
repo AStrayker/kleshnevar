@@ -13,34 +13,34 @@
     html, body { height: 100%; margin: 0; background: var(--ink); color: var(--paper); font-family: Manrope, system-ui, sans-serif; }
     body { overflow: hidden; }
     button { cursor: pointer; }
-    .screen { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) 34vh; height: 100dvh; min-height: 100vh; overflow: hidden; background: var(--ink); }
-    .top { position: relative; z-index: 3; display: flex; justify-content: center; padding: 0.3rem 1rem 0; }
+    .screen { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) 24vh; height: 100dvh; min-height: 100vh; overflow: hidden; background: var(--ink); }
+    .top { position: relative; z-index: 3; display: flex; justify-content: center; padding: clamp(0.35rem, 1.2vh, 0.9rem) 1rem 0; }
     .logo-btn { display: block; border: 0; padding: 0; background: transparent; }
-    .logo { display: block; height: clamp(3.6rem, 11vh, 7rem); width: auto; max-width: min(68vw, 40rem); object-fit: contain; }
+    .logo { display: block; height: clamp(5rem, 17vh, 11rem); width: auto; max-width: min(72vw, 44rem); object-fit: contain; }
     .menu {
-      --fit: 32; position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center;
+      --fit: 28; position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center;
       width: min(98vw, 120rem); height: 100%; min-height: 0; margin: 0 auto;
-      padding: 0.05em 0.45em 0.1em; overflow: hidden; font-size: calc(var(--fit) * 1px);
+      padding: 0.1em 0.6em 0.2em; overflow: hidden; font-size: calc(var(--fit) * 1px);
     }
-    .board-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.08em 0.55em; }
-    .board-title { grid-column: 1 / -1; margin: 0 0 0.06em; color: #ff7a22; font-size: 1.7em; font-weight: 800; letter-spacing: 0.03em; line-height: 1; text-transform: uppercase; }
+    .board-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.2em 0.7em; }
+    .board-title { grid-column: 1 / -1; margin: 0 0 0.12em; color: #ff7a22; font-size: 1.35em; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
     .dish-stack { min-width: 0; }
-    .dish-head { display: flex; justify-content: space-between; gap: 0.35em; align-items: baseline; }
-    .dish-name { color: #fff; font-size: 1.7em; font-weight: 800; line-height: 1; white-space: nowrap; }
-    .dish-meta { color: #fff; font-size: 1.35em; font-weight: 800; line-height: 1; white-space: nowrap; }
-    .size-grid { display: grid; gap: 0.08em; margin-top: 0.1em; }
-    .size-grid > div { display: grid; grid-template-columns: auto 1fr; column-gap: 0.4em; align-items: baseline; }
-    .size-grid b { color: #fff; font-size: 1.55em; line-height: 1; grid-column: 1; grid-row: 1; }
-    .size-grid i { color: #f4f4f4; font-style: normal; font-weight: 700; font-size: 1.2em; line-height: 1.05; grid-column: 1; grid-row: 2; white-space: nowrap; }
-    .size-grid span { justify-self: end; align-self: start; color: #ff7a22; font-size: 1.55em; font-weight: 800; line-height: 1; grid-column: 2; grid-row: 1; white-space: nowrap; }
-    .half-grid { display: grid; gap: 0.08em; margin-top: 0.14em; padding-top: 0.12em; border-top: 2px solid rgba(255,255,255,0.35); }
+    .dish-head { display: flex; justify-content: space-between; gap: 0.4em; align-items: baseline; }
+    .dish-name { color: #fff; font-size: 1.35em; font-weight: 800; line-height: 1; white-space: nowrap; }
+    .dish-meta { color: #fff; font-size: 1em; font-weight: 700; white-space: nowrap; }
+    .size-grid { display: grid; gap: 0.16em; margin-top: 0.16em; }
+    .size-grid > div { display: grid; grid-template-columns: auto 1fr; column-gap: 0.45em; align-items: baseline; }
+    .size-grid b { color: #fff; font-size: 1.35em; grid-column: 1; grid-row: 1; }
+    .size-grid i { color: #f2f2f2; font-style: normal; font-weight: 700; font-size: 0.95em; grid-column: 1; grid-row: 2; white-space: nowrap; }
+    .size-grid span { justify-self: end; align-self: start; color: #ff7a22; font-size: 1.35em; font-weight: 800; grid-column: 2; grid-row: 1; white-space: nowrap; }
+    .half-grid { display: grid; gap: 0.12em; margin-top: 0.22em; padding-top: 0.18em; border-top: 1px solid rgba(255,255,255,0.28); }
     .half-grid > div { display: grid; grid-template-columns: auto 1fr; align-items: baseline; }
-    .half-grid small { grid-column: 1; color: #fff; font-size: 1.05em; font-weight: 700; line-height: 1; }
-    .half-grid b { grid-column: 1; color: #fff; font-size: 1.4em; line-height: 1; }
-    .half-grid span { grid-column: 2; grid-row: 1 / span 2; justify-self: end; align-self: center; color: #ff7a22; font-size: 1.5em; font-weight: 800; line-height: 1; white-space: nowrap; }
-    .qr { position: absolute; z-index: 4; right: clamp(0.7rem, 2vw, 1.6rem); bottom: clamp(0.7rem, 2vh, 1.4rem); width: clamp(4.2rem, 10vh, 7rem); border-radius: 0.7rem; background: var(--paper); box-shadow: 0 0 0 0.35rem var(--paper); }
+    .half-grid small { grid-column: 1; color: #f3f3f3; font-size: 0.72em; font-weight: 700; line-height: 1; }
+    .half-grid b { grid-column: 1; color: #fff; font-size: 1.15em; line-height: 1; }
+    .half-grid span { grid-column: 2; grid-row: 1 / span 2; justify-self: end; align-self: center; color: #ff7a22; font-size: 1.2em; font-weight: 800; white-space: nowrap; }
+    .qr { position: absolute; z-index: 4; right: clamp(0.7rem, 2vw, 1.6rem); bottom: clamp(0.7rem, 2vh, 1.4rem); width: clamp(4.6rem, 12vh, 8.5rem); border-radius: 0.7rem; background: var(--paper); box-shadow: 0 0 0 0.35rem var(--paper); }
     .stage { position: relative; z-index: 1; min-height: 0; overflow: hidden; }
-    .flame { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 170%; object-fit: cover; object-position: center bottom; pointer-events: none; }
+    .flame { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 118%; object-fit: cover; object-position: center 48%; transform: translateY(-14%); pointer-events: none; }
   </style>
 </head>
 <body>
@@ -74,7 +74,12 @@
       const nums = String(row[3]).match(/\d+/g) || [];
       const prices = nums.length >= sizes.length ? nums.slice(0, sizes.length).map((n) => n + " грн") : chunks(row[3]).map(money);
       if (prices.length < sizes.length) return [];
-      return sizes.map((size, index) => ({ size, count: counts[size.toLowerCase()] || "", portion, price: prices[index] }));
+      return sizes.map((size, index) => ({
+        size,
+        count: counts[size.toLowerCase()] || "",
+        portion,
+        price: prices[index]
+      }));
     }
     function addDish(board, row, lines) {
       const dish = document.createElement("article");
@@ -207,13 +212,13 @@
       if (menu.scrollHeight > menu.clientHeight + 2) return true;
       if (menu.scrollWidth > menu.clientWidth + 2) return true;
       const block = menu.querySelector(".board-cards");
-      if (block && block.getBoundingClientRect().bottom > menu.getBoundingClientRect().bottom - 2) return true;
+      if (block && block.getBoundingClientRect().bottom > menu.getBoundingClientRect().bottom - 4) return true;
       return false;
     }
     function fitMenu() {
       const menu = menuEl;
-      const max = Math.round(window.innerHeight * 0.055);
-      let lo = 18, hi = Math.max(lo + 2, max), best = lo;
+      const max = Math.round(window.innerHeight * 0.08);
+      let lo = 16, hi = Math.max(lo + 2, max), best = lo;
       while (lo <= hi) {
         const mid = (lo + hi) >> 1;
         menu.style.setProperty("--fit", String(mid));
