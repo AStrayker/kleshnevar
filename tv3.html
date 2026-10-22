@@ -32,21 +32,23 @@
     .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
     .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
     .menu { --fit: 32; min-height: 0; overflow: hidden; display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr; padding: .15em .6vw .2em; }
-    .col { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 0 .55em; border-right: 1px solid rgba(255,255,255,.22); font-size: calc(var(--fit) * 1px); }
+    .col { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 0 .55em; border-right: 2px solid rgba(255,255,255,.34); font-size: calc(var(--fit) * 1px); }
     .col:last-child { border-right: 0; }
     .mixes { font-size: clamp(26px, 3.5vh, 44px); padding-left: .15em; padding-right: .28em; }
-    .mix-kg { color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1; letter-spacing: .04em; min-height: 1.35em; }
+    .mix-kg { color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1; letter-spacing: .04em; min-height: 1.35em; text-align: right; }
     .col-body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; }
     .card { min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 .15em .1em; overflow: hidden; }
-    .card h2 { margin: 0 0 .08em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.45em; line-height: 1; white-space: nowrap; }
+    .card h2 { margin: 0 0 .08em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.7em; line-height: 1; white-space: nowrap; }
     .card.big h2 { font-size: 1.85em; }
     .cost { display: flex; align-items: baseline; gap: .28em; white-space: nowrap; }
     .cost i, .cost em { font-style: normal; color: #fff; font-weight: 700; font-size: .64em; }
-    .cost b { font-size: 1.45em; line-height: 1; }
+    .cost b { font-size: 1.7em; line-height: 1; }
     .card.big .cost b { font-size: 1.7em; }
     .rule { height: .12em; width: 100%; margin: .28em 0 0; background: var(--red); }
     .food { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; display: block; }
-    .foot { display: flex; align-items: center; justify-content: flex-end; padding: 0 2.2vw; background: #050505; border-top: 3px solid #2a0604; }
+    .foot { display: flex; align-items: center; justify-content: space-between; padding: 0 1.6vw; background: #050505; border-top: 3px solid #2a0604; }
+    .qrbox { background: #fff; padding: .18rem; border-radius: .28rem; line-height: 0; }
+    .qrbox svg { width: clamp(3.3rem, 7vh, 5rem); height: auto; display: block; }
     .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .08em; font-size: clamp(1.7rem, 4.2vh, 3rem); }
   </style>
 </head>
@@ -70,7 +72,7 @@
     </header>
     <main class="menu" id="menu"></main>
     <img class="food" src="board-food.jpg" alt="" />
-    <footer class="foot"><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
+    <footer class="foot"><div class="qrbox" id="qr"></div><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=1124262152&single=true&output=csv";
@@ -95,8 +97,40 @@
     function extraOf(name) {
       const n = name.toLowerCase();
       if (n.includes("міді") || n.includes("миди")) return "25-30 шт";
-      if (n.includes("панко") && n.includes("кревет")) return "5-7 шт";
+      if (n.includes("панко") && n.includes("кревет")) return "9 шт";
       return "";
+    }
+    function priceOf(row) {
+      const n = row[0].toLowerCase();
+      if (n.includes("міді") || n.includes("миди")) return "200 грн";
+      return money(row[3]);
+    }
+    function placeRest(rows) {
+      const groups = [[], [], []];
+      const rank = (name) => {
+        const n = name.toLowerCase();
+        if (n.includes("соус")) return [2, 0];
+        if (n.includes("міді") || n.includes("миди")) return [2, 1];
+        if (n.includes("панко")) return [2, 2];
+        if (n.includes("кха")) return [1, 0];
+        if (n.includes("ям")) return [1, 1];
+        if (n.includes("часник")) return [1, 2];
+        if (n.includes("вершков")) return [0, 0];
+        if (n.includes("класич")) return [0, 1];
+        if (n.includes("томат")) return [0, 2];
+        return null;
+      };
+      const extra = [];
+      rows.forEach((row) => {
+        const spot = rank(row[0]);
+        if (!spot) { extra.push(row); return; }
+        groups[spot[0]][spot[1]] = row;
+      });
+      extra.forEach((row) => {
+        const group = groups.find((items) => items.filter(Boolean).length < 3) || groups[2];
+        group.push(row);
+      });
+      return groups.map((items) => items.filter(Boolean));
     }
     function labelOf(name) {
       const n = name.toLowerCase();
@@ -108,10 +142,7 @@
     function paint(rows) {
       const mixes = rows.filter((row) => groupOf(row[0]) === "Мікс");
       const rest = rows.filter((row) => groupOf(row[0]) !== "Мікс");
-      const cols = 3;
-      const per = Math.max(1, Math.ceil(rest.length / cols));
-      const groups = Array.from({ length: cols }, () => []);
-      rest.forEach((row, index) => groups[Math.min(cols - 1, Math.floor(index / per))].push(row));
+      const groups = placeRest(rest);
       menuEl.replaceChildren();
       const make = (row, big) => {
         const card = document.createElement("article");
@@ -133,7 +164,7 @@
           cost.appendChild(extra);
         }
         const price = document.createElement("b");
-        price.textContent = money(row[3]);
+        price.textContent = priceOf(row);
         cost.appendChild(price);
         const rule = document.createElement("div");
         rule.className = "rule";
@@ -212,6 +243,16 @@
     setInterval(pull, 2000);
     window.addEventListener("resize", fitMenu);
     document.fonts.ready.then(fitMenu);
+    const qrLib = document.createElement("script");
+    qrLib.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    qrLib.onload = () => {
+      const qr = qrcode(0, "M");
+      const link = location.protocol.startsWith("http") ? new URL("/list.html", location.href).href : new URL("list.html", location.href).href;
+      qr.addData(link);
+      qr.make();
+      document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 3, margin: 1, scalable: true });
+    };
+    document.body.appendChild(qrLib);
   </script>
 </body>
 </html>
