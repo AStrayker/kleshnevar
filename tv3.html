@@ -31,22 +31,23 @@
     .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .15rem; color: #f2f2f2; font-family: Oswald, sans-serif; font-size: clamp(.85rem, 1.7vh, 1.25rem); letter-spacing: .18em; }
     .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
     .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
-    .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; grid-template-columns: repeat(4, 1fr) 1.15fr 1.15fr; grid-template-rows: 1fr 1fr; padding: .2em 1.2vw .35em; font-size: calc(var(--fit) * 1px); }
-    .card { min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 .5em .15em; overflow: hidden; }
-    .card.split { border-left: 1px solid rgba(255,255,255,.16); padding-left: .7em; }
-    .card h2 { margin: 0 0 .1em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1; white-space: nowrap; }
-    .cost { display: flex; align-items: baseline; gap: .35em; white-space: nowrap; }
-    .cost i { font-style: normal; color: #fff; font-weight: 700; font-size: .72em; }
-    .cost b { font-size: 1.35em; line-height: 1; }
+    .menu { --fit: 32; min-height: 0; overflow: hidden; display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr; padding: .15em .6vw .2em; }
+    .col { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 0 .55em; border-right: 1px solid rgba(255,255,255,.22); font-size: calc(var(--fit) * 1px); }
+    .col:last-child { border-right: 0; }
+    .mixes { font-size: clamp(26px, 3.5vh, 44px); padding-left: .15em; padding-right: .28em; }
+    .mix-kg { color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1; letter-spacing: .04em; min-height: 1.35em; }
+    .col-body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; }
+    .card { min-width: 0; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 .15em .1em; overflow: hidden; }
+    .card h2 { margin: 0 0 .08em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.45em; line-height: 1; white-space: nowrap; }
+    .card.big h2 { font-size: 1.85em; }
+    .cost { display: flex; align-items: baseline; gap: .28em; white-space: nowrap; }
+    .cost i, .cost em { font-style: normal; color: #fff; font-weight: 700; font-size: .64em; }
+    .cost b { font-size: 1.45em; line-height: 1; }
+    .card.big .cost b { font-size: 1.7em; }
     .rule { height: .12em; width: 100%; margin: .28em 0 0; background: var(--red); }
     .food { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; display: block; }
-    .foot { display: grid; grid-template-columns: 1fr 1.3fr 1fr 1.2fr; align-items: center; gap: .6rem; padding: 0 1.4vw; background: #050505; border-top: 3px solid #2a0604; }
-    .bit { display: flex; align-items: center; gap: .55rem; min-width: 0; }
-    .bit svg { width: 2.1rem; height: 2.1rem; flex: none; }
-    .bit p { margin: 0; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .04em; font-size: clamp(.85rem, 1.9vh, 1.35rem); line-height: 1.05; }
-    .tag { justify-content: flex-end; text-align: right; }
-    .tag strong { display: block; font-family: "Rubik Wet Paint", system-ui, sans-serif; color: var(--red); font-size: clamp(1.15rem, 2.8vh, 2rem); font-weight: 400; line-height: .9; }
-    .tag em { font-style: normal; font-family: Oswald, sans-serif; letter-spacing: .04em; font-size: clamp(.8rem, 1.7vh, 1.15rem); }
+    .foot { display: flex; align-items: center; justify-content: flex-end; padding: 0 2.2vw; background: #050505; border-top: 3px solid #2a0604; }
+    .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .08em; font-size: clamp(1.7rem, 4.2vh, 3rem); }
   </style>
 </head>
 <body>
@@ -69,12 +70,7 @@
     </header>
     <main class="menu" id="menu"></main>
     <img class="food" src="board-food.jpg" alt="" />
-    <footer class="foot">
-      <div class="bit"><svg viewBox="0 0 48 48" fill="none" stroke="#ff2a18" stroke-width="2.4"><path d="M16 16c-6-5-12 0-9 6 2 4 7 4 9 0M14 14c1-5 8-5 8 0M32 16c6-5 12 0 9 6-2 4-7 4-9 0M34 14c-1-5-8-5-8 0"/><ellipse cx="24" cy="22" rx="5" ry="7" fill="#ff2a18" stroke="none"/><path d="M19 28h10l-2 4h-6zM20 32h8l-2 4h-4zM22 36h4l-2 5-2-5z" fill="#ff2a18" stroke="none"/></svg><p>СВІЖІ<br>МОРЕПРОДУКТИ</p></div>
-      <div class="bit"><svg viewBox="0 0 48 48"><path fill="#ff2a18" d="M24 6c2 6-2 8-2 14 0 3 2 4 2 4s2-1 2-4c0-6-4-8-2-14zm-8 14c2 5-1 7-1 12 0 4 3 6 5 7-6 0-12-4-12-11 0-5 5-8 8-8zm16 0c3 0 8 3 8 8 0 7-6 11-12 11 2-1 5-3 5-7 0-5-3-7-1-12z"/></svg><p>ПРИГОТОВЛЕННЯ<br>ПІД ВАШ СМАК</p></div>
-      <div class="bit"><svg viewBox="0 0 48 48" fill="#ff2a18"><path d="M16 10h10c6 0 10 4 10 10v2H18v-2c0-2-1-4-2-6V10z"/><path d="M14 22h24v4c0 6-5 12-12 12S14 32 14 26v-4z"/><rect x="20" y="38" width="8" height="3" rx="1"/></svg><p>ПИВО<br>НА РОЗЛИВ</p></div>
-      <div class="tag"><strong>KLESHNEVAR</strong><em>— ЦЕ БІЛЬШЕ, НІЖ ЇЖА!</em></div>
-    </footer>
+    <footer class="foot"><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=1124262152&single=true&output=csv";
@@ -96,6 +92,12 @@
       if (/^\d+$/.test(text)) return text + " г";
       return text;
     }
+    function extraOf(name) {
+      const n = name.toLowerCase();
+      if (n.includes("міді") || n.includes("миди")) return "25-30 шт";
+      if (n.includes("панко") && n.includes("кревет")) return "5-7 шт";
+      return "";
+    }
     function labelOf(name) {
       const n = name.toLowerCase();
       if (n.includes("vip")) return "Морський мікс VIP";
@@ -104,26 +106,31 @@
       return name;
     }
     function paint(rows) {
-      const shrimp = rows.filter((row) => groupOf(row[0]) === "Креветки");
-      const rest = rows.filter((row) => groupOf(row[0]) !== "Креветки");
-      const shrimpCols = Math.max(1, Math.ceil(shrimp.length / 2));
-      const restCols = Math.max(1, Math.ceil(rest.length / 2));
-      menuEl.style.gridTemplateColumns = "repeat(" + shrimpCols + ", 1fr) " + Array(restCols).fill("1.15fr").join(" ");
-      menuEl.style.gridTemplateRows = "1fr 1fr";
+      const mixes = rows.filter((row) => groupOf(row[0]) === "Мікс");
+      const rest = rows.filter((row) => groupOf(row[0]) !== "Мікс");
+      const cols = 3;
+      const per = Math.max(1, Math.ceil(rest.length / cols));
+      const groups = Array.from({ length: cols }, () => []);
+      rest.forEach((row, index) => groups[Math.min(cols - 1, Math.floor(index / per))].push(row));
       menuEl.replaceChildren();
-      const add = (row, line, col, split) => {
+      const make = (row, big) => {
         const card = document.createElement("article");
-        card.className = "card" + (split ? " split" : "");
-        card.style.gridRow = String(line);
-        card.style.gridColumn = String(col);
+        card.className = "card" + (big ? " big" : "");
         const title = document.createElement("h2");
         title.textContent = labelOf(row[0]);
         const cost = document.createElement("div");
         cost.className = "cost";
-        if (row[2]) {
+        const weightText = weightOf(row[2]);
+        if (weightText && !/^1\s*кг$/i.test(weightText)) {
           const weight = document.createElement("i");
-          weight.textContent = weightOf(row[2]);
+          weight.textContent = weightText;
           cost.appendChild(weight);
+        }
+        const note = extraOf(row[0]);
+        if (note) {
+          const extra = document.createElement("em");
+          extra.textContent = note;
+          cost.appendChild(extra);
         }
         const price = document.createElement("b");
         price.textContent = money(row[3]);
@@ -131,10 +138,26 @@
         const rule = document.createElement("div");
         rule.className = "rule";
         card.append(title, cost, rule);
-        menuEl.appendChild(card);
+        return card;
       };
-      shrimp.forEach((row, index) => add(row, Math.floor(index / shrimpCols) + 1, (index % shrimpCols) + 1, false));
-      rest.forEach((row, index) => add(row, Math.floor(index / restCols) + 1, shrimpCols + (index % restCols) + 1, index % restCols === 0));
+      const column = (items, big, kilo) => {
+        const col = document.createElement("section");
+        col.className = "col" + (big ? " mixes" : "");
+        const head = document.createElement("div");
+        head.className = "mix-kg";
+        if (kilo) head.textContent = "1 кг";
+        const body = document.createElement("div");
+        body.className = "col-body";
+        items.forEach((row) => body.appendChild(make(row, big)));
+        col.append(head, body);
+        return col;
+      };
+      menuEl.append(
+        column(mixes, true, true),
+        column(groups[0], false, true),
+        column(groups[1], false, true),
+        column(groups[2], false, false)
+      );
     }
     function parseCsv(text) {
       const rows = [];
@@ -167,7 +190,7 @@
         .catch(() => {});
     }
     function crowded(menu) {
-      return [...menu.querySelectorAll("h2, .cost")].some((node) => node.scrollWidth > node.clientWidth + 1);
+      return [...menu.querySelectorAll(".col:not(.mixes) h2, .col:not(.mixes) .cost")].some((node) => node.scrollWidth > node.clientWidth + 1);
     }
     function fitMenu() {
       const menu = menuEl;
