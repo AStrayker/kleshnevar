@@ -8,18 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --red: #ff2a18; --ink: #070707; --line: rgba(255,255,255,.16);
-      /* РОЗМІР QR. Не став більше 23vh — інакше код налізе на ціни. */
-      --qr-size: 22vh;
-    }
+    :root { --red: #ff2a18; --ink: #070707; }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: var(--ink); color: #fff; font-family: Manrope, system-ui, sans-serif; }
     body { overflow: hidden; }
     button { font: inherit; color: inherit; cursor: pointer; }
     .screen {
       height: 100dvh; min-height: 100vh; display: grid;
-      grid-template-rows: 17vh minmax(0, 1fr) 15vh 8vh;
+      grid-template-rows: 15vh minmax(0, 1fr) 21vh 9vh;
       background: radial-gradient(1200px 420px at 50% 0%, rgba(255,40,20,.08), transparent 60%), var(--ink);
       overflow: hidden;
     }
@@ -32,26 +28,27 @@
     .under { height: .28rem; margin-top: .15rem; background: var(--red); border-radius: 2px; transform: rotate(-2deg); }
     .brand { text-align: center; }
     .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: clamp(3.2rem, 8.4vh, 7.2rem); line-height: .8; color: var(--red); text-shadow: 0 2px 0 #7a0c08; }
-    .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .05rem; color: var(--red); font-family: Oswald, sans-serif; font-size: clamp(1.35rem, 3.1vh, 2.3rem); letter-spacing: .28em; font-weight: 700; }
+    .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .05rem; color: #f2f2f2; font-family: Oswald, sans-serif; font-size: clamp(.85rem, 1.7vh, 1.25rem); letter-spacing: .18em; }
     .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
-    .kind { margin: .05rem 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; letter-spacing: .42em; font-size: clamp(1.4rem, 3.1vh, 2.2rem); }
+    .kind { margin: .08rem 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; letter-spacing: .42em; font-size: clamp(1.15rem, 2.5vh, 1.9rem); }
     .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
-    .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; padding: .05em .4vw .2em; font-size: calc(var(--fit) * 1px); }
-    .col { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 0 .4em; border-right: 2px solid rgba(255,255,255,.34); overflow: hidden; }
-    .col:last-child { border-right: 0; }
-    .mix-kg { color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.05em; line-height: 1; letter-spacing: .04em; text-align: center; }
-    .sauce { margin: 0; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.42em; line-height: 1; letter-spacing: .02em; text-align: center; white-space: nowrap; }
-    .col-body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; }
-    .card { min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 .05em; }
-    .card h2 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 2.35em; line-height: 1; text-align: center; white-space: nowrap; }
-    .cost { display: flex; align-items: baseline; justify-content: center; gap: .2em; white-space: nowrap; width: 100%; margin-top: .02em; }
-    .cost em { font-style: normal; color: #fff; font-weight: 800; font-size: 1em; }
-    .cost b { font-size: 2.6em; line-height: .95; font-weight: 800; color: var(--red); }
-    .rule { height: .09em; width: 100%; margin: .05em 0 0; background: var(--red); }
-    .food { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; display: block; }
+    .menu { --fit: 22; min-height: 0; overflow: hidden; display: grid; padding: .1em 1vw .25em; font-size: calc(var(--fit) * 1px); }
+    .col { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto repeat(4, 1fr); padding: 0 .42em; border-left: 1px solid rgba(255,255,255,.14); }
+    .col:first-child { border-left: 0; }
+    .col h2 { margin: 0; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.72em; line-height: 1; white-space: nowrap; text-align: center; }
+    .size { min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; }
+    .top { display: flex; justify-content: center; align-items: baseline; gap: .28em; }
+    .top b { font-size: 1.34em; line-height: 1; }
+    .top span { font-size: .82em; font-weight: 700; white-space: nowrap; }
+    .prices { display: grid; justify-items: center; margin-top: .08em; }
+    .prices div { display: flex; align-items: baseline; justify-content: center; gap: .4em; white-space: nowrap; }
+    .prices i { font-style: normal; font-weight: 700; font-size: .68em; }
+    .prices strong { font-size: 1.22em; line-height: 1.05; }
+    .rule { height: .11em; width: 100%; margin-top: .16em; background: var(--red); }
+    .food { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; display: block; }
     .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding: 0 1.6vw; background: #050505; border-top: 3px solid #2a0604; overflow: visible; }
     .qrbox { position: absolute; left: 0; bottom: 0; z-index: 4; background: #fff; padding: .4rem; border-radius: 0 .45rem 0 0; line-height: 0; box-shadow: 0 10px 28px rgba(0,0,0,.5); }
-    .qrbox svg { width: var(--qr-size); height: auto; display: block; }
+    .qrbox svg { width: clamp(13rem, 28vh, 20rem); height: auto; display: block; }
     .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .08em; font-size: clamp(1.7rem, 4.2vh, 3rem); }
   </style>
 </head>
@@ -61,7 +58,7 @@
       <div class="slogan left"><div><p>свіжі морепродукти<br>прямо до столу</p><div class="under"></div></div></div>
       <div class="brand">
         <button type="button" class="word" id="logoBtn">KLESHNEVAR</button>
-        <div class="navline"><i></i>РАКИ<i></i></div>
+        <div class="navline"><i></i>РАКИ · КРЕВЕТКИ · ПИВО<i></i></div>
         <p class="kind">БУЛЬЙОНИ</p>
       </div>
       <div class="slogan right">
@@ -77,6 +74,7 @@
     <main class="menu" id="menu"></main>
     <img class="food" src="board-cray.jpg" alt="" />
     <footer class="foot"><div class="qrbox" id="qr"></div><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
+    <audio id="bgm" src="cafe.mp3" loop preload="auto"></audio>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
@@ -87,11 +85,11 @@
     }
     function titleOf(name) {
       const n = name.toLowerCase();
-      if (n.includes("bbq")) return "BBQ";
-      if (n.includes("вершк")) return "Вершкові";
-      if (n.includes("класик")) return "Класика";
-      if (n.includes("томат")) return "Томатні";
-      if (n.includes("пікант") || n.includes("пикант") || n.includes("hot")) return "Пікантні/HOT";
+      if (n.includes("bbq")) return "РАКИ BBQ";
+      if (n.includes("вершк")) return "ВЕРШКОВІ";
+      if (n.includes("класик")) return "КЛАСИКА";
+      if (n.includes("томат")) return "ТОМАТИ";
+      if (n.includes("пікант") || n.includes("пикант")) return "ПІКАНТНІ/HOT";
       return name.replace(/^раки\s+/i, "").toUpperCase();
     }
     function paint(rows) {
@@ -101,6 +99,7 @@
         if (index[row[0]] == null) { index[row[0]] = groups.length; groups.push([]); }
         groups[index[row[0]]].push(row);
       });
+      const maxSizes = Math.max(1, ...groups.map((group) => chunks((group.find((row) => !/0[.,]\s*5/.test(row[2])) || group[0])[1]).length));
       menuEl.style.gridTemplateColumns = "repeat(" + Math.max(groups.length, 1) + ", minmax(0, 1fr))";
       menuEl.replaceChildren();
       groups.forEach((group) => {
@@ -111,44 +110,39 @@
         const halfNums = half ? (String(half[3]).match(/\d+/g) || []) : [];
         const col = document.createElement("section");
         col.className = "col";
-        const kilo = document.createElement("div");
-        kilo.className = "mix-kg";
-        kilo.textContent = "1 кг";
-        const sauce = document.createElement("h2");
-        sauce.className = "sauce";
-        sauce.textContent = titleOf(full[0]);
-        const body = document.createElement("div");
-        body.className = "col-body";
+        col.style.gridTemplateRows = "auto repeat(" + maxSizes + ", 1fr)";
+        const heading = document.createElement("h2");
+        heading.textContent = titleOf(full[0]);
+        col.appendChild(heading);
         sizes.forEach((size, i) => {
-          const card = document.createElement("article");
-          card.className = "card";
-          const title = document.createElement("h2");
-          const spec = (SPEC[size.toLowerCase()] || "").replace(/\s*шт\s*$/i, "");
-          title.textContent = spec ? size + " — " + spec : size;
-          const cost = document.createElement("div");
-          cost.className = "cost";
-          const price = document.createElement("b");
-          price.textContent = fullNums[i] ? fullNums[i] + " грн" : "";
-          cost.append(price);
-          if (half && halfNums[i]) {
-            const extra = document.createElement("div");
-            extra.className = "cost";
-            const mark = document.createElement("em");
-            mark.textContent = half[2] || "0.5 кг";
-            const halfPrice = document.createElement("b");
-            halfPrice.textContent = halfNums[i] + " грн";
-            extra.append(mark, halfPrice);
-            const rule = document.createElement("div");
-            rule.className = "rule";
-            card.append(title, cost, extra, rule);
-          } else {
-            const rule = document.createElement("div");
-            rule.className = "rule";
-            card.append(title, cost, rule);
-          }
-          body.appendChild(card);
+          const cell = document.createElement("div");
+          cell.className = "size";
+          const top = document.createElement("div");
+          top.className = "top";
+          const mark = document.createElement("b");
+          const spec = document.createElement("span");
+          const pieces = SPEC[size.toLowerCase()] || "";
+          mark.textContent = size;
+          spec.textContent = pieces ? "— " + pieces : "";
+          top.append(mark, spec);
+          const prices = document.createElement("div");
+          prices.className = "prices";
+          const line = (label, value) => {
+            const row = document.createElement("div");
+            const weight = document.createElement("i");
+            weight.textContent = label;
+            const price = document.createElement("strong");
+            price.textContent = value ? value + " грн" : "";
+            row.append(weight, price);
+            return row;
+          };
+          prices.appendChild(line(full[2] || "1 кг", fullNums[i]));
+          if (half) prices.appendChild(line(half[2] || "0.5 кг", halfNums[i]));
+          const rule = document.createElement("div");
+          rule.className = "rule";
+          cell.append(top, prices, rule);
+          col.appendChild(cell);
         });
-        col.append(kilo, sauce, body);
         menuEl.appendChild(col);
       });
     }
@@ -183,25 +177,11 @@
         .catch(() => {});
     }
     function crowded(menu) {
-      const wide = [...menu.querySelectorAll(".sauce, .card h2, .cost b, .mix-kg")].some((node) => {
-        const r = node.getBoundingClientRect();
-        const box = node.closest(".col").getBoundingClientRect();
-        return node.scrollWidth > node.clientWidth + 1 || r.right > box.right + 2 || r.left < box.left - 2;
-      });
-      const cards = [...menu.querySelectorAll(".card")];
-      const hit = cards.some((card, i) => {
-        const next = cards[i + 1];
-        if (!next || card.parentElement !== next.parentElement) return false;
-        return card.getBoundingClientRect().bottom > next.getBoundingClientRect().top + 1;
-      });
-      const clipped = [...menu.querySelectorAll(".col, .col-body")].some((node) => node.scrollHeight > node.clientHeight + 8);
-      const last = menu.querySelector(".card:last-child");
-      const cut = last && last.getBoundingClientRect().bottom > menu.getBoundingClientRect().bottom - 1;
-      return wide || hit || clipped || cut || menu.scrollHeight > menu.clientHeight + 2;
+      return [...menu.querySelectorAll("h2, .top, .prices div")].some((node) => node.scrollWidth > node.clientWidth + 2);
     }
     function fitMenu() {
       const menu = menuEl;
-      let lo = 16, hi = Math.round(window.innerHeight * 0.046), best = lo;
+      let lo = 14, hi = Math.round(window.innerHeight * 0.032), best = lo;
       while (lo <= hi) {
         const mid = (lo + hi) >> 1;
         menu.style.setProperty("--fit", String(mid));
@@ -229,6 +209,11 @@
       document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
     };
     document.body.appendChild(qrLib);
+    const bgm = document.getElementById("bgm");
+    bgm.volume = 0.34;
+    const playBgm = () => { bgm.play().catch(() => {}); };
+    playBgm();
+    ["pointerdown", "keydown", "touchstart"].forEach((ev) => document.addEventListener(ev, playBgm));
   </script>
 </body>
 </html>
