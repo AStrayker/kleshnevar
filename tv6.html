@@ -74,6 +74,7 @@
     <main class="menu" id="menu"></main>
     <img class="food" src="board-cray.jpg" alt="" />
     <footer class="foot"><div class="qrbox" id="qr"></div><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
+    <audio id="bgm" src="cafe.mp3" loop preload="auto"></audio>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
@@ -208,6 +209,11 @@
       document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
     };
     document.body.appendChild(qrLib);
+    const bgm = document.getElementById("bgm");
+    bgm.volume = 0.34;
+    const playBgm = () => { bgm.play().catch(() => {}); };
+    playBgm();
+    ["pointerdown", "keydown", "touchstart"].forEach((ev) => document.addEventListener(ev, playBgm));
   </script>
 </body>
 </html>
