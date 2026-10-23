@@ -11,8 +11,9 @@
     :root {
       --red: #ff2a18; --ink: #070707; --line: rgba(255,255,255,.16);
       /* РОЗМІР QR-КОДА. Зміни тільки це число:
-         22vh — менший, 30vh — як зараз, 40vh — більший */
-      --qr-size: 30vh;
+         22vh — менший, 24vh — як зараз, 28vh — більший.
+         Не став більше, ніж висота фото + низ, інакше QR налізе на ціни. */
+      --qr-size: 24vh;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: var(--ink); color: #fff; font-family: Manrope, system-ui, sans-serif; }
@@ -20,7 +21,7 @@
     button { font: inherit; color: inherit; cursor: pointer; }
     .screen {
       height: 100dvh; min-height: 100vh; display: grid;
-      grid-template-rows: 15vh minmax(0, 1fr) 21vh 9vh;
+      grid-template-rows: 17vh minmax(0, 1fr) 18vh 8vh;
       background: radial-gradient(1200px 420px at 50% 0%, rgba(255,40,20,.08), transparent 60%), var(--ink);
       overflow: hidden;
     }
@@ -35,20 +36,20 @@
     .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: clamp(3.2rem, 8.4vh, 7.2rem); line-height: .8; color: var(--red); text-shadow: 0 2px 0 #7a0c08; }
     .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .05rem; color: var(--red); font-family: Oswald, sans-serif; font-size: clamp(1.35rem, 3.1vh, 2.3rem); letter-spacing: .28em; font-weight: 700; }
     .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
-    .kind { margin: .05rem 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .34em; font-size: clamp(1rem, 2.3vh, 1.7rem); }
+    .kind { margin: .05rem 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; letter-spacing: .34em; font-size: clamp(1.15rem, 2.6vh, 1.9rem); }
     .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
-    .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; padding: .15em .4vw .15em; font-size: calc(var(--fit) * 1px); }
+    .menu { --fit: 28; min-height: 0; overflow: hidden; display: grid; padding: .05em .4vw .2em; font-size: calc(var(--fit) * 1px); }
     .col { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 0 .4em; border-right: 2px solid rgba(255,255,255,.34); overflow: hidden; }
     .col:last-child { border-right: 0; }
-    .mix-kg { color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.35em; line-height: 1; letter-spacing: .04em; min-height: 1.2em; text-align: center; }
-    .sauce { margin: 0 0 .12em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.85em; line-height: 1; letter-spacing: .02em; text-align: center; white-space: nowrap; }
+    .mix-kg { color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.15em; line-height: 1; letter-spacing: .04em; min-height: 1.05em; text-align: center; }
+    .sauce { margin: 0 0 .06em; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.65em; line-height: 1; letter-spacing: .02em; text-align: center; white-space: nowrap; }
     .col-body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; }
     .card { min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 .05em; }
-    .card h2 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.55em; line-height: 1; text-align: center; white-space: nowrap; }
-    .cost { display: flex; align-items: baseline; justify-content: center; gap: .2em; white-space: nowrap; width: 100%; margin-top: .04em; }
+    .card h2 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 2em; line-height: 1; text-align: center; white-space: nowrap; }
+    .cost { display: flex; align-items: baseline; justify-content: center; gap: .2em; white-space: nowrap; width: 100%; margin-top: .02em; }
     .cost em { font-style: normal; color: #fff; font-weight: 800; font-size: 1em; }
-    .cost b { font-size: 1.55em; line-height: 1; font-weight: 800; color: var(--red); }
-    .rule { height: .12em; width: 100%; margin: .16em 0 0; background: var(--red); }
+    .cost b { font-size: 2.15em; line-height: 1; font-weight: 800; color: var(--red); }
+    .rule { height: .1em; width: 100%; margin: .08em 0 0; background: var(--red); }
     .food { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; display: block; }
     .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding: 0 1.6vw; background: #050505; border-top: 3px solid #2a0604; overflow: visible; }
     .qrbox { position: absolute; left: 0; bottom: 0; z-index: 4; background: #fff; padding: .4rem; border-radius: 0 .45rem 0 0; line-height: 0; box-shadow: 0 10px 28px rgba(0,0,0,.5); }
@@ -202,7 +203,7 @@
     }
     function fitMenu() {
       const menu = menuEl;
-      let lo = 16, hi = Math.round(window.innerHeight * 0.038), best = lo;
+      let lo = 16, hi = Math.round(window.innerHeight * 0.042), best = lo;
       while (lo <= hi) {
         const mid = (lo + hi) >> 1;
         menu.style.setProperty("--fit", String(mid));
