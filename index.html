@@ -35,9 +35,12 @@
       <img class="brand-logo" src="assets/logo-word.png" alt="Kleshnevar" />
     </a>
     <div class="header-actions">
-      <button class="icon-btn" id="cartBtn" aria-label="Кошик">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
-        <span class="cart-count" id="cartCount" hidden>0</span>
+      <button class="cart-pill" id="cartBtn" aria-label="Кошик">
+        <span class="cart-pill-sum" id="cartHeadSum" hidden></span>
+        <span class="cart-pill-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </span>
       </button>
       <button class="icon-btn burger" id="burger" aria-label="Меню">
         <span></span><span></span><span></span>
@@ -53,6 +56,11 @@
       <a href="#top" data-scroll="top">Головна</a>
       <a href="#krevetky" data-scroll="krevetky">Креветки</a>
       <a href="#raky" data-scroll="raky">Раки</a>
+      <a href="#kuhnia" data-scroll="kuhnia">Мікси та панко</a>
+      <a href="#zhyvi" data-scroll="zhyvi">Живі раки</a>
+      <a href="#zamorozka" data-scroll="zamorozka">Заморозка</a>
+      <a href="#napoi" data-scroll="napoi">Напої</a>
+      <a href="#vitryna" data-scroll="vitryna">Вітрина</a>
       <a href="#dostavka" data-scroll="dostavka">Доставка</a>
     </nav>
     <button class="btn btn-primary" id="showMapBtn" style="margin-top:22px">Показати на карті</button>
@@ -92,10 +100,10 @@
       <div class="hero-bg"></div>
       <div class="hero-content">
         <h1>Клішня.<br>Вогонь.<br>Бульйон.</h1>
-        <p>Свіжі раки M–XXL і креветки в авторських бульйонах. Гарячими — до дверей.</p>
+        <p>Свіжі раки M–XXL, креветки, морські мікси, риба з вітрини та розливне пиво. Гарячими — до дверей.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#krevetky" data-scroll="krevetky">Дивитись меню</a>
-          <a class="btn btn-ghost" id="callBtn" href="tel:+380960444765">Зателефонувати</a>
+          <a class="btn btn-ghost" id="callBtn" href="tel:+380636503959">Зателефонувати</a>
         </div>
       </div>
     </section>
@@ -117,6 +125,56 @@
           <p>Розмір, кількість штук на кілограм і бульйон на ваш смак</p>
         </div>
         <div class="grid" id="crayGrid"></div>
+      </div>
+    </section>
+
+    <section id="kuhnia">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Мікси та панко</h2>
+          <p>Мікси і панко</p>
+        </div>
+        <div class="grid" id="kuhniaGrid"></div>
+      </div>
+    </section>
+
+    <section id="zhyvi">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Живі раки</h2>
+          <p>Ціна за 100 г</p>
+        </div>
+        <div class="grid" id="zhyviGrid"></div>
+      </div>
+    </section>
+
+    <section id="zamorozka">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Заморозка</h2>
+          <p>Ціна за 100 г</p>
+        </div>
+        <div class="grid" id="zamorozkaGrid"></div>
+      </div>
+    </section>
+
+    <section id="napoi">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Напої</h2>
+          <p>Пиво, сидр і лимонад — ціна за 1 літр</p>
+        </div>
+        <div class="grid" id="napoiGrid"></div>
+      </div>
+    </section>
+
+    <section id="vitryna">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Вітрина</h2>
+          <p>Риба та морепродукти на вагу — за 100 г. Снеки — за упаковку.</p>
+        </div>
+        <div id="vitrynaRoot"></div>
       </div>
     </section>
 
@@ -146,6 +204,7 @@
   <footer>© <span id="year"></span> Клешневар. Смачного.</footer>
   <div class="toast" id="toast"></div>
 
+  <script src="catalog.js"></script>
   <script src="config.js"></script>
   <script src="config.secrets.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>

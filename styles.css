@@ -100,6 +100,26 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
     width: 42px;
     height: 42px;
   }
+  .cart-pill { height: 42px; }
+  .cart-pill:has(.cart-pill-sum[hidden]) { width: 42px; }
+  .cart-pill-sum { font-size: 12px; }
+  .header.has-sum .brand-logo,
+  .header.has-sum.scrolled .brand-logo {
+    max-width: calc(100vw - 248px);
+  }
+}
+
+@media (max-width: 980px) {
+  .header.has-sum {
+    justify-content: flex-start;
+  }
+  .header.has-sum .brand {
+    align-items: flex-start;
+  }
+  .header.has-sum .brand-logo {
+    height: 40px;
+    max-width: calc(100vw - 250px);
+  }
 }
 
 .header-actions {
@@ -124,9 +144,45 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   position: relative;
 }
 .icon-btn:hover { background: rgba(255,106,26,0.16); }
+.cart-pill {
+  height: 46px;
+  padding: 0 6px 0 14px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  color: inherit;
+}
+.cart-pill:hover { background: rgba(255,106,26,0.16); }
+.cart-pill:has(.cart-pill-sum[hidden]) {
+  width: 46px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+}
+.cart-pill-sum {
+  font-family: "Unbounded", sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--accent-2);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cart-pill-sum[hidden] { display: none; }
+.cart-pill-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  flex: 0 0 34px;
+}
 .cart-count {
   position: absolute;
-  top: -6px; right: -6px;
+  top: -4px; right: -6px;
   min-width: 18px; height: 18px;
   padding: 0 5px;
   border-radius: 99px;
@@ -136,6 +192,7 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   font-weight: 700;
   display: grid; place-items: center;
 }
+.cart-count[hidden] { display: none; }
 
 .burger span {
   display: block; width: 18px; height: 2px; background: #fff; margin: 4px 0;
@@ -209,11 +266,25 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
   letter-spacing: -0.04em;
 }
 .sec-head p { color: var(--muted); margin-top: 8px; }
+.shop-block { margin-top: 28px; }
+.shop-block h3 {
+  font-family: "Unbounded", sans-serif;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 980px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .grid { grid-template-columns: 1fr; }
 }
 
 .card {
@@ -222,9 +293,13 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  height: 476px;
 }
 .card-photo {
-  height: 168px;
+  height: 190px;
+  flex: 0 0 190px;
   background: #0c0c0d center/cover no-repeat;
   position: relative;
 }
@@ -233,10 +308,39 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
   position: absolute; inset: auto 0 0 0; height: 70px;
   background: linear-gradient(transparent, #121214);
 }
-.card-body { padding: 16px 16px 18px; }
-.card-body h3 { font-size: 18px; margin-bottom: 6px; }
-.meta { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
-.price { font-family: "Unbounded", sans-serif; color: var(--accent-2); font-size: 18px; }
+.card-body {
+  padding: 16px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.card-body > h3,
+.card-body .row-between {
+  min-height: 3.9em;
+}
+.card-body h3 {
+  font-size: 16px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-body > .meta {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.3;
+  height: 1.3em;
+  margin-bottom: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.meta { color: var(--muted); font-size: 13px; }
+.price { font-family: "Unbounded", sans-serif; color: var(--accent-2); font-size: 18px; line-height: 1.2; }
+.card-body .qty { margin-top: auto; }
+.qty .meta { margin: 0 0 0 auto; white-space: nowrap; }
 .row-between { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .select {
   width: 100%;
