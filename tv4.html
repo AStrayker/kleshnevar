@@ -104,13 +104,13 @@
     }
     function extraOf(name) {
       const n = name.toLowerCase();
-      if (n.includes("міді") || n.includes("миди")) return "25-30 шт";
+      if (n.includes("міді") || n.includes("миди")) return "28-31 шт";
       if (n.includes("панко") && n.includes("кревет")) return "9 шт";
       return "";
     }
     function priceOf(row) {
       const n = row[0].toLowerCase();
-      if (n.includes("міді") || n.includes("миди")) return "200 грн";
+      if (n.includes("міді") || n.includes("миди")) return "175 грн";
       return money(row[3]);
     }
     function placeRest(rows) {
