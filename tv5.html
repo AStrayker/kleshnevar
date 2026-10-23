@@ -91,7 +91,7 @@
       if (n.includes("вершк")) return "Вершкові";
       if (n.includes("класик")) return "Класика";
       if (n.includes("томат")) return "Томатні";
-      if (n.includes("пікант") || n.includes("пикант") || n.includes("hot")) return "Пікантні\HOT";
+      if (n.includes("пікант") || n.includes("пикант") || n.includes("hot")) return "Пікантні/HOT";
       return name.replace(/^раки\s+/i, "").toUpperCase();
     }
     function paint(rows) {
