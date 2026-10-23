@@ -3,171 +3,146 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Клешневар — меню</title>
+  <title>Клешневар — раки</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
   <style>
-    :root { --ink: #070707; --paper: #f4efe6; }
+    :root { --red: #ff2a18; --ink: #070707; }
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; background: var(--ink); color: var(--paper); font-family: Manrope, system-ui, sans-serif; }
+    html, body { height: 100%; margin: 0; background: var(--ink); color: #fff; font-family: Manrope, system-ui, sans-serif; }
     body { overflow: hidden; }
-    button { cursor: pointer; }
-    .screen { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) 24vh; height: 100dvh; min-height: 100vh; overflow: hidden; background: var(--ink); }
-    .top { position: relative; z-index: 3; display: flex; justify-content: center; padding: clamp(0.35rem, 1.2vh, 0.9rem) 1rem 0; }
-    .logo-btn { display: block; border: 0; padding: 0; background: transparent; }
-    .logo { display: block; height: clamp(5rem, 17vh, 11rem); width: auto; max-width: min(72vw, 44rem); object-fit: contain; }
-    .menu {
-      --fit: 28; position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center;
-      width: min(98vw, 120rem); height: 100%; min-height: 0; margin: 0 auto;
-      padding: 0.1em 0.6em 0.2em; overflow: hidden; font-size: calc(var(--fit) * 1px);
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .screen {
+      height: 100dvh; min-height: 100vh; display: grid;
+      grid-template-rows: 15vh minmax(0, 1fr) 21vh 9vh;
+      background: radial-gradient(1200px 420px at 50% 0%, rgba(255,40,20,.08), transparent 60%), var(--ink);
+      overflow: hidden;
     }
-    .board-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.2em 0.7em; }
-    .board-title { grid-column: 1 / -1; margin: 0 0 0.12em; color: #ff7a22; font-size: 1.35em; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
-    .dish-stack { min-width: 0; }
-    .dish-head { display: flex; justify-content: space-between; gap: 0.4em; align-items: baseline; }
-    .dish-name { color: #fff; font-size: 1.35em; font-weight: 800; line-height: 1; white-space: nowrap; }
-    .dish-meta { color: #fff; font-size: 1em; font-weight: 700; white-space: nowrap; }
-    .size-grid { display: grid; gap: 0.16em; margin-top: 0.16em; }
-    .size-grid > div { display: grid; grid-template-columns: auto 1fr; column-gap: 0.45em; align-items: baseline; }
-    .size-grid b { color: #fff; font-size: 1.35em; grid-column: 1; grid-row: 1; }
-    .size-grid i { color: #f2f2f2; font-style: normal; font-weight: 700; font-size: 0.95em; grid-column: 1; grid-row: 2; white-space: nowrap; }
-    .size-grid span { justify-self: end; align-self: start; color: #ff7a22; font-size: 1.35em; font-weight: 800; grid-column: 2; grid-row: 1; white-space: nowrap; }
-    .half-grid { display: grid; gap: 0.12em; margin-top: 0.22em; padding-top: 0.18em; border-top: 1px solid rgba(255,255,255,0.28); }
-    .half-grid > div { display: grid; grid-template-columns: auto 1fr; align-items: baseline; }
-    .half-grid small { grid-column: 1; color: #f3f3f3; font-size: 0.72em; font-weight: 700; line-height: 1; }
-    .half-grid b { grid-column: 1; color: #fff; font-size: 1.15em; line-height: 1; }
-    .half-grid span { grid-column: 2; grid-row: 1 / span 2; justify-self: end; align-self: center; color: #ff7a22; font-size: 1.2em; font-weight: 800; white-space: nowrap; }
-    .qr { position: absolute; z-index: 4; right: clamp(0.7rem, 2vw, 1.6rem); bottom: clamp(0.7rem, 2vh, 1.4rem); width: clamp(4.6rem, 12vh, 8.5rem); border-radius: 0.7rem; background: var(--paper); box-shadow: 0 0 0 0.35rem var(--paper); }
-    .stage { position: relative; z-index: 1; min-height: 0; overflow: hidden; }
-    .flame { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 118%; object-fit: cover; object-position: center 48%; transform: translateY(-14%); pointer-events: none; }
+    .head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: .4vh 2.2vw 0; }
+    .slogan { display: flex; align-items: center; gap: .8rem; min-width: 0; }
+    .slogan.left { justify-content: flex-start; transform: rotate(-6deg); transform-origin: left center; }
+    .slogan.right { justify-content: flex-end; }
+    .slogan p { margin: 0; font-family: "Marck Script", cursive; font-size: clamp(1.15rem, 2.5vh, 2.1rem); line-height: .95; }
+    .slogan.right p { color: var(--red); font-size: clamp(1.2rem, 2.7vh, 2.25rem); }
+    .under { height: .28rem; margin-top: .15rem; background: var(--red); border-radius: 2px; transform: rotate(-2deg); }
+    .brand { text-align: center; }
+    .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: clamp(3.2rem, 8.4vh, 7.2rem); line-height: .8; color: var(--red); text-shadow: 0 2px 0 #7a0c08; }
+    .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .05rem; color: #f2f2f2; font-family: Oswald, sans-serif; font-size: clamp(.85rem, 1.7vh, 1.25rem); letter-spacing: .18em; }
+    .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
+    .kind { margin: .08rem 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; letter-spacing: .42em; font-size: clamp(1.15rem, 2.5vh, 1.9rem); }
+    .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
+    .menu { --fit: 22; min-height: 0; overflow: hidden; display: grid; padding: .1em 1vw .25em; font-size: calc(var(--fit) * 1px); }
+    .col { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto repeat(4, 1fr); padding: 0 .42em; border-left: 1px solid rgba(255,255,255,.14); }
+    .col:first-child { border-left: 0; }
+    .col h2 { margin: 0; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.72em; line-height: 1; white-space: nowrap; text-align: center; }
+    .size { min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; }
+    .top { display: flex; justify-content: space-between; align-items: baseline; gap: .35em; }
+    .top b { font-size: 1.34em; line-height: 1; }
+    .top span { font-size: .68em; font-weight: 700; white-space: nowrap; }
+    .prices { display: grid; justify-items: end; margin-top: .04em; }
+    .prices div { display: flex; align-items: baseline; gap: .4em; white-space: nowrap; }
+    .prices i { font-style: normal; font-weight: 700; font-size: .68em; }
+    .prices strong { font-size: 1.02em; line-height: 1.05; }
+    .rule { height: .11em; width: 100%; margin-top: .16em; background: var(--red); }
+    .food { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; display: block; }
+    .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding: 0 1.6vw; background: #050505; border-top: 3px solid #2a0604; overflow: visible; }
+    .qrbox { position: absolute; left: 0; bottom: 0; z-index: 4; background: #fff; padding: .4rem; border-radius: 0 .45rem 0 0; line-height: 0; box-shadow: 0 10px 28px rgba(0,0,0,.5); }
+    .qrbox svg { width: clamp(13rem, 28vh, 20rem); height: auto; display: block; }
+    .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .08em; font-size: clamp(1.7rem, 4.2vh, 3rem); }
   </style>
 </head>
 <body>
   <div class="screen">
-    <header class="top">
-      <button type="button" class="logo-btn" id="logoBtn" aria-label="Повний екран">
-        <img src="logo-word.png" alt="Kleshnevar" class="logo" />
-      </button>
+    <header class="head">
+      <div class="slogan left"><div><p>свіжі морепродукти<br>прямо до столу</p><div class="under"></div></div></div>
+      <div class="brand">
+        <button type="button" class="word" id="logoBtn">KLESHNEVAR</button>
+        <div class="navline"><i></i>РАКИ · КРЕВЕТКИ · ПИВО<i></i></div>
+        <p class="kind">БУЛЬЙОНИ</p>
+      </div>
+      <div class="slogan right">
+        <svg class="claw" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#ff2a18" stroke-width="3.5"/>
+          <path d="M34 34c-10-8-18-1-14 8 3 6 10 6 13 1M36 30c2-8 12-8 12 0M66 34c10-8 18-1 14 8-3 6-10 6-13 1M64 30c-2-8-12-8-12 0" fill="none" stroke="#ff2a18" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="50" cy="46" rx="9" ry="13" fill="#ff2a18"/>
+          <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
+        </svg>
+        <div><p>смак<br>який<br>запам'ятовується</p><div class="under"></div></div>
+      </div>
     </header>
     <main class="menu" id="menu"></main>
-    <p id="note" hidden></p>
-    <img class="qr" src="menu-qr.svg" alt="QR-код меню на сайті" />
-    <div class="stage"><video class="flame" id="flame" src="fire.mp4" muted autoplay loop playsinline preload="auto"></video></div>
+    <img class="food" src="board-cray.jpg" alt="" />
+    <footer class="foot"><div class="qrbox" id="qr"></div><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
     const menuEl = document.getElementById("menu");
-    const noteEl = document.getElementById("note");
-    function shortName(name) {
-      const cut = name.replace(/^раки\s+/i, "");
-      return cut.charAt(0).toUpperCase() + cut.slice(1);
+    const SPEC = { m: "30-35 шт", l: "23-25 шт", xl: "15-18 шт", xxl: "10-14 шт" };
+    function chunks(value) {
+      return String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—");
     }
-    function offersFor(row) {
-      const chunks = (value) => String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—" && part !== "–");
-      const counts = { m: "30–35 шт", l: "23–25 шт", xl: "15–18 шт", xxl: "10–14 шт" };
-      const money = (value) => /грн/i.test(value) ? value : (/^\d+$/.test(value) ? value + " грн" : value);
-      const sizes = chunks(row[1]);
-      if (sizes.length < 2) return [];
-      const weights = chunks(row[2]);
-      const portion = weights.length === 1 ? weights[0] : "";
-      const nums = String(row[3]).match(/\d+/g) || [];
-      const prices = nums.length >= sizes.length ? nums.slice(0, sizes.length).map((n) => n + " грн") : chunks(row[3]).map(money);
-      if (prices.length < sizes.length) return [];
-      return sizes.map((size, index) => ({
-        size,
-        count: counts[size.toLowerCase()] || "",
-        portion,
-        price: prices[index]
-      }));
+    function titleOf(name) {
+      const n = name.toLowerCase();
+      if (n.includes("bbq")) return "РАКИ BBQ";
+      if (n.includes("вершк")) return "ВЕРШКОВІ";
+      if (n.includes("класик")) return "КЛАСИКА";
+      if (n.includes("томат")) return "ТОМАТИ";
+      if (n.includes("пікант") || n.includes("пикант")) return "ПІКАНТНІ";
+      return name.replace(/^раки\s+/i, "").toUpperCase();
     }
-    function addDish(board, row, lines) {
-      const dish = document.createElement("article");
-      dish.className = "dish-stack";
-      const head = document.createElement("div");
-      head.className = "dish-head";
-      const name = document.createElement("div");
-      name.className = "dish-name";
-      name.textContent = shortName(row[0]);
-      head.appendChild(name);
-      const portion = lines.length && lines.every((line) => line.portion === lines[0].portion) ? lines[0].portion : "";
-      if (portion) {
-        const sub = document.createElement("div");
-        sub.className = "dish-meta";
-        sub.textContent = portion;
-        head.appendChild(sub);
-      }
-      const grid = document.createElement("div");
-      grid.className = "size-grid";
-      lines.forEach((line) => {
-        const cell = document.createElement("div");
-        const label = document.createElement("b");
-        label.textContent = line.size;
-        const price = document.createElement("span");
-        price.textContent = line.price;
-        cell.append(label, price);
-        if (line.count) {
-          const count = document.createElement("i");
-          count.textContent = line.count;
-          cell.append(count);
-        }
-        grid.appendChild(cell);
-      });
-      const half = document.createElement("div");
-      half.className = "half-grid";
-      lines.forEach((line) => {
-        if (!line.half) return;
-        const cell = document.createElement("div");
-        const kg = document.createElement("small");
-        kg.textContent = line.halfLabel || "0.5 кг";
-        const label = document.createElement("b");
-        label.textContent = line.size;
-        const cost = document.createElement("span");
-        cost.textContent = line.half;
-        cell.append(kg, label, cost);
-        half.appendChild(cell);
-      });
-      if (half.childElementCount) dish.append(head, grid, half);
-      else dish.append(head, grid);
-      board.appendChild(dish);
-    }
-    function paint(rows, problem) {
-      const cray = rows.filter((row) => row[0].toLowerCase().includes("рак"));
-      menuEl.replaceChildren();
-      if (!cray.length) { noteEl.hidden = false; noteEl.textContent = problem || "У таблиці немає раків."; return; }
-      const board = document.createElement("section");
-      board.className = "board-cards";
-      const heading = document.createElement("h2");
-      heading.className = "board-title";
-      heading.textContent = "Раки";
-      board.appendChild(heading);
+    function paint(rows) {
       const groups = [];
       const index = {};
-      cray.forEach((row) => {
+      rows.filter((row) => row[0].toLowerCase().includes("рак")).forEach((row) => {
         if (index[row[0]] == null) { index[row[0]] = groups.length; groups.push([]); }
         groups[index[row[0]]].push(row);
       });
-      const isHalf = (row) => /0[.,]\s*5/.test(row[2]);
+      const maxSizes = Math.max(1, ...groups.map((group) => chunks((group.find((row) => !/0[.,]\s*5/.test(row[2])) || group[0])[1]).length));
+      menuEl.style.gridTemplateColumns = "repeat(" + Math.max(groups.length, 1) + ", minmax(0, 1fr))";
+      menuEl.replaceChildren();
       groups.forEach((group) => {
-        const full = group.find((row) => !isHalf(row)) || group[0];
-        const halfRow = group.find(isHalf);
-        const lines = offersFor(full);
-        if (halfRow) {
-          const halves = offersFor(halfRow);
-          const bySize = {};
-          halves.forEach((line) => { bySize[String(line.size).trim().toLowerCase()] = line.price; });
-          lines.forEach((line) => {
-            const value = bySize[String(line.size).trim().toLowerCase()];
-            if (!value) return;
-            line.half = value;
-            line.halfLabel = halfRow[2] || "0.5 кг";
-          });
-        }
-        addDish(board, full, lines);
+        const full = group.find((row) => !/0[.,]\s*5/.test(row[2])) || group[0];
+        const half = group.find((row) => /0[.,]\s*5/.test(row[2]));
+        const sizes = chunks(full[1]);
+        const fullNums = String(full[3]).match(/\d+/g) || [];
+        const halfNums = half ? (String(half[3]).match(/\d+/g) || []) : [];
+        const col = document.createElement("section");
+        col.className = "col";
+        col.style.gridTemplateRows = "auto repeat(" + maxSizes + ", 1fr)";
+        const heading = document.createElement("h2");
+        heading.textContent = titleOf(full[0]);
+        col.appendChild(heading);
+        sizes.forEach((size, i) => {
+          const cell = document.createElement("div");
+          cell.className = "size";
+          const top = document.createElement("div");
+          top.className = "top";
+          const mark = document.createElement("b");
+          mark.textContent = size;
+          const spec = document.createElement("span");
+          spec.textContent = SPEC[size.toLowerCase()] || "";
+          top.append(mark, spec);
+          const prices = document.createElement("div");
+          prices.className = "prices";
+          const line = (label, value) => {
+            const row = document.createElement("div");
+            const weight = document.createElement("i");
+            weight.textContent = label;
+            const price = document.createElement("strong");
+            price.textContent = value ? value + " грн" : "";
+            row.append(weight, price);
+            return row;
+          };
+          prices.appendChild(line(full[2] || "1 кг", fullNums[i]));
+          if (half) prices.appendChild(line(half[2] || "0.5 кг", halfNums[i]));
+          const rule = document.createElement("div");
+          rule.className = "rule";
+          cell.append(top, prices, rule);
+          col.appendChild(cell);
+        });
+        menuEl.appendChild(col);
       });
-      menuEl.appendChild(board);
-      noteEl.hidden = !problem;
-      noteEl.textContent = problem || "";
     }
     function parseCsv(text) {
       const rows = [];
@@ -175,8 +150,7 @@
       for (let i = 0; i < text.length; i++) {
         const ch = text[i];
         if (quoted) {
-          if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i += 1; } else quoted = false; }
-          else cell += ch;
+          if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i += 1; } else quoted = false; } else cell += ch;
         } else if (ch === '"') quoted = true;
         else if (ch === ",") { row.push(cell.trim()); cell = ""; }
         else if (ch === "\n") { row.push(cell.trim()); rows.push(row); row = []; cell = ""; }
@@ -185,22 +159,33 @@
       if (cell.length || row.length) { row.push(cell.trim()); rows.push(row); }
       return rows;
     }
-    let shown = "", previous = "", switchedAt = 0;
+    let shown = "";
     function pull() {
       fetch(CSV + "&_=" + Date.now(), { cache: "no-store" })
-        .then((res) => { if (!res.ok) throw new Error(String(res.status)); return res.text(); })
+        .then((res) => res.text())
         .then((text) => {
-          const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || ""]).filter((r) => r.some(Boolean));
+          const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || ""]).filter((r) => r[0]);
           const key = JSON.stringify(next);
           if (key === shown) return;
-          if (previous && key === previous && Date.now() - switchedAt < 12000) return;
-          previous = shown; shown = key; switchedAt = Date.now();
-          paint(next, next.length ? "" : "У таблиці немає рядків.");
+          shown = key;
+          paint(next);
           requestAnimationFrame(fitMenu);
-          setTimeout(fitMenu, 60);
-          setTimeout(fitMenu, 500);
+          setTimeout(fitMenu, 80);
         })
-        .catch(() => { noteEl.hidden = false; noteEl.textContent = "Не вдалося прочитати таблицю."; });
+        .catch(() => {});
+    }
+    function crowded(menu) {
+      return [...menu.querySelectorAll("h2, .top, .prices div")].some((node) => node.scrollWidth > node.clientWidth + 2);
+    }
+    function fitMenu() {
+      const menu = menuEl;
+      let lo = 14, hi = Math.round(window.innerHeight * 0.032), best = lo;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        menu.style.setProperty("--fit", String(mid));
+        if (!crowded(menu)) { best = mid; lo = mid + 1; } else hi = mid - 1;
+      }
+      menu.style.setProperty("--fit", String(best));
     }
     document.getElementById("logoBtn").addEventListener("click", () => {
       const root = document.documentElement;
@@ -208,42 +193,20 @@
       if (!active) { (root.requestFullscreen || root.webkitRequestFullscreen).call(root); return; }
       (document.exitFullscreen || document.webkitExitFullscreen).call(document);
     });
-    function crowded(menu) {
-      if (menu.scrollHeight > menu.clientHeight + 2) return true;
-      if (menu.scrollWidth > menu.clientWidth + 2) return true;
-      const block = menu.querySelector(".board-cards");
-      if (block && block.getBoundingClientRect().bottom > menu.getBoundingClientRect().bottom - 4) return true;
-      return false;
-    }
-    function fitMenu() {
-      const menu = menuEl;
-      const max = Math.round(window.innerHeight * 0.08);
-      let lo = 16, hi = Math.max(lo + 2, max), best = lo;
-      while (lo <= hi) {
-        const mid = (lo + hi) >> 1;
-        menu.style.setProperty("--fit", String(mid));
-        if (!crowded(menu)) { best = mid; lo = mid + 1; }
-        else hi = mid - 1;
-      }
-      menu.style.setProperty("--fit", String(best));
-      while (best > 16 && crowded(menu)) { best -= 1; menu.style.setProperty("--fit", String(best)); }
-    }
     pull();
     setInterval(pull, 2000);
-    document.addEventListener("visibilitychange", pull);
     window.addEventListener("resize", fitMenu);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setTimeout(fitMenu, 50));
-  </script>
-  <script>
-    (function () {
-      const flame = document.getElementById("flame");
-      const kick = () => flame.play().catch(function () {});
-      flame.addEventListener("stalled", kick);
-      flame.addEventListener("waiting", kick);
-      flame.addEventListener("ended", function () { flame.currentTime = 0; kick(); });
-      document.addEventListener("visibilitychange", function () { if (!document.hidden) kick(); });
-      kick();
-    })();
+    document.fonts.ready.then(fitMenu);
+    const qrLib = document.createElement("script");
+    qrLib.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    qrLib.onload = () => {
+      const qr = qrcode(0, "M");
+      const link = location.protocol.startsWith("http") ? new URL("/list.html", location.href).href : new URL("list.html", location.href).href;
+      qr.addData(link);
+      qr.make();
+      document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+    };
+    document.body.appendChild(qrLib);
   </script>
 </body>
 </html>
