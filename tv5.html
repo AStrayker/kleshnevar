@@ -50,6 +50,11 @@
     .qrbox { position: absolute; left: 0; bottom: 0; z-index: 4; background: #fff; padding: .4rem; border-radius: 0 .45rem 0 0; line-height: 0; box-shadow: 0 10px 28px rgba(0,0,0,.5); }
     .qrbox svg { width: clamp(13rem, 28vh, 20rem); height: auto; display: block; }
     .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .08em; font-size: clamp(1.7rem, 4.2vh, 3rem); }
+    .sound-tap {
+      position: fixed; inset: 0; z-index: 30; border: 0; padding: 0;
+      background: transparent; cursor: pointer;
+    }
+    .sound-tap[hidden] { display: none !important; }
   </style>
 </head>
 <body>
@@ -74,7 +79,8 @@
     <main class="menu" id="menu"></main>
     <img class="food" src="board-cray.jpg" alt="" />
     <footer class="foot"><div class="qrbox" id="qr"></div><a class="phone" href="tel:+380636503959">+380 63 650 39 59</a></footer>
-    <audio id="bgm" src="cafe.mp3" loop preload="auto"></audio>
+    <audio id="bgm" src="cafe.mp3?v=2" loop preload="auto" autoplay playsinline></audio>
+    <button type="button" class="sound-tap" id="soundTap" hidden aria-label="Увімкнути музику"></button>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
@@ -210,10 +216,42 @@
     };
     document.body.appendChild(qrLib);
     const bgm = document.getElementById("bgm");
+    const soundTap = document.getElementById("soundTap");
     bgm.volume = 0.34;
-    const playBgm = () => { bgm.play().catch(() => {}); };
-    playBgm();
-    ["pointerdown", "keydown", "touchstart"].forEach((ev) => document.addEventListener(ev, playBgm));
+    bgm.muted = false;
+    const hideTap = () => { if (soundTap) soundTap.hidden = true; };
+    const showTap = () => { if (soundTap) soundTap.hidden = false; };
+    const tryBgm = () => {
+      if (!bgm.paused) { hideTap(); return; }
+      const p = bgm.play();
+      if (p && p.then) p.then(hideTap).catch(showTap);
+    };
+    const unlockBgm = () => {
+      hideTap();
+      bgm.muted = false;
+      if (bgm.error) bgm.load();
+      tryBgm();
+    };
+    tryBgm();
+    ["canplay", "canplaythrough", "loadeddata"].forEach((ev) => bgm.addEventListener(ev, tryBgm));
+    bgm.addEventListener("playing", hideTap);
+    bgm.addEventListener("error", () => { setTimeout(() => { bgm.load(); tryBgm(); }, 800); });
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) tryBgm(); });
+    window.addEventListener("pageshow", tryBgm);
+    window.addEventListener("focus", tryBgm);
+    ["pointerdown", "keydown", "touchstart"].forEach((ev) => document.addEventListener(ev, unlockBgm, { passive: true }));
+    document.getElementById("logoBtn").addEventListener("click", unlockBgm);
+    if (soundTap) {
+      soundTap.addEventListener("click", () => {
+        unlockBgm();
+        const root = document.documentElement;
+        const active = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!active && (root.requestFullscreen || root.webkitRequestFullscreen)) {
+          (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+        }
+      });
+    }
+    setInterval(tryBgm, 2000);
   </script>
 </body>
 </html>
