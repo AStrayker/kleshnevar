@@ -19,13 +19,14 @@
     "Часниково-гострі": "assets/shrimp-garlic.jpg",
     "Томатний": "assets/shrimp-tomato.jpg",
   };
-  const BROTHS = ["BBQ", "Вершкові", "Класика", "Томатний", "Пікантний / HOT"];
+  const BROTHS = ["BBQ", "Вершкові", "Класика", "Томатний", "Пікантний / HOT", "Табаско"];
   const BROTH_PHOTOS = {
-    BBQ: "assets/cray-bbq.jpg",
-    "Вершкові": "assets/cray-cream.jpg",
-    "Класика": "assets/cray-classic.jpg",
-    "Томатний": "assets/cray-tomato.jpg",
-    "Пікантний / HOT": "assets/cray-hot.jpg",
+    BBQ: "assets/cray-bbq.jpg?v=2",
+    "Вершкові": "assets/cray-cream.jpg?v=2",
+    "Класика": "assets/cray-classic.jpg?v=2",
+    "Томатний": "assets/cray-tomato.jpg?v=2",
+    "Пікантний / HOT": "assets/cray-hot.jpg?v=2",
+    "Табаско": "assets/cray-tabasco.jpg?v=1",
   };
   const SIZES = [
     { id: "M", label: "M", price: 1300, pcs: "30–35 шт/кг" },
@@ -38,7 +39,15 @@
   let db = null;
 
   function money(n) {
-    return new Intl.NumberFormat("uk-UA").format(n) + " грн";
+    const v = Math.round(Number(n) * 100) / 100;
+    return new Intl.NumberFormat("uk-UA", {
+      minimumFractionDigits: Number.isInteger(v) ? 0 : 2,
+      maximumFractionDigits: 2,
+    }).format(v) + " грн";
+  }
+  function lineSum(item) {
+    const qty = item.qty != null ? item.qty : item.kg;
+    return qty * item.price;
   }
   function saveCart() {
     localStorage.setItem("kv-cart", JSON.stringify(cart));
@@ -259,6 +268,7 @@
         extra: flavor,
         kg,
         price: 999,
+        unit: "кг",
       });
     });
   });
@@ -282,6 +292,7 @@
         extra: broth,
         kg,
         price: size.price,
+        unit: "кг",
       });
     });
   });
@@ -296,16 +307,25 @@
 
   function renderCart() {
     const list = $("#cartList");
-    const n = cart.reduce((s, i) => s + i.kg, 0);
     const count = $("#cartCount");
+    const head = $("#cartHeadSum");
+    const sum = cart.reduce((s, i) => s + lineSum(i), 0);
     if (cart.length) {
       count.hidden = false;
-      count.textContent = cart.length;
-    } else count.hidden = true;
+      count.textContent = String(cart.length);
+      head.hidden = false;
+      head.textContent = money(sum);
+      $("#header").classList.add("has-sum");
+    } else {
+      count.hidden = true;
+      head.hidden = true;
+      head.textContent = "";
+      $("#header").classList.remove("has-sum");
+    }
+    $("#cartSum").textContent = money(sum);
 
     if (!cart.length) {
       list.innerHTML = '<p class="empty">Кошик порожній</p>';
-      $("#cartSum").textContent = money(0);
       return;
     }
     list.innerHTML = cart
@@ -314,10 +334,10 @@
       <div class="cart-item">
         <div>
           <b>${i.title}</b>
-          <small>${i.extra} · ${i.kg} кг × ${money(i.price)}</small>
+          <small>${i.extra} · ${i.qty != null ? i.qty : i.kg} ${i.unit || "кг"} × ${money(i.price)}</small>
         </div>
         <div style="text-align:right">
-          <b>${money(Math.round(i.kg * i.price))}</b>
+          <b>${money(lineSum(i))}</b>
           <div><button data-del="${idx}" style="color:#ff8a8a;font-size:12px;margin-top:6px">прибрати</button></div>
         </div>
       </div>`
@@ -329,8 +349,6 @@
         saveCart();
       })
     );
-    const sum = cart.reduce((s, i) => s + i.kg * i.price, 0);
-    $("#cartSum").textContent = money(Math.round(sum));
   }
 
   $("#orderForm").addEventListener("submit", async (e) => {
@@ -338,7 +356,7 @@
     if (!cart.length) return toast("Кошик порожній");
     const fd = new FormData(e.target);
     const type = fd.get("type");
-    const sum = Math.round(cart.reduce((s, i) => s + i.kg * i.price, 0));
+    const sum = Math.round(cart.reduce((s, i) => s + lineSum(i), 0) * 100) / 100;
     if (type === "delivery" && sum < C.minOrder) {
       return toast("Мінімальне замовлення на доставку — " + C.minOrder + " грн");
     }
@@ -397,6 +415,94 @@
   orderType.addEventListener("change", syncAddress);
   syncAddress();
 
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (ch) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[ch]));
+  }
+
+  function findCatalogItem(id) {
+    const sections = (window.KLESHNEVAR_CATALOG && window.KLESHNEVAR_CATALOG.sections) || [];
+    for (const section of sections) {
+      const found = section.items.find((item) => item.id === id);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function catalogCard(item) {
+    return `
+      <article class="card" data-id="${esc(item.id)}">
+        <div class="card-photo" style="background-image:url('${esc(item.photo)}')"></div>
+        <div class="card-body">
+          <h3>${esc(item.name)}</h3>
+          <p class="meta">${esc(item.meta)}</p>
+          <div class="price">${money(item.price)} / ${esc(item.unit)}</div>
+          <div class="qty">
+            <button type="button" data-step="-1">−</button>
+            <span class="qty-val">1</span>
+            <button type="button" data-step="1">+</button>
+            <span class="meta">${esc(item.unit)}</span>
+          </div>
+          <button class="add-btn add-extra" type="button">Додати в кошик</button>
+        </div>
+      </article>`;
+  }
+
+  function renderCatalog() {
+    const sections = (window.KLESHNEVAR_CATALOG && window.KLESHNEVAR_CATALOG.sections) || [];
+    sections.forEach((section) => {
+      if (section.grouped) {
+        const root = document.getElementById(section.id + "Root");
+        if (!root) return;
+        const order = [];
+        const groups = {};
+        section.items.forEach((item) => {
+          const key = item.group || "Інше";
+          if (!groups[key]) {
+            groups[key] = [];
+            order.push(key);
+          }
+          groups[key].push(item);
+        });
+        root.innerHTML = order
+          .map(
+            (key) => `
+            <div class="shop-block">
+              <h3>${esc(key)}</h3>
+              <div class="grid">${groups[key].map(catalogCard).join("")}</div>
+            </div>`
+          )
+          .join("");
+        return;
+      }
+      const grid = document.getElementById(section.id + "Grid");
+      if (grid) grid.innerHTML = section.items.map(catalogCard).join("");
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    const add = e.target.closest(".add-extra");
+    if (!add) return;
+    const card = add.closest(".card");
+    const item = findCatalogItem(card.dataset.id);
+    if (!item) return;
+    const qty = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
+    addItem({
+      id: item.id,
+      title: item.name,
+      extra: item.meta,
+      kg: qty,
+      unit: item.unit,
+      price: item.price,
+    });
+  });
+
+  renderCatalog();
   initFirebase();
   renderCart();
 })();
