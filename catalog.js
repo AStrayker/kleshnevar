@@ -97,7 +97,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 50.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/squid-rings.jpg"
+          "photo": "assets/menu/squid-rings.jpg?v=3"
         },
         {
           "id": "mussel-chili",
@@ -105,7 +105,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 65.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/mussels-chili.jpg"
+          "photo": "assets/menu/mussels-chili.jpg?v=3"
         },
         {
           "id": "shrimp-tail",
@@ -113,7 +113,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 69.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/shrimp-tails.jpg"
+          "photo": "assets/menu/shrimp-tails.jpg?v=3"
         },
         {
           "id": "tiger-tail",
@@ -121,7 +121,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 63.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/tiger-shrimp.jpg"
+          "photo": "assets/menu/tiger-shrimp.jpg?v=4"
         },
         {
           "id": "sq-tent",
@@ -129,7 +129,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 54.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/squid-tentacles.jpg"
+          "photo": "assets/menu/squid-tentacles.jpg?v=4"
         },
         {
           "id": "shrimp-90120",
@@ -137,7 +137,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 67.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/shrimp-medium.jpg"
+          "photo": "assets/menu/shrimp-medium.jpg?v=3"
         },
         {
           "id": "scallop",
@@ -145,7 +145,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 60.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/scallop.jpg"
+          "photo": "assets/menu/scallop.jpg?v=3"
         },
         {
           "id": "shrimp-2030",
@@ -153,7 +153,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 75.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/shrimp-king.jpg"
+          "photo": "assets/menu/shrimp-king.jpg?v=3"
         },
         {
           "id": "crab-claws",
@@ -161,7 +161,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 250.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/crab-claws.jpg"
+          "photo": "assets/menu/crab-claws.jpg?v=3"
         }
       ]
     },
@@ -279,7 +279,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 58.0,
           "unit": "шт",
           "meta": "упаковка",
-          "photo": "assets/menu/cheese-braid.jpg",
+          "photo": "assets/menu/cheese-braid.jpg?v=3",
           "group": "Сир"
         },
         {
@@ -288,7 +288,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 83.0,
           "unit": "шт",
           "meta": "125г",
-          "photo": "assets/menu/pack-lux-sour.jpg",
+          "photo": "assets/menu/pack-lux-sour.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -297,7 +297,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 83.0,
           "unit": "шт",
           "meta": "125г",
-          "photo": "assets/menu/pack-lux-gouda.jpg",
+          "photo": "assets/menu/pack-lux-gouda.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -306,7 +306,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-boch-garlic.jpg",
+          "photo": "assets/menu/pack-boch-garlic.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -315,7 +315,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-flint-veal.jpg",
+          "photo": "assets/menu/pack-flint-veal.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -324,7 +324,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-flint-shank.jpg",
+          "photo": "assets/menu/pack-flint-shank.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -360,7 +360,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-boch-horse.jpg",
+          "photo": "assets/menu/pack-boch-horse.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -369,7 +369,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-boch-tomato.jpg",
+          "photo": "assets/menu/pack-boch-tomato.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -378,7 +378,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-boch-tomato.jpg",
+          "photo": "assets/menu/pack-boch-spicy.jpg",
           "group": "Грінки"
         },
         {
@@ -387,7 +387,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 143.0,
           "unit": "шт",
           "meta": "упаковка",
-          "photo": "assets/menu/pistachios.jpg",
+          "photo": "assets/menu/pistachios.jpg?v=3",
           "group": "Арахіс"
         },
         {
@@ -432,7 +432,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 49.0,
           "unit": "шт",
           "meta": "80г",
-          "photo": "assets/menu/pack-flint-sausage.jpg",
+          "photo": "assets/menu/pack-flint-sausage.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -441,7 +441,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 49.0,
           "unit": "шт",
           "meta": "80г",
-          "photo": "assets/menu/pack-flint-tomato.jpg",
+          "photo": "assets/menu/pack-flint-tomato.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -450,7 +450,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 49.0,
           "unit": "шт",
           "meta": "80г",
-          "photo": "assets/menu/pack-flint-cream.jpg",
+          "photo": "assets/menu/pack-flint-cream.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -459,7 +459,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 49.0,
           "unit": "шт",
           "meta": "80г",
-          "photo": "assets/menu/pack-flint-garlic.jpg",
+          "photo": "assets/menu/pack-flint-garlic.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -468,7 +468,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 83.0,
           "unit": "шт",
           "meta": "125г",
-          "photo": "assets/menu/pack-lux-crab.jpg",
+          "photo": "assets/menu/pack-lux-crab.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -486,7 +486,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 169.0,
           "unit": "шт",
           "meta": "165г",
-          "photo": "assets/menu/pack-pringles-onion.jpg",
+          "photo": "assets/menu/pack-pringles-onion.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -495,7 +495,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 169.0,
           "unit": "шт",
           "meta": "165г",
-          "photo": "assets/menu/pack-pringles-hot.jpg",
+          "photo": "assets/menu/pack-pringles-hot.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -504,7 +504,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 169.0,
           "unit": "шт",
           "meta": "165г",
-          "photo": "assets/menu/pack-pringles-cheese.jpg",
+          "photo": "assets/menu/pack-pringles-cheese.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -513,7 +513,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 169.0,
           "unit": "шт",
           "meta": "165г",
-          "photo": "assets/menu/pack-pringles-paprika.jpg",
+          "photo": "assets/menu/pack-pringles-paprika.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -522,7 +522,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 169.0,
           "unit": "шт",
           "meta": "165г",
-          "photo": "assets/menu/pack-pringles-original.jpg",
+          "photo": "assets/menu/pack-pringles-original.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -531,7 +531,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 169.0,
           "unit": "шт",
           "meta": "165г",
-          "photo": "assets/menu/pack-pringles-onion.jpg",
+          "photo": "assets/menu/pack-pringles-onion.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -549,7 +549,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 99.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-tuna-shred.jpg",
+          "photo": "assets/menu/fish-tuna-shred.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -567,7 +567,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 80.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-tuna-premium.jpg",
+          "photo": "assets/menu/fish-tuna-premium.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -576,7 +576,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 72.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-web.jpg",
+          "photo": "assets/menu/fish-web.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -585,7 +585,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 172.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/octopus-coins.jpg",
+          "photo": "assets/menu/octopus-coins.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -594,7 +594,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 111.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/squid-rings-snack.jpg",
+          "photo": "assets/menu/squid-rings-snack.jpg?v=4",
           "group": "Рибка"
         },
         {
@@ -603,7 +603,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 110.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/squid-peruvian.jpg",
+          "photo": "assets/menu/squid-peruvian.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -612,7 +612,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 91.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/anchovy.jpg",
+          "photo": "assets/menu/anchovy.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -621,7 +621,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 69.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-amber-pepper.jpg",
+          "photo": "assets/menu/fish-amber-pepper.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -630,7 +630,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 106.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/squid-snack.jpg",
+          "photo": "assets/menu/squid-snack.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -639,7 +639,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 97.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-stripe.jpg",
+          "photo": "assets/menu/fish-stripe.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -648,7 +648,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 85.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-amber-stripe.jpg",
+          "photo": "assets/menu/fish-amber-stripe.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -657,7 +657,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 97.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-gold.jpg",
+          "photo": "assets/menu/fish-gold.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -666,7 +666,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 82.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/cod.jpg",
+          "photo": "assets/menu/cod.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -675,7 +675,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 71.0,
           "unit": "100 г",
           "meta": "Рибка",
-          "photo": "assets/menu/fish-roe-snack.jpg",
+          "photo": "assets/menu/fish-roe-snack.jpg?v=3",
           "group": "Рибка"
         },
         {
@@ -711,7 +711,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 39.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-bream.jpg",
+          "photo": "assets/menu/fish-bream.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -774,7 +774,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 55.0,
           "unit": "шт",
           "meta": "упаковка",
-          "photo": "assets/menu/cheese-suluguni.jpg",
+          "photo": "assets/menu/cheese-suluguni.jpg?v=3",
           "group": "Сир"
         },
         {
@@ -837,7 +837,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 106.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-lays-cheese.jpg",
+          "photo": "assets/menu/pack-lays-cheese.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -846,7 +846,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 106.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-lays-crab.jpg",
+          "photo": "assets/menu/pack-lays-crab.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -855,7 +855,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 106.0,
           "unit": "шт",
           "meta": "120г",
-          "photo": "assets/menu/pack-lays-sour.jpg",
+          "photo": "assets/menu/pack-lays-sour.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -864,7 +864,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 83.0,
           "unit": "шт",
           "meta": "125г",
-          "photo": "assets/menu/pack-lux-fox.jpg",
+          "photo": "assets/menu/pack-lux-fox.jpg?v=4",
           "group": "Чіпси"
         },
         {
@@ -873,7 +873,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 49.0,
           "unit": "шт",
           "meta": "80г",
-          "photo": "assets/menu/pack-flint-tabasco.jpg",
+          "photo": "assets/menu/pack-flint-tabasco.jpg?v=4",
           "group": "Грінки"
         },
         {
@@ -882,7 +882,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 132.0,
           "unit": "шт",
           "meta": "упаковка",
-          "photo": "assets/menu/cheese.jpg",
+          "photo": "assets/menu/cheese.jpg?v=3",
           "group": "Сир"
         },
         {
@@ -945,7 +945,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 41.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-capelin.jpg",
+          "photo": "assets/menu/fish-capelin.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -954,7 +954,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 25.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-herring.jpg",
+          "photo": "assets/menu/fish-herring.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -963,7 +963,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 51.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-bream-steak.jpg",
+          "photo": "assets/menu/fish-bream-steak.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -972,7 +972,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 60.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/squid-braid.jpg",
+          "photo": "assets/menu/squid-braid.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -981,7 +981,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 58.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-saury.jpg",
+          "photo": "assets/menu/fish-saury.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -990,7 +990,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 60.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-mullet.jpg",
+          "photo": "assets/menu/fish-mullet.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -999,7 +999,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 69.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-pomfret.jpg",
+          "photo": "assets/menu/fish-pomfret.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1008,7 +1008,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 97.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/salmon.jpg",
+          "photo": "assets/menu/salmon.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1017,7 +1017,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 80.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-smoked.jpg",
+          "photo": "assets/menu/fish-smoked.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1026,7 +1026,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 133.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/squid-tentacles-smoked.jpg",
+          "photo": "assets/menu/squid-tentacles-smoked.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1062,7 +1062,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 32.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-whiting.jpg",
+          "photo": "assets/menu/fish-whiting.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1071,7 +1071,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 57.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-scad.jpg",
+          "photo": "assets/menu/fish-scad.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1080,7 +1080,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 73.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-mackerel-blue.jpg",
+          "photo": "assets/menu/fish-mackerel-blue.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1089,7 +1089,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 60.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-bream-roe.jpg",
+          "photo": "assets/menu/fish-bream-roe.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1107,7 +1107,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 55.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-roach.jpg",
+          "photo": "assets/menu/fish-roach.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1125,7 +1125,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 125.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-sabre.jpg",
+          "photo": "assets/menu/fish-sabre.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1143,7 +1143,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 30.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-silver-bream.jpg",
+          "photo": "assets/menu/fish-silver-bream.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1152,7 +1152,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 63.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-bream-honey.jpg",
+          "photo": "assets/menu/fish-bream-honey.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1161,7 +1161,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 117.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-roach-roe.jpg",
+          "photo": "assets/menu/fish-roach-roe.jpg?v=3",
           "group": "Риба"
         },
         {
@@ -1170,7 +1170,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 114.0,
           "unit": "100 г",
           "meta": "Риба",
-          "photo": "assets/menu/fish-goby.jpg",
+          "photo": "assets/menu/fish-goby.jpg?v=3",
           "group": "Риба"
         },
         {
