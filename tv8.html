@@ -43,6 +43,10 @@
     h2.extra::after { width: 92%; height: 4px; }
     .title-row { display: flex; align-items: center; gap: 12px; }
     .title-row h2::after { width: 100%; }
+    .shrimp-note {
+      margin: 6px 0 0 2px; color: var(--hot); font-family: "Marck Script", cursive;
+      font-size: 32px; line-height: 1; transform: rotate(-2deg); transform-origin: left center;
+    }
     .kg { flex: none; border: 2px solid var(--price); border-radius: 14px; padding: 1px 12px 3px; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: .03em; line-height: 1.15; }
     .stack { margin-top: 12px; }
     .line { margin-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
@@ -123,6 +127,7 @@
           <h2>Смаки на вибір</h2>
           <span class="kg" id="kgBadge">1 кг</span>
         </div>
+        <p class="shrimp-note">креветки</p>
         <div class="flavors">
           <div class="flavor"><h3>Вершкові</h3><p class="price" data-key="cream">999 грн</p></div>
           <div class="flavor"><h3>Класичні</h3><p class="price" data-key="classic">999 грн</p></div>
