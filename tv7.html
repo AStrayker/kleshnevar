@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Клешневар — TV7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
+  <style>
+    :root { --hot: #ff2a18; --price: #ff2a18; --ink: #090807; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: #050403; color: #fff; font-family: Manrope, system-ui, sans-serif; overflow: hidden; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .stage {
+      width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(var(--s, 1));
+      background:
+        radial-gradient(320px 520px at -20px 46%, rgba(255, 78, 16, .34), transparent 68%),
+        radial-gradient(300px 480px at 1300px 50%, rgba(255, 64, 10, .32), transparent 70%),
+        radial-gradient(640px 140px at 50% 100%, rgba(90, 28, 8, .55), transparent 72%),
+        var(--ink);
+      display: grid; grid-template-rows: 112px minmax(0, 1fr) 72px;
+      padding: 14px 26px 8px;
+      user-select: none;
+    }
+    .head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+    .badge { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .badge.right { justify-content: flex-end; }
+    .mark { width: 78px; height: 78px; flex: none; }
+    .words { margin: 0; color: var(--price); font-family: "Marck Script", cursive; font-size: 26px; line-height: .92; position: relative; }
+    .words::after { content: ""; position: absolute; left: 0; right: 8%; bottom: -3px; height: 3px; background: var(--hot); border-radius: 2px; transform: rotate(-7deg); }
+    .brand { text-align: center; }
+    .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: 60px; line-height: .8; color: var(--hot); text-shadow: 0 2px 0 #7a0c08; }
+    .navline { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 6px; color: #f4f4f4; font-family: Oswald, sans-serif; font-weight: 500; font-size: 16px; letter-spacing: .22em; }
+    .navline i { display: block; height: 2px; width: 54px; background: var(--hot); font-style: normal; }
+    .cols { min-height: 0; display: grid; grid-template-columns: .96fr 1.18fr .96fr; }
+    .col { min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding: 0 18px 0; border-right: 2px solid rgba(255,255,255,.32); }
+    .col:last-child { border-right: 0; }
+    h2 { margin: 0; display: inline-block; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 40px; line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
+    h2::after { content: ""; display: block; width: 78%; height: 5px; margin-top: 6px; background: var(--hot); border-radius: 4px; transform: rotate(-1.4deg); transform-origin: left center; }
+    h2.extra { margin-top: 8px; color: var(--price); font-size: 28px; }
+    h2.extra::after { width: 92%; height: 4px; }
+    .title-row { display: flex; align-items: center; gap: 12px; }
+    .title-row h2::after { width: 100%; }
+    .kg { flex: none; border: 2px solid var(--price); border-radius: 14px; padding: 1px 12px 3px; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: .03em; line-height: 1.15; }
+    .stack { margin-top: 12px; }
+    .line { margin-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+    .line h3 { white-space: nowrap; font-size: 29px; }
+    .line .price { font-size: 40px; }
+    h3 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 32px; line-height: 1; }
+    .meta { margin: 2px 0 0; color: #dedede; font-weight: 700; font-size: 16px; line-height: 1.1; }
+    .price { margin: 0; color: var(--price); font-family: Oswald, sans-serif; font-weight: 700; font-size: 44px; line-height: .95; white-space: nowrap; }
+    .flavors { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; margin-top: 6px; }
+    .flavor { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.34); }
+    .flavor:last-child { border-bottom: 0; }
+    .flavor h3 { font-size: 30px; font-weight: 500; white-space: nowrap; }
+    .flavor .price { font-size: 38px; }
+    .dish {
+      width: calc(100% + 36px); margin: auto -18px 0; min-height: 0; flex: 1 1 auto;
+      display: block; object-fit: cover; object-position: center 48%;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
+    }
+    .col.left .dish { max-height: 250px; }
+    .col.right .dish { max-height: 188px; object-position: center 30%; }
+    .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+    .qrbox { position: absolute; left: -26px; bottom: -8px; z-index: 4; background: #fff; padding: 6px; line-height: 0; border-radius: 0 8px 0 0; }
+    .qrbox svg { width: 176px; height: 176px; display: block; }
+    .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; font-size: 40px; letter-spacing: .04em; }
+    .stage.smack { animation: tv-shake .55s linear; }
+    @keyframes tv-shake {
+      0%, 100% { transform: translate(-50%, -50%) scale(var(--s, 1)); }
+      18% { transform: translate(calc(-50% - 16px), calc(-50% + 8px)) scale(var(--s, 1)) rotate(-.7deg); }
+      36% { transform: translate(calc(-50% + 14px), calc(-50% - 7px)) scale(var(--s, 1)) rotate(.55deg); }
+      54% { transform: translate(calc(-50% - 8px), calc(-50% + 4px)) scale(var(--s, 1)) rotate(-.3deg); }
+      72% { transform: translate(calc(-50% + 4px), calc(-50% - 2px)) scale(var(--s, 1)); }
+    }
+    .bats { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+    .bat { position: absolute; left: 0; top: 0; width: 180px; height: 108px; transform-origin: center; filter: drop-shadow(0 10px 6px rgba(0,0,0,.6)); }
+    .bat svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .bat .down, .bat .spiral, .bat .ooh { display: none; }
+    .bat.flap .up { display: none; }
+    .bat.flap .down { display: block; }
+    .bat.dizzy .eyes { display: none; }
+    .bat.dizzy .spiral, .bat.dizzy .ooh { display: block; }
+    .star { position: absolute; color: #ffe14a; font-style: normal; font-size: 28px; line-height: 1; text-shadow: 0 0 8px #ff8800; opacity: 0; }
+    .hit { position: absolute; width: 0; height: 0; z-index: 7; }
+    .hit .flash {
+      position: absolute; left: -70px; top: -70px; width: 140px; height: 140px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,42,24,.45) 42%, transparent 72%);
+      animation: bat-flash .4s ease-out forwards;
+    }
+    .hit .ring {
+      position: absolute; left: -16px; top: -16px; width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,.85); animation: bat-ring .5s ease-out forwards;
+    }
+    .hit .cracks { position: absolute; left: -230px; top: -230px; width: 460px; height: 460px; animation: bat-crack 1.7s ease-out forwards; }
+    .hit .burst { position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; animation: bat-flash .32s ease-out forwards; }
+    .wash { position: absolute; inset: 0; background: rgba(255,255,255,.28); animation: bat-flash .28s ease-out forwards; }
+    @keyframes bat-flash { to { opacity: 0; } }
+    @keyframes bat-ring { to { transform: scale(9); opacity: 0; } }
+    @keyframes bat-crack { 0% { opacity: 0; transform: scale(.4); } 12% { opacity: 1; transform: scale(1); } 70% { opacity: 1; } 100% { opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <header class="head">
+      <div class="badge">
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#ff2a18" stroke-width="3.5"/>
+          <path d="M34 34c-10-8-18-1-14 8 3 6 10 6 13 1M36 30c2-8 12-8 12 0M66 34c10-8 18-1 14 8-3 6-10 6-13 1M64 30c-2-8-12-8-12 0" fill="none" stroke="#ff2a18" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="50" cy="46" rx="9" ry="13" fill="#ff2a18"/>
+          <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
+        </svg>
+        <p class="words">смак<br>якість<br>задоволення</p>
+      </div>
+      <div class="brand">
+        <button type="button" class="word" id="logoBtn">KLESHNEVAR</button>
+        <div class="navline"><i></i>РАКИ · КРЕВЕТКИ · ПИВО<i></i></div>
+      </div>
+      <div class="badge right">
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#ff2a18" stroke-width="3.5"/>
+          <path d="M34 34c-10-8-18-1-14 8 3 6 10 6 13 1M36 30c2-8 12-8 12 0M66 34c10-8 18-1 14 8-3 6-10 6-13 1M64 30c-2-8-12-8-12 0" fill="none" stroke="#ff2a18" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="50" cy="46" rx="9" ry="13" fill="#ff2a18"/>
+          <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
+        </svg>
+        <p class="words">смак<br>якість<br>задоволення</p>
+      </div>
+    </header>
+    <main class="cols">
+      <section class="col left">
+        <h2>Морські мікси</h2>
+        <article class="stack">
+          <h3>Морський мікс</h3>
+          <p class="meta" data-weight="mix">1 кг</p>
+          <p class="price" data-key="mix">1800 грн</p>
+        </article>
+        <article class="stack">
+          <h3>Морський мікс VIP</h3>
+          <p class="meta" data-weight="vip">1 кг</p>
+          <p class="price" data-key="vip">2200 грн</p>
+        </article>
+        <img class="dish" src="board-mix.jpg" alt="" />
+      </section>
+      <section class="col">
+        <div class="title-row">
+          <h2>Смаки на вибір</h2>
+          <span class="kg" id="kgBadge">1 кг</span>
+        </div>
+        <div class="flavors">
+          <div class="flavor"><h3>Вершкові</h3><p class="price" data-key="cream">999 грн</p></div>
+          <div class="flavor"><h3>Класичні</h3><p class="price" data-key="classic">999 грн</p></div>
+          <div class="flavor"><h3>Томатний</h3><p class="price" data-key="tomato">999 грн</p></div>
+          <div class="flavor"><h3>Том Кха</h3><p class="price" data-key="tomkha">999 грн</p></div>
+          <div class="flavor"><h3>Том Ям</h3><p class="price" data-key="tomyum">999 грн</p></div>
+          <div class="flavor"><h3>Часниково-гострі</h3><p class="price" data-key="garlic">999 грн</p></div>
+        </div>
+      </section>
+      <section class="col right">
+        <h2>Хрумке панко</h2>
+        <article class="line">
+          <div>
+            <h3>Мідії Панко</h3>
+            <p class="meta"><span data-weight="mussels">200 г</span> · 28-31 шт</p>
+          </div>
+          <p class="price" data-key="mussels">275 грн</p>
+        </article>
+        <article class="line">
+          <div>
+            <h3>Креветки панко</h3>
+            <p class="meta"><span data-weight="shrimp">200 г</span> · 9 шт</p>
+          </div>
+          <p class="price" data-key="shrimp">250 грн</p>
+        </article>
+        <h2 class="extra">Додатково</h2>
+        <article class="stack">
+          <h3>Креватка в соусі вершковом</h3>
+          <p class="price" data-key="sauce">900 грн</p>
+        </article>
+        <img class="dish" src="board-panko.jpg" alt="" />
+      </section>
+    </main>
+    <footer class="foot">
+      <div class="qrbox" id="qr"></div>
+      <a class="phone" href="tel:+380636503959">+380 63 650 39 59</a>
+    </footer>
+  </div>
+  <div class="bats" id="bats"></div>
+  <script>
+    const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=1124262152&single=true&output=csv";
+    function kind(name) {
+      const n = name.toLowerCase();
+      if (n.includes("мікс") || n.includes("микс")) return n.includes("vip") ? "vip" : "mix";
+      if (n.includes("соус")) return "sauce";
+      if (n.includes("міді") || n.includes("миди")) return "mussels";
+      if (n.includes("панко")) return "shrimp";
+      if (n.includes("кха")) return "tomkha";
+      if (n.includes("ям")) return "tomyum";
+      if (n.includes("часник")) return "garlic";
+      if (n.includes("томат")) return "tomato";
+      if (n.includes("класич")) return "classic";
+      if (n.includes("вершков")) return "cream";
+      return "";
+    }
+    function money(value) {
+      const nums = String(value || "").replace(/\s/g, "").match(/\d+/);
+      return nums ? nums[0] + " грн" : "";
+    }
+    function weightOf(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+      return /^\d+$/.test(text) ? text + " г" : text;
+    }
+    function parseCsv(text) {
+      const rows = [];
+      let row = [], cell = "", quoted = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (quoted) {
+          if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i += 1; } else quoted = false; } else cell += ch;
+        } else if (ch === '"') quoted = true;
+        else if (ch === ",") { row.push(cell.trim()); cell = ""; }
+        else if (ch === "\n") { row.push(cell.trim()); rows.push(row); row = []; cell = ""; }
+        else if (ch !== "\r") cell += ch;
+      }
+      if (cell.length || row.length) { row.push(cell.trim()); rows.push(row); }
+      return rows;
+    }
+    function apply(rows) {
+      const map = {};
+      rows.forEach((row) => {
+        const key = kind(row[0] || "");
+        if (key && !map[key]) map[key] = row;
+      });
+      document.querySelectorAll("[data-key]").forEach((el) => {
+        const row = map[el.dataset.key];
+        const next = row ? money(row[3]) : "";
+        if (next) el.textContent = next;
+      });
+      document.querySelectorAll("[data-weight]").forEach((el) => {
+        const row = map[el.dataset.weight];
+        const next = row ? weightOf(row[2]) : "";
+        if (next) el.textContent = next;
+      });
+      const flavor = map.cream || map.classic;
+      const kilo = flavor ? weightOf(flavor[2]) : "";
+      if (kilo) document.getElementById("kgBadge").textContent = kilo;
+    }
+    let shown = "";
+    function pull() {
+      fetch(CSV + "&_=" + Date.now(), { cache: "no-store" })
+        .then((res) => res.text())
+        .then((text) => {
+          const next = parseCsv(text).slice(1).filter((row) => row[0]);
+          const key = JSON.stringify(next);
+          if (key === shown) return;
+          shown = key;
+          apply(next);
+        })
+        .catch(() => {});
+    }
+    function fit() {
+      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty("--s", String(scale));
+    }
+    document.getElementById("logoBtn").addEventListener("click", () => {
+      const root = document.documentElement;
+      const active = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!active) { (root.requestFullscreen || root.webkitRequestFullscreen).call(root); return; }
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    });
+    fit();
+    pull();
+    setInterval(pull, 2000);
+    window.addEventListener("resize", fit);
+    const qrLib = document.createElement("script");
+    qrLib.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    qrLib.onload = () => {
+      const qr = qrcode(0, "M");
+      const link = location.protocol.startsWith("http") ? new URL("/list.html", location.href).href : new URL("list.html", location.href).href;
+      qr.addData(link);
+      qr.make();
+      document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+    };
+    document.body.appendChild(qrLib);
+
+    const BAT_SVG = '<svg viewBox="0 0 240 150">' +
+      '<g class="up" fill="#2a0c0c" stroke="#ff2a18" stroke-width="4" stroke-linejoin="round">' +
+        '<path d="M104 78 L18 34 L46 52 L4 58 L44 72 L16 98 L104 96 Z"/>' +
+        '<path d="M136 78 L222 34 L194 52 L236 58 L196 72 L224 98 L136 96 Z"/>' +
+      '</g>' +
+      '<g class="down" fill="#2a0c0c" stroke="#ff2a18" stroke-width="4" stroke-linejoin="round">' +
+        '<path d="M104 86 L30 78 L52 96 L12 118 L54 116 L34 140 L104 108 Z"/>' +
+        '<path d="M136 86 L210 78 L188 96 L228 118 L186 116 L206 140 L136 108 Z"/>' +
+      '</g>' +
+      '<ellipse cx="120" cy="96" rx="22" ry="20" fill="#140606" stroke="#ff2a18" stroke-width="3"/>' +
+      '<circle cx="120" cy="62" r="20" fill="#140606" stroke="#ff2a18" stroke-width="3"/>' +
+      '<path d="M100 58 L86 16 L118 50 Z M140 58 L154 16 L122 50 Z" fill="#140606" stroke="#ff2a18" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M114 74 L110 82 L118 80 L114 90 L122 80 L128 84 L122 74 Z" fill="#f4f4f4"/>' +
+      '<ellipse class="ooh" cx="120" cy="78" rx="5" ry="6" fill="#ffb4a8"/>' +
+      '<g class="eyes"><circle cx="112" cy="60" r="3.2" fill="#ff2a18"/><circle cx="128" cy="60" r="3.2" fill="#ff2a18"/></g>' +
+      '<g class="spiral" fill="none" stroke="#ff2a18" stroke-width="2.6" stroke-linecap="round">' +
+        '<path d="M102 58 c5-9 18-7 18 2 c0 9-13 11-18 5"/>' +
+        '<path d="M120 58 c5-9 18-7 18 2 c0 9-13 11-18 5"/>' +
+      '</g></svg>';
+    const CRACK_SVG = '<svg class="cracks" viewBox="-100 -100 200 200">' +
+      '<g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round">' +
+        '<path d="M0 0 L-48 -22 L-78 -8"/><path d="M0 0 L40 -46 L70 -34"/>' +
+        '<path d="M0 0 L14 58 L6 86"/><path d="M0 0 L-36 38 L-62 58"/>' +
+        '<path d="M0 0 L64 18 L96 28"/><path d="M0 0 L-12 -60 L-22 -84"/>' +
+        '<path d="M0 0 L28 16 L46 8"/><path d="M0 0 L-24 -8 L-18 -28"/>' +
+      '</g></svg>' +
+      '<svg class="burst" viewBox="-20 -20 40 40"><polygon points="0,-16 3,-3 16,0 3,3 0,16 -3,3 -16,0 -3,-3" fill="#fff"/></svg>';
+
+    function batNode(cls) {
+      const el = document.createElement("div");
+      el.className = "bat " + cls;
+      el.innerHTML = BAT_SVG;
+      return el;
+    }
+    function placeBat(el, x, y, sx, sy, rot, dir) {
+      el.style.left = x + "vw";
+      el.style.top = y + "vh";
+      el.style.transform = "translate(-50%, -50%) scale(" + (dir * sx) + ", " + sy + ") rotate(" + rot + "deg)";
+    }
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function bonk() {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        const ctx = bonk.ctx || (bonk.ctx = new Ctx());
+        if (ctx.state === "suspended") ctx.resume();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(210, now);
+        osc.frequency.exponentialRampToValueAtTime(42, now + 0.18);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (err) {}
+    }
+    function shakeStage() {
+      const stage = document.querySelector(".stage");
+      stage.classList.remove("smack");
+      void stage.offsetWidth;
+      stage.classList.add("smack");
+      setTimeout(() => stage.classList.remove("smack"), 600);
+    }
+
+    let boomRunning = false;
+    let boomAgain = false;
+    function playBoom() {
+      if (boomRunning) { boomAgain = true; return; }
+      boomRunning = true;
+      runBoom(() => {
+        boomRunning = false;
+        if (boomAgain) { boomAgain = false; playBoom(); }
+      });
+    }
+    function runBoom(done) {
+      const layer = document.getElementById("bats");
+      layer.replaceChildren();
+      const flock = Array.from({ length: 6 }, (_, i) => {
+        const el = batNode("flock");
+        el.style.zIndex = String(2 + (i % 3));
+        layer.appendChild(el);
+        const dir = i % 2 === 0 ? 1 : -1;
+        return {
+          el: el,
+          dir: dir,
+          y: 10 + (i * 13) % 68,
+          speed: (15 + (i % 4) * 6) / 1000,
+          start: dir > 0 ? -24 + (i % 3) * 22 : 118 - (i % 3) * 16,
+          delay: (i % 4) * 140,
+          size: 0.42 + (i % 5) * 0.12,
+          amp: 2.2 + (i % 3)
+        };
+      });
+      const hero = batNode("hero");
+      hero.style.zIndex = "6";
+      layer.appendChild(hero);
+      const fromLeft = Math.random() < 0.5;
+      const from = { x: fromLeft ? -16 : 112, y: 8 + Math.random() * 18 };
+      const impact = { x: 42 + Math.random() * 16, y: 32 + Math.random() * 16 };
+      const dir = from.x < impact.x ? 1 : -1;
+      const exit = { x: dir > 0 ? 120 : -20, y: -14 };
+      const stars = [0, 1, 2].map(() => {
+        const star = document.createElement("i");
+        star.className = "star";
+        star.textContent = "★";
+        layer.appendChild(star);
+        return star;
+      });
+      let smashed = false;
+      const started = performance.now();
+      function finish() {
+        layer.replaceChildren();
+        document.querySelector(".stage").classList.remove("smack");
+        done();
+      }
+      function frame(now) {
+        const t = now - started;
+        flock.forEach((bat, i) => {
+          const tt = Math.max(0, t - bat.delay);
+          const x = bat.start + bat.dir * bat.speed * tt;
+          const y = bat.y + Math.sin(tt / 280 + i) * bat.amp;
+          const gone = bat.dir > 0 ? x > 126 : x < -26;
+          bat.el.style.opacity = gone ? "0" : "1";
+          placeBat(bat.el, x, y, bat.size, bat.size, Math.sin(tt / 200) * 8, bat.dir);
+          bat.el.classList.toggle("flap", Math.floor(tt / 95 + i) % 2 === 0);
+        });
+        let x, y, sx, sy, rot, flapEvery;
+        if (t < 1600) {
+          const p = clamp01(t / 1600);
+          const e = p * 0.4 + p * p * 0.6;
+          x = lerp(from.x, impact.x, e);
+          y = lerp(from.y, impact.y, e);
+          sx = sy = lerp(0.24, 2.15, e);
+          rot = Math.sin(t / 70) * 7;
+          flapEvery = 90;
+        } else if (t < 2000) {
+          const p = clamp01((t - 1600) / 400);
+          const squash = Math.sin(p * Math.PI);
+          x = impact.x - dir * squash * 1.4;
+          y = impact.y + squash * 1.6;
+          sx = 2.15 * (1 + 0.42 * squash);
+          sy = 2.15 * (1 - 0.48 * squash);
+          rot = -dir * 16 * squash;
+          flapEvery = 240;
+        } else if (t < 3100) {
+          const p = clamp01((t - 2000) / 1100);
+          x = impact.x + Math.sin(t / 90) * (1 - p) * 0.8;
+          y = impact.y + Math.sin(p * Math.PI) * 2.4;
+          sx = sy = lerp(1.9, 1.55, p);
+          rot = Math.sin(t / 130) * 18 * (1 - p);
+          flapEvery = 260;
+        } else if (t < 3700) {
+          const p = clamp01((t - 3100) / 600);
+          x = impact.x;
+          y = impact.y;
+          sx = sy = lerp(1.55, 1.7, p);
+          rot = Math.sin(t / 80) * 12 * (1 - p);
+          flapEvery = 120;
+        } else {
+          const p = clamp01((t - 3700) / 1900);
+          const e = p * p;
+          x = lerp(impact.x, exit.x, e);
+          y = lerp(impact.y, exit.y, 1 - (1 - p) * (1 - p));
+          sx = sy = lerp(1.7, 0.28, p);
+          rot = -dir * 14 * p;
+          flapEvery = 65;
+        }
+        hero.classList.toggle("dizzy", t >= 1650 && t < 3150);
+        placeBat(hero, x, y, sx, sy, rot, dir);
+        hero.classList.toggle("flap", Math.floor(t / flapEvery) % 2 === 0);
+        if (t >= 1600 && !smashed) {
+          smashed = true;
+          shakeStage();
+          bonk();
+          const hit = document.createElement("div");
+          hit.className = "hit";
+          hit.style.left = impact.x + "vw";
+          hit.style.top = impact.y + "vh";
+          hit.innerHTML = '<div class="flash"></div><div class="ring"></div>' + CRACK_SVG;
+          const wash = document.createElement("div");
+          wash.className = "wash";
+          layer.append(wash, hit);
+        }
+        stars.forEach((star, i) => {
+          const show = t > 1680 && t < 3600;
+          const fadeIn = clamp01((t - 1680) / 180);
+          const fadeOut = t < 3200 ? 1 : clamp01((3600 - t) / 400);
+          star.style.opacity = show ? String(fadeIn * fadeOut) : "0";
+          const ang = t / 190 + i * 2.094;
+          const rad = 78 + i * 14;
+          star.style.left = "calc(" + impact.x + "vw + " + Math.cos(ang) * rad + "px)";
+          star.style.top = "calc(" + impact.y + "vh + " + Math.sin(ang) * rad * 0.62 + "px)";
+        });
+        if (t < 5900) requestAnimationFrame(frame);
+        else finish();
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const fxBase = (new URLSearchParams(location.search).get("bot") || "https://kleshnevartelegrambot-production.up.railway.app").replace(/\/$/, "");
+    let fxAfter = 0;
+    try { fxAfter = Number(sessionStorage.getItem("tv7-fx") || 0) || 0; } catch (err) {}
+    let fxBusy = false;
+    function pollFx() {
+      if (fxBusy) return;
+      fxBusy = true;
+      fetch(fxBase + "/fx?after=" + fxAfter, { cache: "no-store" })
+        .then((res) => res.ok ? res.json() : null)
+        .then((data) => {
+          if (!data) return;
+          (data.events || []).forEach((ev) => { if (ev.kind === "boom") playBoom(); });
+          const cursor = Number(data.cursor || 0);
+          if (cursor > fxAfter) {
+            fxAfter = cursor;
+            try { sessionStorage.setItem("tv7-fx", String(fxAfter)); } catch (err) {}
+          }
+        })
+        .catch(() => {})
+        .then(() => { fxBusy = false; });
+    }
+    pollFx();
+    setInterval(pollFx, 1500);
+    if (new URLSearchParams(location.search).has("boom")) playBoom();
+  </script>
+</body>
+</html>
