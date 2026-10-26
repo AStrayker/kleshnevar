@@ -3,152 +3,181 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Клешневар — раки</title>
+  <title>Клешневар — меню</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet" />
   <style>
-    :root { --red: #ff2a18; --ink: #070707; }
+    :root { --hot: #ff2a18; --price: #ff2a18; --ink: #090807; }
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; background: var(--ink); color: #fff; font-family: Manrope, system-ui, sans-serif; }
-    body { overflow: hidden; }
+    html, body { height: 100%; margin: 0; background: #050403; color: #fff; font-family: Manrope, system-ui, sans-serif; overflow: hidden; }
     button { font: inherit; color: inherit; cursor: pointer; }
-    .screen {
-      height: 100dvh; min-height: 100vh; display: grid;
-      grid-template-rows: 15vh minmax(0, 1fr) 21vh 9vh;
-      background: radial-gradient(1200px 420px at 50% 0%, rgba(255,40,20,.08), transparent 60%), var(--ink);
-      overflow: hidden;
+    .stage {
+      width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(var(--s, 1));
+      background:
+        radial-gradient(320px 520px at -20px 46%, rgba(255, 78, 16, .34), transparent 68%),
+        radial-gradient(300px 480px at 1300px 50%, rgba(255, 64, 10, .32), transparent 70%),
+        radial-gradient(640px 140px at 50% 100%, rgba(90, 28, 8, .55), transparent 72%),
+        var(--ink);
+      display: grid; grid-template-rows: 112px minmax(0, 1fr) 72px;
+      padding: 14px 26px 8px;
+      user-select: none;
     }
-    .head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: .4vh 2.2vw 0; }
-    .slogan { display: flex; align-items: center; gap: .8rem; min-width: 0; }
-    .slogan.left { justify-content: flex-start; transform: rotate(-6deg); transform-origin: left center; }
-    .slogan.right { justify-content: flex-end; }
-    .slogan p { margin: 0; font-family: "Marck Script", cursive; font-size: clamp(1.15rem, 2.5vh, 2.1rem); line-height: .95; }
-    .slogan.right p { color: var(--red); font-size: clamp(1.2rem, 2.7vh, 2.25rem); }
-    .under { height: .28rem; margin-top: .15rem; background: var(--red); border-radius: 2px; transform: rotate(-2deg); }
+    .head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+    .badge { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .badge.right { justify-content: flex-end; }
+    .mark { width: 78px; height: 78px; flex: none; }
+    .words { margin: 0; color: var(--price); font-family: "Marck Script", cursive; font-size: 26px; line-height: .92; position: relative; }
+    .words::after { content: ""; position: absolute; left: 0; right: 8%; bottom: -3px; height: 3px; background: var(--hot); border-radius: 2px; transform: rotate(-7deg); }
     .brand { text-align: center; }
-    .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: clamp(3.2rem, 8.4vh, 7.2rem); line-height: .8; color: var(--red); text-shadow: 0 2px 0 #7a0c08; }
-    .navline { display: flex; align-items: center; justify-content: center; gap: .7rem; margin-top: .15rem; color: #f2f2f2; font-family: Oswald, sans-serif; font-size: clamp(.85rem, 1.7vh, 1.25rem); letter-spacing: .18em; }
-    .navline i { display: block; height: 2px; width: clamp(2.5rem, 8vw, 7rem); background: var(--red); font-style: normal; }
-    .claw { width: clamp(4.2rem, 11vh, 7.4rem); height: auto; flex: none; }
-    .menu { --fit: 22; min-height: 0; overflow: hidden; display: grid; padding: .1em 1vw .25em; font-size: calc(var(--fit) * 1px); }
-    .col { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto repeat(4, 1fr); padding: 0 .42em; border-left: 1px solid rgba(255,255,255,.14); }
-    .col:first-child { border-left: 0; }
-    .col h2 { margin: 0; color: var(--red); font-family: Oswald, sans-serif; font-weight: 700; font-size: 1.45em; line-height: 1; white-space: nowrap; }
-    .size { min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; }
-    .top { display: flex; justify-content: space-between; align-items: baseline; gap: .35em; }
-    .top b { font-size: 1.2em; line-height: 1; }
-    .top span { font-size: .68em; font-weight: 700; white-space: nowrap; }
-    .prices { display: grid; justify-items: end; margin-top: .04em; }
-    .prices div { display: flex; align-items: baseline; gap: .4em; white-space: nowrap; }
-    .prices i { font-style: normal; font-weight: 700; font-size: .68em; }
-    .prices strong { font-size: 1.02em; line-height: 1.05; }
-    .rule { height: .11em; width: 100%; margin-top: .16em; background: var(--red); }
-    .food { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; display: block; }
-    .foot { display: grid; grid-template-columns: 1fr 1.3fr 1fr 1.2fr; align-items: center; gap: .6rem; padding: 0 1.4vw; background: #050505; border-top: 3px solid #2a0604; }
-    .bit { display: flex; align-items: center; gap: .55rem; min-width: 0; }
-    .bit svg { width: 2.1rem; height: 2.1rem; flex: none; }
-    .bit p { margin: 0; font-family: Oswald, sans-serif; font-weight: 600; letter-spacing: .04em; font-size: clamp(.85rem, 1.9vh, 1.35rem); line-height: 1.05; }
-    .tag { justify-content: flex-end; text-align: right; }
-    .tag strong { display: block; font-family: "Rubik Wet Paint", system-ui, sans-serif; color: var(--red); font-size: clamp(1.15rem, 2.8vh, 2rem); font-weight: 400; line-height: .9; }
-    .tag em { font-style: normal; font-family: Oswald, sans-serif; letter-spacing: .04em; font-size: clamp(.8rem, 1.7vh, 1.15rem); }
+    .word { border: 0; background: transparent; padding: 0; font-family: "Russo One", Impact, sans-serif; font-size: 68px; line-height: .82; letter-spacing: .01em; color: var(--hot); }
+    .navline { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 6px; color: #f4f4f4; font-family: Oswald, sans-serif; font-weight: 500; font-size: 16px; letter-spacing: .22em; }
+    .navline i { display: block; height: 2px; width: 54px; background: var(--hot); font-style: normal; }
+    .cols { min-height: 0; display: grid; grid-template-columns: .96fr 1.18fr .96fr; }
+    .col { min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding: 0 18px 0; border-right: 2px solid rgba(255,255,255,.32); }
+    .col:last-child { border-right: 0; }
+    h2 { margin: 0; display: inline-block; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 40px; line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
+    h2::after { content: ""; display: block; width: 78%; height: 5px; margin-top: 6px; background: var(--hot); border-radius: 4px; transform: rotate(-1.4deg); transform-origin: left center; }
+    h2.extra { margin-top: 8px; color: var(--price); font-size: 28px; }
+    h2.extra::after { width: 92%; height: 4px; }
+    .title-row { display: flex; align-items: center; gap: 12px; }
+    .title-row h2::after { width: 100%; }
+    .kg { flex: none; border: 2px solid var(--price); border-radius: 14px; padding: 1px 12px 3px; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: .03em; line-height: 1.15; }
+    .stack { margin-top: 12px; }
+    .line { margin-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+    .line h3 { white-space: nowrap; font-size: 29px; }
+    .line .price { font-size: 40px; }
+    h3 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 32px; line-height: 1; }
+    .meta { margin: 2px 0 0; color: #dedede; font-weight: 700; font-size: 16px; line-height: 1.1; }
+    .price { margin: 0; color: var(--price); font-family: Oswald, sans-serif; font-weight: 700; font-size: 44px; line-height: .95; white-space: nowrap; }
+    .flavors { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; margin-top: 6px; }
+    .flavor { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.34); }
+    .flavor:last-child { border-bottom: 0; }
+    .flavor h3 { font-size: 30px; font-weight: 500; white-space: nowrap; }
+    .flavor .price { font-size: 38px; }
+    .dish {
+      width: calc(100% + 36px); margin: auto -18px 0; min-height: 0; flex: 1 1 auto;
+      display: block; object-fit: cover; object-position: center 48%;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
+    }
+    .col.left .dish { max-height: 250px; }
+    .col.right .dish { max-height: 188px; object-position: center 30%; }
+    .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+    .qrbox { position: absolute; left: -26px; bottom: -8px; z-index: 4; background: #fff; padding: 6px; line-height: 0; border-radius: 0 8px 0 0; }
+    .qrbox svg { width: 176px; height: 176px; display: block; }
+    .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; font-size: 40px; letter-spacing: .04em; }
   </style>
 </head>
 <body>
-  <div class="screen">
+  <div class="stage">
     <header class="head">
-      <div class="slogan left"><div><p>свіжі морепродукти<br>прямо до столу</p><div class="under"></div></div></div>
-      <div class="brand">
-        <button type="button" class="word" id="logoBtn">KLESHNEVAR</button>
-        <div class="navline"><i></i>РАКИ · КРЕВЕТКИ · ПИВО<i></i></div>
-      </div>
-      <div class="slogan right">
-        <svg class="claw" viewBox="0 0 100 100" aria-hidden="true">
+      <div class="badge">
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="44" fill="none" stroke="#ff2a18" stroke-width="3.5"/>
           <path d="M34 34c-10-8-18-1-14 8 3 6 10 6 13 1M36 30c2-8 12-8 12 0M66 34c10-8 18-1 14 8-3 6-10 6-13 1M64 30c-2-8-12-8-12 0" fill="none" stroke="#ff2a18" stroke-width="3" stroke-linecap="round"/>
           <ellipse cx="50" cy="46" rx="9" ry="13" fill="#ff2a18"/>
           <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
         </svg>
-        <div><p>смак<br>який<br>запам'ятовується</p><div class="under"></div></div>
+        <p class="words">смак<br>якість<br>задоволення</p>
+      </div>
+      <div class="brand">
+        <button type="button" class="word" id="logoBtn">KLESHNEVAR</button>
+        <div class="navline"><i></i>РАКИ · КРЕВЕТКИ · ПИВО<i></i></div>
+      </div>
+      <div class="badge right">
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#ff2a18" stroke-width="3.5"/>
+          <path d="M34 34c-10-8-18-1-14 8 3 6 10 6 13 1M36 30c2-8 12-8 12 0M66 34c10-8 18-1 14 8-3 6-10 6-13 1M64 30c-2-8-12-8-12 0" fill="none" stroke="#ff2a18" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="50" cy="46" rx="9" ry="13" fill="#ff2a18"/>
+          <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
+        </svg>
+        <p class="words">смак<br>якість<br>задоволення</p>
       </div>
     </header>
-    <main class="menu" id="menu"></main>
-    <img class="food" src="board-food.jpg" alt="" />
+    <main class="cols">
+      <section class="col left">
+        <h2>Морські мікси</h2>
+        <article class="stack">
+          <h3>Морський мікс</h3>
+          <p class="meta" data-weight="mix">1 кг</p>
+          <p class="price" data-key="mix">1800 грн</p>
+        </article>
+        <article class="stack">
+          <h3>Морський мікс VIP</h3>
+          <p class="meta" data-weight="vip">1 кг</p>
+          <p class="price" data-key="vip">2200 грн</p>
+        </article>
+        <img class="dish" src="board-mix.jpg" alt="" />
+      </section>
+      <section class="col">
+        <div class="title-row">
+          <h2>Смаки на вибір</h2>
+          <span class="kg" id="kgBadge">1 кг</span>
+        </div>
+        <div class="flavors">
+          <div class="flavor"><h3>Вершкові</h3><p class="price" data-key="cream">999 грн</p></div>
+          <div class="flavor"><h3>Класичні</h3><p class="price" data-key="classic">999 грн</p></div>
+          <div class="flavor"><h3>Томатний</h3><p class="price" data-key="tomato">999 грн</p></div>
+          <div class="flavor"><h3>Том Кха</h3><p class="price" data-key="tomkha">999 грн</p></div>
+          <div class="flavor"><h3>Том Ям</h3><p class="price" data-key="tomyum">999 грн</p></div>
+          <div class="flavor"><h3>Часниково-гострі</h3><p class="price" data-key="garlic">999 грн</p></div>
+        </div>
+      </section>
+      <section class="col right">
+        <h2>Хрумке панко</h2>
+        <article class="line">
+          <div>
+            <h3>Мідії Панко</h3>
+            <p class="meta"><span data-weight="mussels">200 г</span> · 28-31 шт</p>
+          </div>
+          <p class="price" data-key="mussels">275 грн</p>
+        </article>
+        <article class="line">
+          <div>
+            <h3>Креветки панко</h3>
+            <p class="meta"><span data-weight="shrimp">200 г</span> · 9 шт</p>
+          </div>
+          <p class="price" data-key="shrimp">250 грн</p>
+        </article>
+        <h2 class="extra">Додатково</h2>
+        <article class="stack">
+          <h3>Соус вершковий</h3>
+          <p class="price" data-key="sauce">900 грн</p>
+        </article>
+        <img class="dish" src="board-panko.jpg" alt="" />
+      </section>
+    </main>
     <footer class="foot">
-      <div class="bit"><svg viewBox="0 0 48 48" fill="none" stroke="#ff2a18" stroke-width="2.4"><path d="M16 16c-6-5-12 0-9 6 2 4 7 4 9 0M14 14c1-5 8-5 8 0M32 16c6-5 12 0 9 6-2 4-7 4-9 0M34 14c-1-5-8-5-8 0"/><ellipse cx="24" cy="22" rx="5" ry="7" fill="#ff2a18" stroke="none"/><path d="M19 28h10l-2 4h-6zM20 32h8l-2 4h-4zM22 36h4l-2 5-2-5z" fill="#ff2a18" stroke="none"/></svg><p>СВІЖІ<br>МОРЕПРОДУКТИ</p></div>
-      <div class="bit"><svg viewBox="0 0 48 48"><path fill="#ff2a18" d="M24 6c2 6-2 8-2 14 0 3 2 4 2 4s2-1 2-4c0-6-4-8-2-14zm-8 14c2 5-1 7-1 12 0 4 3 6 5 7-6 0-12-4-12-11 0-5 5-8 8-8zm16 0c3 0 8 3 8 8 0 7-6 11-12 11 2-1 5-3 5-7 0-5-3-7-1-12z"/></svg><p>ПРИГОТОВЛЕННЯ<br>ПІД ВАШ СМАК</p></div>
-      <div class="bit"><svg viewBox="0 0 48 48" fill="#ff2a18"><path d="M16 10h10c6 0 10 4 10 10v2H18v-2c0-2-1-4-2-6V10z"/><path d="M14 22h24v4c0 6-5 12-12 12S14 32 14 26v-4z"/><rect x="20" y="38" width="8" height="3" rx="1"/></svg><p>ПИВО<br>НА РОЗЛИВ</p></div>
-      <div class="tag"><strong>KLESHNEVAR</strong><em>— ЦЕ БІЛЬШЕ, НІЖ ЇЖА!</em></div>
+      <div class="qrbox" id="qr"></div>
+      <a class="phone" href="tel:+380636503959">+380 63 650 39 59</a>
     </footer>
   </div>
   <script>
-    const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
-    const menuEl = document.getElementById("menu");
-    const SPEC = { m: "30-35 шт", l: "23-25 шт", xl: "15-18 шт", xxl: "10-14 шт" };
-    function chunks(value) {
-      return String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—");
-    }
-    function titleOf(name) {
+    const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=1124262152&single=true&output=csv";
+    function kind(name) {
       const n = name.toLowerCase();
-      if (n.includes("bbq")) return "РАКИ BBQ";
-      if (n.includes("вершк")) return "ВЕРШКОВІ";
-      if (n.includes("класик")) return "КЛАСИКА";
-      if (n.includes("томат")) return "ТОМАТИ";
-      if (n.includes("пікант") || n.includes("пикант")) return "ПІКАНТНІ";
-      return name.replace(/^раки\s+/i, "").toUpperCase();
+      if (n.includes("мікс") || n.includes("микс")) return n.includes("vip") ? "vip" : "mix";
+      if (n.includes("соус")) return "sauce";
+      if (n.includes("міді") || n.includes("миди")) return "mussels";
+      if (n.includes("панко")) return "shrimp";
+      if (n.includes("кха")) return "tomkha";
+      if (n.includes("ям")) return "tomyum";
+      if (n.includes("часник")) return "garlic";
+      if (n.includes("томат")) return "tomato";
+      if (n.includes("класич")) return "classic";
+      if (n.includes("вершков")) return "cream";
+      return "";
     }
-    function paint(rows) {
-      const groups = [];
-      const index = {};
-      rows.filter((row) => row[0].toLowerCase().includes("рак")).forEach((row) => {
-        if (index[row[0]] == null) { index[row[0]] = groups.length; groups.push([]); }
-        groups[index[row[0]]].push(row);
-      });
-      const maxSizes = Math.max(1, ...groups.map((group) => chunks((group.find((row) => !/0[.,]\s*5/.test(row[2])) || group[0])[1]).length));
-      menuEl.style.gridTemplateColumns = "repeat(" + Math.max(groups.length, 1) + ", minmax(0, 1fr))";
-      menuEl.replaceChildren();
-      groups.forEach((group) => {
-        const full = group.find((row) => !/0[.,]\s*5/.test(row[2])) || group[0];
-        const half = group.find((row) => /0[.,]\s*5/.test(row[2]));
-        const sizes = chunks(full[1]);
-        const fullNums = String(full[3]).match(/\d+/g) || [];
-        const halfNums = half ? (String(half[3]).match(/\d+/g) || []) : [];
-        const col = document.createElement("section");
-        col.className = "col";
-        col.style.gridTemplateRows = "auto repeat(" + maxSizes + ", 1fr)";
-        const heading = document.createElement("h2");
-        heading.textContent = titleOf(full[0]);
-        col.appendChild(heading);
-        sizes.forEach((size, i) => {
-          const cell = document.createElement("div");
-          cell.className = "size";
-          const top = document.createElement("div");
-          top.className = "top";
-          const mark = document.createElement("b");
-          mark.textContent = size;
-          const spec = document.createElement("span");
-          spec.textContent = SPEC[size.toLowerCase()] || "";
-          top.append(mark, spec);
-          const prices = document.createElement("div");
-          prices.className = "prices";
-          const line = (label, value) => {
-            const row = document.createElement("div");
-            const weight = document.createElement("i");
-            weight.textContent = label;
-            const price = document.createElement("strong");
-            price.textContent = value ? value + " грн" : "";
-            row.append(weight, price);
-            return row;
-          };
-          prices.appendChild(line(full[2] || "1 кг", fullNums[i]));
-          if (half) prices.appendChild(line(half[2] || "0.5 кг", halfNums[i]));
-          const rule = document.createElement("div");
-          rule.className = "rule";
-          cell.append(top, prices, rule);
-          col.appendChild(cell);
-        });
-        menuEl.appendChild(col);
-      });
+    function money(value) {
+      const nums = String(value || "").replace(/\s/g, "").match(/\d+/);
+      return nums ? nums[0] + " грн" : "";
+    }
+    function weightOf(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+      return /^\d+$/.test(text) ? text + " г" : text;
     }
     function parseCsv(text) {
       const rows = [];
@@ -165,33 +194,42 @@
       if (cell.length || row.length) { row.push(cell.trim()); rows.push(row); }
       return rows;
     }
+    function apply(rows) {
+      const map = {};
+      rows.forEach((row) => {
+        const key = kind(row[0] || "");
+        if (key && !map[key]) map[key] = row;
+      });
+      document.querySelectorAll("[data-key]").forEach((el) => {
+        const row = map[el.dataset.key];
+        const next = row ? money(row[3]) : "";
+        if (next) el.textContent = next;
+      });
+      document.querySelectorAll("[data-weight]").forEach((el) => {
+        const row = map[el.dataset.weight];
+        const next = row ? weightOf(row[2]) : "";
+        if (next) el.textContent = next;
+      });
+      const flavor = map.cream || map.classic;
+      const kilo = flavor ? weightOf(flavor[2]) : "";
+      if (kilo) document.getElementById("kgBadge").textContent = kilo;
+    }
     let shown = "";
     function pull() {
       fetch(CSV + "&_=" + Date.now(), { cache: "no-store" })
         .then((res) => res.text())
         .then((text) => {
-          const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || ""]).filter((r) => r[0]);
+          const next = parseCsv(text).slice(1).filter((row) => row[0]);
           const key = JSON.stringify(next);
           if (key === shown) return;
           shown = key;
-          paint(next);
-          requestAnimationFrame(fitMenu);
-          setTimeout(fitMenu, 80);
+          apply(next);
         })
         .catch(() => {});
     }
-    function crowded(menu) {
-      return [...menu.querySelectorAll("h2, .top, .prices div")].some((node) => node.scrollWidth > node.clientWidth + 2);
-    }
-    function fitMenu() {
-      const menu = menuEl;
-      let lo = 14, hi = Math.round(window.innerHeight * 0.032), best = lo;
-      while (lo <= hi) {
-        const mid = (lo + hi) >> 1;
-        menu.style.setProperty("--fit", String(mid));
-        if (!crowded(menu)) { best = mid; lo = mid + 1; } else hi = mid - 1;
-      }
-      menu.style.setProperty("--fit", String(best));
+    function fit() {
+      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty("--s", String(scale));
     }
     document.getElementById("logoBtn").addEventListener("click", () => {
       const root = document.documentElement;
@@ -199,9 +237,20 @@
       if (!active) { (root.requestFullscreen || root.webkitRequestFullscreen).call(root); return; }
       (document.exitFullscreen || document.webkitExitFullscreen).call(document);
     });
+    fit();
     pull();
     setInterval(pull, 2000);
-    window.addEventListener("resize", fitMenu);
+    window.addEventListener("resize", fit);
+    const qrLib = document.createElement("script");
+    qrLib.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    qrLib.onload = () => {
+      const qr = qrcode(0, "M");
+      const link = location.protocol.startsWith("http") ? new URL("/list.html", location.href).href : new URL("list.html", location.href).href;
+      qr.addData(link);
+      qr.make();
+      document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+    };
+    document.body.appendChild(qrLib);
   </script>
 </body>
 </html>
