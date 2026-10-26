@@ -72,13 +72,43 @@
     .qrbox { position: absolute; left: -26px; bottom: -8px; z-index: 4; background: #fff; padding: 6px; line-height: 0; border-radius: 0 8px 0 0; }
     .qrbox svg { width: 176px; height: 176px; display: block; }
     .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; font-size: 40px; letter-spacing: .04em; }
+    .stage.smack { animation: tv-shake .55s linear; }
+    @keyframes tv-shake {
+      0%, 100% { transform: translate(-50%, -50%) scale(var(--s, 1)); }
+      18% { transform: translate(calc(-50% - 16px), calc(-50% + 8px)) scale(var(--s, 1)) rotate(-.7deg); }
+      36% { transform: translate(calc(-50% + 14px), calc(-50% - 7px)) scale(var(--s, 1)) rotate(.55deg); }
+      54% { transform: translate(calc(-50% - 8px), calc(-50% + 4px)) scale(var(--s, 1)) rotate(-.3deg); }
+      72% { transform: translate(calc(-50% + 4px), calc(-50% - 2px)) scale(var(--s, 1)); }
+    }
     .bats { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
-    .bat { position: absolute; left: 0; top: 0; transform-origin: center; }
-    .bat.sil { width: 230px; height: 126px; filter: drop-shadow(0 6px 4px rgba(0,0,0,.8)); }
+    .bat { position: absolute; left: 0; top: 0; width: 240px; height: 283px; transform-origin: center; filter: drop-shadow(0 12px 8px rgba(0,0,0,.55)); }
+    .bat img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: none; }
+    .bat.face-fly .up { display: block; }
+    .bat.face-fly.flap .up { display: none; }
+    .bat.face-fly.flap .down { display: block; }
+    .bat.face-shock .shock, .bat.face-wince .wince, .bat.face-dizzy .daze, .bat.face-wake .wake { display: block; }
     .bat.sil .down { display: none; }
     .bat.sil.flap .up { display: none; }
     .bat.sil.flap .down { display: block; }
+    .bat.sil { width: 230px; height: 126px; filter: drop-shadow(0 6px 4px rgba(0,0,0,.8)); }
     .bat.sil svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .star { position: absolute; color: #ffe14a; font-style: normal; font-size: 28px; line-height: 1; text-shadow: 0 0 8px #ff8800; opacity: 0; }
+    .hit { position: absolute; width: 0; height: 0; z-index: 7; }
+    .hit .flash {
+      position: absolute; left: -70px; top: -70px; width: 140px; height: 140px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,42,24,.45) 42%, transparent 72%);
+      animation: bat-flash .4s ease-out forwards;
+    }
+    .hit .ring {
+      position: absolute; left: -16px; top: -16px; width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,.85); animation: bat-ring .5s ease-out forwards;
+    }
+    .hit .cracks { position: absolute; left: -230px; top: -230px; width: 460px; height: 460px; animation: bat-crack 1.7s ease-out forwards; }
+    .hit .burst { position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; animation: bat-flash .32s ease-out forwards; }
+    .wash { position: absolute; inset: 0; background: rgba(255,255,255,.28); animation: bat-flash .28s ease-out forwards; }
+    @keyframes bat-flash { to { opacity: 0; } }
+    @keyframes bat-ring { to { transform: scale(9); opacity: 0; } }
+    @keyframes bat-crack { 0% { opacity: 0; transform: scale(.4); } 12% { opacity: 1; transform: scale(1); } 70% { opacity: 1; } 100% { opacity: 0; } }
   </style>
 </head>
 <body>
@@ -285,28 +315,61 @@
       el.innerHTML = SIL_SVG;
       return el;
     }
+    const CRACK_SVG = '<svg class="cracks" viewBox="-100 -100 200 200">' +
+      '<g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round">' +
+        '<path d="M0 0 L-48 -22 L-78 -8"/><path d="M0 0 L40 -46 L70 -34"/>' +
+        '<path d="M0 0 L14 58 L6 86"/><path d="M0 0 L-36 38 L-62 58"/>' +
+        '<path d="M0 0 L64 18 L96 28"/><path d="M0 0 L-12 -60 L-22 -84"/>' +
+        '<path d="M0 0 L28 16 L46 8"/><path d="M0 0 L-24 -8 L-18 -28"/>' +
+      '</g></svg>' +
+      '<svg class="burst" viewBox="-20 -20 40 40"><polygon points="0,-16 3,-3 16,0 3,3 0,16 -3,3 -16,0 -3,-3" fill="#fff"/></svg>';
+    function batNode(cls) {
+      const el = document.createElement("div");
+      el.className = "bat " + cls;
+      el.innerHTML = '<img class="up" src="bat-fly-up.png" alt="">' +
+        '<img class="down" src="bat-fly-down.png" alt="">' +
+        '<img class="shock" src="bat-shock.png" alt="">' +
+        '<img class="wince" src="bat-wince.png" alt="">' +
+        '<img class="daze" src="bat-dizzy.png" alt="">' +
+        '<img class="wake" src="bat-wake.png" alt="">';
+      return el;
+    }
     function placeBat(el, x, y, sx, sy, rot, dir) {
       el.style.left = x + "vw";
       el.style.top = y + "vh";
       el.style.transform = "translate(-50%, -50%) scale(" + (dir * sx) + ", " + sy + ") rotate(" + rot + "deg)";
     }
     function clamp01(v) { return Math.max(0, Math.min(1, v)); }
-
-    let boomRunning = false;
-    let boomAgain = false;
-    function playBoom() {
-      if (boomRunning) { boomAgain = true; return; }
-      boomRunning = true;
-      runBoom(() => {
-        boomRunning = false;
-        if (boomAgain) { boomAgain = false; playBoom(); }
-      });
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function bonk() {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        const ctx = bonk.ctx || (bonk.ctx = new Ctx());
+        if (ctx.state === "suspended") ctx.resume();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(210, now);
+        osc.frequency.exponentialRampToValueAtTime(42, now + 0.18);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (err) {}
     }
-    function runBoom(done) {
-      const layer = document.getElementById("bats");
-      layer.replaceChildren();
-      const dir = Math.random() < 0.5 ? 1 : -1;
-      const flock = Array.from({ length: 18 }, (_, i) => {
+    function shakeStage() {
+      const stage = document.querySelector(".stage");
+      stage.classList.remove("smack");
+      void stage.offsetWidth;
+      stage.classList.add("smack");
+      setTimeout(() => stage.classList.remove("smack"), 600);
+    }
+    function makeFlock(layer, dir) {
+      return Array.from({ length: 18 }, (_, i) => {
         const el = silNode();
         const depth = i % 4;
         el.style.zIndex = String(2 + depth);
@@ -326,6 +389,45 @@
           phase: i * 0.9
         };
       });
+    }
+    function stepFlock(flock, t, dir) {
+      let flying = false;
+      flock.forEach((bat) => {
+        const tt = Math.max(0, t - bat.delay);
+        const x = bat.start + dir * bat.speed * tt;
+        const travel = clamp01(tt / 1600);
+        const y = bat.y0 + bat.dive * travel + Math.sin(tt / 260 + bat.phase) * bat.amp;
+        const gone = dir > 0 ? x > 128 : x < -28;
+        const born = tt > 0;
+        if (!gone) flying = true;
+        bat.el.style.visibility = born && !gone ? "visible" : "hidden";
+        const bank = Math.cos(tt / 260 + bat.phase) * 10;
+        placeBat(bat.el, x, y, bat.size, bat.size, bank, dir);
+        bat.el.classList.toggle("flap", Math.floor(tt / 70) % 2 === 0);
+      });
+      return flying;
+    }
+
+    let boomRunning = false;
+    let boomAgain = "";
+    function playBoom(mode) {
+      if (boomRunning) { boomAgain = mode; return; }
+      boomRunning = true;
+      const run = mode === "pass" ? runPass : runHit;
+      run(() => {
+        boomRunning = false;
+        if (boomAgain) {
+          const next = boomAgain;
+          boomAgain = "";
+          playBoom(next);
+        }
+      });
+    }
+    function runPass(done) {
+      const layer = document.getElementById("bats");
+      layer.replaceChildren();
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const flock = makeFlock(layer, dir);
       const started = performance.now();
       function finish() {
         layer.replaceChildren();
@@ -333,21 +435,110 @@
       }
       function frame(now) {
         const t = now - started;
-        let flying = false;
-        flock.forEach((bat) => {
-          const tt = Math.max(0, t - bat.delay);
-          const x = bat.start + dir * bat.speed * tt;
-          const travel = clamp01(tt / 1600);
-          const y = bat.y0 + bat.dive * travel + Math.sin(tt / 260 + bat.phase) * bat.amp;
-          const gone = dir > 0 ? x > 128 : x < -28;
-          const born = tt > 0;
-          if (!gone) flying = true;
-          bat.el.style.visibility = born && !gone ? "visible" : "hidden";
-          const bank = Math.cos(tt / 260 + bat.phase) * 10;
-          placeBat(bat.el, x, y, bat.size, bat.size, bank, dir);
-          bat.el.classList.toggle("flap", Math.floor(tt / 70) % 2 === 0);
-        });
+        const flying = stepFlock(flock, t, dir);
         if (flying && t < 8000) requestAnimationFrame(frame);
+        else finish();
+      }
+      requestAnimationFrame(frame);
+    }
+    function runHit(done) {
+      const layer = document.getElementById("bats");
+      layer.replaceChildren();
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const flock = makeFlock(layer, dir);
+      const hero = batNode("hero face-fly");
+      hero.style.zIndex = "8";
+      layer.appendChild(hero);
+      const from = { x: dir > 0 ? -20 : 116, y: 14 + Math.random() * 16 };
+      const impact = { x: 46 + Math.random() * 10, y: 34 + Math.random() * 12 };
+      const exit = { x: dir > 0 ? 122 : -22, y: impact.y - 6 };
+      const stars = [0, 1, 2].map(() => {
+        const star = document.createElement("i");
+        star.className = "star";
+        star.textContent = "★";
+        layer.appendChild(star);
+        return star;
+      });
+      let smashed = false;
+      const started = performance.now();
+      function finish() {
+        layer.replaceChildren();
+        document.querySelector(".stage").classList.remove("smack");
+        done();
+      }
+      function frame(now) {
+        const t = now - started;
+        stepFlock(flock, t, dir);
+        let x, y, sx, sy, rot, flapEvery;
+        if (t < 1000) {
+          const p = clamp01(t / 1000);
+          const e = p * 0.35 + p * p * 0.65;
+          x = lerp(from.x, impact.x, e);
+          y = lerp(from.y, impact.y, e);
+          sx = sy = lerp(0.35, 1.85, e);
+          rot = Math.sin(t / 60) * 6;
+          flapEvery = 70;
+        } else if (t < 1400) {
+          const p = clamp01((t - 1000) / 400);
+          const squash = Math.sin(p * Math.PI);
+          x = impact.x - dir * squash * 1.2;
+          y = impact.y + squash * 1.4;
+          sx = 1.85 * (1 + 0.4 * squash);
+          sy = 1.85 * (1 - 0.46 * squash);
+          rot = -dir * 14 * squash;
+          flapEvery = 220;
+        } else if (t < 2300) {
+          const p = clamp01((t - 1400) / 900);
+          x = impact.x + Math.sin(t / 90) * (1 - p) * 0.7;
+          y = impact.y + Math.sin(p * Math.PI) * 1.8;
+          sx = sy = lerp(1.7, 1.45, p);
+          rot = Math.sin(t / 120) * 16 * (1 - p);
+          flapEvery = 240;
+        } else if (t < 2750) {
+          const p = clamp01((t - 2300) / 450);
+          x = impact.x;
+          y = impact.y;
+          sx = sy = lerp(1.45, 1.2, p);
+          rot = Math.sin(t / 70) * 10 * (1 - p);
+          flapEvery = 90;
+        } else {
+          const p = clamp01((t - 2750) / 1400);
+          const e = p * p;
+          x = lerp(impact.x, exit.x, e);
+          y = lerp(impact.y, exit.y, p);
+          sx = sy = lerp(1.2, 0.4, p);
+          rot = dir * 8 * p;
+          flapEvery = 60;
+        }
+        const face = t < 700 ? "fly" : t < 1000 ? "shock" : t < 1400 ? "wince" : t < 2150 ? "dizzy" : t < 2320 ? "wince" : t < 2680 ? "wake" : "fly";
+        hero.classList.remove("face-fly", "face-shock", "face-wince", "face-dizzy", "face-wake");
+        hero.classList.add("face-" + face);
+        placeBat(hero, x, y, sx, sy, rot, dir);
+        hero.classList.toggle("flap", Math.floor(t / flapEvery) % 2 === 0);
+        if (t >= 1000 && !smashed) {
+          smashed = true;
+          shakeStage();
+          bonk();
+          const hit = document.createElement("div");
+          hit.className = "hit";
+          hit.style.left = impact.x + "vw";
+          hit.style.top = impact.y + "vh";
+          hit.innerHTML = '<div class="flash"></div><div class="ring"></div>' + CRACK_SVG;
+          const wash = document.createElement("div");
+          wash.className = "wash";
+          layer.append(wash, hit);
+        }
+        stars.forEach((star, i) => {
+          const show = t > 1080 && t < 2700;
+          const fadeIn = clamp01((t - 1080) / 160);
+          const fadeOut = t < 2350 ? 1 : clamp01((2700 - t) / 350);
+          star.style.opacity = show ? String(fadeIn * fadeOut) : "0";
+          const ang = t / 190 + i * 2.094;
+          const rad = 78 + i * 14;
+          star.style.left = "calc(" + impact.x + "vw + " + Math.cos(ang) * rad + "px)";
+          star.style.top = "calc(" + impact.y + "vh + " + Math.sin(ang) * rad * 0.62 + "px)";
+        });
+        if (t < 4500) requestAnimationFrame(frame);
         else finish();
       }
       requestAnimationFrame(frame);
@@ -364,7 +555,10 @@
         .then((res) => res.ok ? res.json() : null)
         .then((data) => {
           if (!data) return;
-          (data.events || []).forEach((ev) => { if (ev.kind === "boom1") playBoom(); });
+          (data.events || []).forEach((ev) => {
+            if (ev.kind === "boom") playBoom("hit");
+            else if (ev.kind === "boom1") playBoom("pass");
+          });
           const cursor = Number(data.cursor || 0);
           if (cursor > fxAfter) {
             fxAfter = cursor;
@@ -377,7 +571,8 @@
     pollFx();
     setInterval(pollFx, 1500);
     const preview = new URLSearchParams(location.search);
-    if (preview.has("boom") || preview.has("boom1")) playBoom();
+    if (preview.has("boom1")) playBoom("pass");
+    else if (preview.has("boom")) playBoom("hit");
   </script>
 </body>
 </html>
