@@ -336,4 +336,240 @@
       el.style.top = y + "vh";
       el.style.transform = "translate(-50%, -50%) scale(" + (dir * sx) + ", " + sy + ") rotate(" + rot + "deg)";
     }
-    function clamp01(v) { return Math.max(0, Math.min(1,
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function bonk() {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        const ctx = bonk.ctx || (bonk.ctx = new Ctx());
+        if (ctx.state === "suspended") ctx.resume();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(210, now);
+        osc.frequency.exponentialRampToValueAtTime(42, now + 0.18);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (err) {}
+    }
+    function shakeStage() {
+      const stage = document.querySelector(".stage");
+      stage.classList.remove("smack");
+      void stage.offsetWidth;
+      stage.classList.add("smack");
+      setTimeout(() => stage.classList.remove("smack"), 600);
+    }
+    function makeFlock(layer, dir) {
+      return Array.from({ length: 18 }, (_, i) => {
+        const el = silNode();
+        const depth = i % 4;
+        el.style.zIndex = String(2 + depth);
+        el.style.opacity = String(0.78 + depth * 0.07);
+        layer.appendChild(el);
+        const dive = i % 5 === 0;
+        const y0 = dive ? 2 + (i % 4) * 5 : 8 + (i % 7) * 10;
+        return {
+          el: el,
+          y0: y0,
+          dive: dive ? 26 + (i % 3) * 6 : (i % 3) - 1,
+          speed: (62 + depth * 16 + (i % 3) * 5) / 1000,
+          start: dir > 0 ? -22 - (i % 5) * 7 : 118 + (i % 5) * 7,
+          delay: i * 95 + (i % 3) * 30,
+          size: 0.48 + depth * 0.28,
+          amp: 4 + (i % 4) * 1.6,
+          phase: i * 0.9
+        };
+      });
+    }
+    function stepFlock(flock, t, dir) {
+      let flying = false;
+      flock.forEach((bat) => {
+        const tt = Math.max(0, t - bat.delay);
+        const x = bat.start + dir * bat.speed * tt;
+        const travel = clamp01(tt / 1600);
+        const y = bat.y0 + bat.dive * travel + Math.sin(tt / 260 + bat.phase) * bat.amp;
+        const gone = dir > 0 ? x > 128 : x < -28;
+        const born = tt > 0;
+        if (!gone) flying = true;
+        bat.el.style.visibility = born && !gone ? "visible" : "hidden";
+        const bank = Math.cos(tt / 260 + bat.phase) * 10;
+        placeBat(bat.el, x, y, bat.size, bat.size, bank, dir);
+        bat.el.classList.toggle("flap", Math.floor(tt / 70) % 2 === 0);
+      });
+      return flying;
+    }
+
+    let boomRunning = false;
+    let boomAgain = "";
+    function playBoom(mode) {
+      if (boomRunning) { boomAgain = mode; return; }
+      boomRunning = true;
+      const run = mode === "pass" ? runPass : runHit;
+      run(() => {
+        boomRunning = false;
+        if (boomAgain) {
+          const next = boomAgain;
+          boomAgain = "";
+          playBoom(next);
+        }
+      });
+    }
+    function runPass(done) {
+      const layer = document.getElementById("bats");
+      layer.replaceChildren();
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const flock = makeFlock(layer, dir);
+      const started = performance.now();
+      function finish() {
+        layer.replaceChildren();
+        done();
+      }
+      function frame(now) {
+        const t = now - started;
+        const flying = stepFlock(flock, t, dir);
+        if (flying && t < 8000) requestAnimationFrame(frame);
+        else finish();
+      }
+      requestAnimationFrame(frame);
+    }
+    function runHit(done) {
+      const layer = document.getElementById("bats");
+      layer.replaceChildren();
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const flock = makeFlock(layer, dir);
+      const hero = batNode("hero face-fly");
+      hero.style.zIndex = "8";
+      layer.appendChild(hero);
+      const from = { x: dir > 0 ? -20 : 116, y: 14 + Math.random() * 16 };
+      const impact = { x: 46 + Math.random() * 10, y: 34 + Math.random() * 12 };
+      const exit = { x: dir > 0 ? 122 : -22, y: impact.y - 6 };
+      const stars = [0, 1, 2].map(() => {
+        const star = document.createElement("i");
+        star.className = "star";
+        star.textContent = "★";
+        layer.appendChild(star);
+        return star;
+      });
+      let smashed = false;
+      const started = performance.now();
+      function finish() {
+        layer.replaceChildren();
+        document.querySelector(".stage").classList.remove("smack");
+        done();
+      }
+      function frame(now) {
+        const t = now - started;
+        stepFlock(flock, t, dir);
+        let x, y, sx, sy, rot, flapEvery;
+        if (t < 1000) {
+          const p = clamp01(t / 1000);
+          const e = p * 0.35 + p * p * 0.65;
+          x = lerp(from.x, impact.x, e);
+          y = lerp(from.y, impact.y, e);
+          sx = sy = lerp(0.35, 1.85, e);
+          rot = Math.sin(t / 60) * 6;
+          flapEvery = 70;
+        } else if (t < 1400) {
+          const p = clamp01((t - 1000) / 400);
+          const squash = Math.sin(p * Math.PI);
+          x = impact.x - dir * squash * 1.2;
+          y = impact.y + squash * 1.4;
+          sx = 1.85 * (1 + 0.4 * squash);
+          sy = 1.85 * (1 - 0.46 * squash);
+          rot = -dir * 14 * squash;
+          flapEvery = 220;
+        } else if (t < 2300) {
+          const p = clamp01((t - 1400) / 900);
+          x = impact.x + Math.sin(t / 90) * (1 - p) * 0.7;
+          y = impact.y + Math.sin(p * Math.PI) * 1.8;
+          sx = sy = lerp(1.7, 1.45, p);
+          rot = Math.sin(t / 120) * 16 * (1 - p);
+          flapEvery = 240;
+        } else if (t < 2750) {
+          const p = clamp01((t - 2300) / 450);
+          x = impact.x;
+          y = impact.y;
+          sx = sy = lerp(1.45, 1.2, p);
+          rot = Math.sin(t / 70) * 10 * (1 - p);
+          flapEvery = 90;
+        } else {
+          const p = clamp01((t - 2750) / 1400);
+          const e = p * p;
+          x = lerp(impact.x, exit.x, e);
+          y = lerp(impact.y, exit.y, p);
+          sx = sy = lerp(1.2, 0.4, p);
+          rot = dir * 8 * p;
+          flapEvery = 60;
+        }
+        const face = t < 700 ? "fly" : t < 1000 ? "shock" : t < 1400 ? "wince" : t < 2150 ? "dizzy" : t < 2320 ? "wince" : t < 2680 ? "wake" : "fly";
+        hero.classList.remove("face-fly", "face-shock", "face-wince", "face-dizzy", "face-wake");
+        hero.classList.add("face-" + face);
+        placeBat(hero, x, y, sx, sy, rot, dir);
+        hero.classList.toggle("flap", Math.floor(t / flapEvery) % 2 === 0);
+        if (t >= 1000 && !smashed) {
+          smashed = true;
+          shakeStage();
+          bonk();
+          const hit = document.createElement("div");
+          hit.className = "hit";
+          hit.style.left = impact.x + "vw";
+          hit.style.top = impact.y + "vh";
+          hit.innerHTML = '<div class="flash"></div><div class="ring"></div>' + CRACK_SVG;
+          const wash = document.createElement("div");
+          wash.className = "wash";
+          layer.append(wash, hit);
+        }
+        stars.forEach((star, i) => {
+          const show = t > 1080 && t < 2700;
+          const fadeIn = clamp01((t - 1080) / 160);
+          const fadeOut = t < 2350 ? 1 : clamp01((2700 - t) / 350);
+          star.style.opacity = show ? String(fadeIn * fadeOut) : "0";
+          const ang = t / 190 + i * 2.094;
+          const rad = 78 + i * 14;
+          star.style.left = "calc(" + impact.x + "vw + " + Math.cos(ang) * rad + "px)";
+          star.style.top = "calc(" + impact.y + "vh + " + Math.sin(ang) * rad * 0.62 + "px)";
+        });
+        if (t < 4500) requestAnimationFrame(frame);
+        else finish();
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const fxBase = (new URLSearchParams(location.search).get("bot") || "https://kleshnevartelegrambot-production.up.railway.app").replace(/\/$/, "");
+    let fxAfter = 0;
+    try { fxAfter = Number(sessionStorage.getItem("tv8-fx") || 0) || 0; } catch (err) {}
+    let fxBusy = false;
+    function pollFx() {
+      if (fxBusy) return;
+      fxBusy = true;
+      fetch(fxBase + "/fx?after=" + fxAfter, { cache: "no-store" })
+        .then((res) => res.ok ? res.json() : null)
+        .then((data) => {
+          if (!data) return;
+          (data.events || []).forEach((ev) => {
+            if (ev.kind === "boom") playBoom("hit");
+            else if (ev.kind === "boom1") playBoom("pass");
+          });
+          const cursor = Number(data.cursor || 0);
+          if (cursor > fxAfter) {
+            fxAfter = cursor;
+            try { sessionStorage.setItem("tv8-fx", String(fxAfter)); } catch (err) {}
+          }
+        })
+        .catch(() => {})
+        .then(() => { fxBusy = false; });
+    }
+    pollFx();
+    setInterval(pollFx, 1500);
+    const preview = new URLSearchParams(location.search);
+    if (preview.has("boom1")) playBoom("pass");
+    else if (preview.has("boom")) playBoom("hit");
+  </script>
+</body>
+</html>
