@@ -10,7 +10,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Морський мікс у вершково-Том Ям соусі",
           "price": 1800.0,
           "unit": "порц.",
-          "meta": "порція 1,53 кг",
+          "meta": "порція 1 кг",
           "photo": "assets/menu/mix.jpg"
         },
         {
@@ -18,7 +18,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Морський мікс у вершково-Том Ям соусі VIP",
           "price": 2200.0,
           "unit": "порц.",
-          "meta": "порція 1,53 кг",
+          "meta": "порція 1 кг",
           "photo": "assets/menu/mix-vip.jpg"
         },
         {
@@ -26,7 +26,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Мідії Панко",
           "price": 275.0,
           "unit": "порц.",
-          "meta": "порція 556 г",
+          "meta": "порція 200 г",
           "photo": "assets/menu/mussels-panko.jpg"
         },
         {
@@ -34,7 +34,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Креветка Панко",
           "price": 250.0,
           "unit": "порц.",
-          "meta": "порція 556 г",
+          "meta": "порція 200 г",
           "photo": "assets/menu/shrimp-panko.jpg"
         },
         {
@@ -42,7 +42,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Креветка соус Вершковий",
           "price": 900.0,
           "unit": "порц.",
-          "meta": "порція 1,48 кг",
+          "meta": "порція 1 кг",
           "photo": "assets/menu/shrimp-cream.jpg"
         }
       ]
@@ -55,32 +55,32 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "live-m",
           "name": "Рак живий M",
-          "price": 110.0,
-          "unit": "100 г",
+          "price": 1100,
+          "unit": "1 кг",
           "meta": "живий",
           "photo": "assets/menu/cray-live.jpg"
         },
         {
           "id": "live-l",
           "name": "Рак живий L",
-          "price": 155.0,
-          "unit": "100 г",
+          "price": 1550,
+          "unit": "1 кг",
           "meta": "живий",
           "photo": "assets/menu/cray-live.jpg"
         },
         {
           "id": "live-xl",
           "name": "Рак живий XL",
-          "price": 210.0,
-          "unit": "100 г",
+          "price": 2100,
+          "unit": "1 кг",
           "meta": "живий",
           "photo": "assets/menu/cray-live.jpg"
         },
         {
           "id": "live-xxl",
           "name": "Рак живий XXL",
-          "price": 260.0,
-          "unit": "100 г",
+          "price": 2600,
+          "unit": "1 кг",
           "meta": "живий",
           "photo": "assets/menu/cray-live.jpg"
         }
