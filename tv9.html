@@ -3,56 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Клешневар — раки</title>
+  <title>Клешневар — TV9</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
   <style>
-    :root { --hot: #ff2a18; --price: #ff2a18; --ink: #090807; }
+    :root { --hot: #ff2a18; --ink: #090807; }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: #050403; color: #fff; font-family: Manrope, system-ui, sans-serif; overflow: hidden; }
     button { font: inherit; color: inherit; cursor: pointer; }
     .stage {
       width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%) scale(var(--s, 1));
+      transform: translate(-50%, -50%) scale(var(--sx, 1), var(--sy, 1));
       background:
-        radial-gradient(320px 520px at -20px 46%, rgba(255, 78, 16, .34), transparent 68%),
-        radial-gradient(300px 480px at 1300px 50%, rgba(255, 64, 10, .32), transparent 70%),
-        radial-gradient(640px 140px at 50% 100%, rgba(90, 28, 8, .55), transparent 72%),
+        radial-gradient(280px 640px at -40px 50%, rgba(255, 72, 12, .42), transparent 70%),
+        radial-gradient(280px 640px at 1320px 50%, rgba(255, 56, 8, .4), transparent 70%),
+        radial-gradient(520px 120px at 50% 100%, rgba(120, 32, 6, .45), transparent 72%),
         var(--ink);
-      display: grid; grid-template-rows: 108px minmax(0, 1fr) 148px 58px;
-      padding: 12px 22px 0;
+      display: grid; grid-template-rows: 84px auto auto auto auto auto minmax(180px, 1fr) 48px;
+      padding: 8px 22px 4px;
       user-select: none;
     }
     .head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
     .badge { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .badge.right { justify-content: flex-end; }
-    .mark { width: 74px; height: 74px; flex: none; }
-    .words { margin: 0; color: var(--price); font-family: "Marck Script", cursive; font-size: 26px; line-height: .92; position: relative; }
+    .mark { width: 68px; height: 68px; flex: none; }
+    .words { margin: 0; color: var(--hot); font-family: "Marck Script", cursive; font-size: 24px; line-height: .92; position: relative; }
     .words::after { content: ""; position: absolute; left: 0; right: 8%; bottom: -3px; height: 3px; background: var(--hot); border-radius: 2px; transform: rotate(-7deg); }
     .brand { text-align: center; }
-    .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: 54px; line-height: .8; color: var(--hot); text-shadow: 0 2px 0 #7a0c08; }
+    .word { border: 0; background: transparent; padding: 0; font-family: "Rubik Wet Paint", system-ui, sans-serif; font-size: 52px; line-height: .8; color: var(--hot); text-shadow: 0 2px 0 #7a0c08; }
     .navline { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 4px; color: #f4f4f4; font-family: Oswald, sans-serif; font-weight: 500; font-size: 15px; letter-spacing: .22em; }
     .navline i { display: block; height: 2px; width: 48px; background: var(--hot); font-style: normal; }
-    .kind { margin: 2px 0 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; letter-spacing: .34em; font-size: 18px; }
-    .menu { min-height: 0; display: grid; }
-    .col { min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding: 0 12px 6px; border-right: 2px solid rgba(255,255,255,.32); }
-    .col:last-child { border-right: 0; }
-    h2 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 26px; line-height: .95; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; }
-    h2::after { content: ""; display: block; width: 72%; height: 4px; margin-top: 5px; background: var(--hot); border-radius: 4px; transform: rotate(-1.4deg); transform-origin: left center; }
-    .sizes { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; margin-top: 4px; }
-    .size { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,.34); }
-    .size:last-child { border-bottom: 0; }
-    .size b { font-family: Oswald, sans-serif; font-weight: 700; font-size: 34px; line-height: 1; }
-    .tiers { min-width: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-    .tier { display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; white-space: nowrap; }
-    .w { color: #dedede; font-weight: 700; font-size: 15px; }
-    .price { color: var(--price); font-family: Oswald, sans-serif; font-weight: 700; font-size: 28px; line-height: 1; }
-    .food { width: calc(100% + 44px); height: 100%; margin: 0 -22px; object-fit: cover; object-position: center 42%; display: block; }
-    .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
-    .qrbox { position: absolute; left: -22px; bottom: 0; z-index: 4; background: #fff; padding: 6px; line-height: 0; border-radius: 0 8px 0 0; }
-    .qrbox svg { width: 168px; height: 168px; display: block; }
-    .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; font-size: 38px; letter-spacing: .04em; }
+    .raki { margin: 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 68px; line-height: .78; letter-spacing: .12em; }
+    .raki::after { content: ""; display: block; width: 62%; height: 8px; margin: 6px auto 0; background: var(--hot); border-radius: 8px; transform: rotate(-1deg); }
+    .pick { margin: 6px 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 500; font-size: 22px; letter-spacing: .18em; }
+    .flavors { display: flex; justify-content: center; gap: 12px; margin-top: 8px; }
+    .pill { position: relative; flex: 1 1 0; min-width: 0; border: 2px solid rgba(255,255,255,.7); border-radius: 16px; padding: 7px 8px 12px; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 26px; line-height: 1; white-space: nowrap; }
+    .pill::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 5px; height: 4px; background: var(--hot); border-radius: 4px; transform: rotate(-2deg); }
+    .note { margin: 8px 0 0; text-align: center; color: var(--hot); font-family: Oswald, sans-serif; font-weight: 500; font-size: 20px; letter-spacing: .14em; }
+    .sizes { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); margin-top: 4px; text-align: center; }
+    .size b { display: block; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 54px; line-height: .86; }
+    .size span { display: block; margin-top: 2px; color: #fff; font-weight: 800; font-size: 20px; line-height: 1; }
+    .size strong { display: inline-block; margin-top: 2px; color: var(--hot); font-family: Oswald, sans-serif; font-weight: 700; font-size: 42px; line-height: .9; }
+    .size strong::after { content: ""; display: block; height: 5px; margin-top: 3px; background: var(--hot); border-radius: 4px; transform: rotate(-1.5deg); }
+    .dish { width: calc(100% + 44px); height: 100%; margin: 8px -22px 0; min-height: 0; display: block; object-fit: cover; object-position: center 48%; }
+    .foot { display: flex; align-items: center; justify-content: center; gap: 14px; }
+    .call { width: 34px; height: 34px; flex: none; }
+    .order { color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 22px; letter-spacing: .16em; }
+    .order::after { content: ""; display: inline-block; width: 2px; height: 22px; margin-left: 14px; background: rgba(255,255,255,.7); vertical-align: -4px; }
+    .phone { color: var(--hot); text-decoration: none; font-family: Oswald, sans-serif; font-weight: 700; font-size: 34px; letter-spacing: .04em; }
   </style>
 </head>
 <body>
@@ -70,7 +69,6 @@
       <div class="brand">
         <button type="button" class="word" id="logoBtn">KLESHNEVAR</button>
         <div class="navline"><i></i>РАКИ · КРЕВЕТКИ · ПИВО<i></i></div>
-        <p class="kind">БУЛЬЙОНИ</p>
       </div>
       <div class="badge right">
         <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
@@ -82,86 +80,85 @@
         <p class="words">смак<br>якість<br>задоволення</p>
       </div>
     </header>
-    <main class="menu" id="menu"></main>
-    <img class="food" src="board-cray.jpg" alt="" />
+    <h1 class="raki">РАКИ</h1>
+    <p class="pick">ОБЕРИ РОЗМІР ТА СМАК</p>
+    <div class="flavors" id="flavors"></div>
+    <p class="note" id="note"></p>
+    <div class="sizes" id="sizes"></div>
+    <img class="dish" src="board-cray.jpg" alt="" />
     <footer class="foot">
-      <div class="qrbox" id="qr"></div>
+      <svg class="call" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="none" stroke="#ff2a18" stroke-width="3"/>
+        <path d="M17 15h4l2 5-2.5 1.5a12 12 0 0 0 6 6L28 25l5 2v4c0 1-1 2-2 2C21 33 15 27 15 17c0-1 1-2 2-2z" fill="#ff2a18"/>
+      </svg>
+      <span class="order">ЗАМОВЛЕННЯ</span>
       <a class="phone" href="tel:+380636503959">+380 63 650 39 59</a>
     </footer>
   </div>
   <script>
     const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThtiqc3OtXf4aXEqRa4KkpPaCIbQ0WSnLplw2QdS0EcfMrXKkjZ0j2ro5qK-bCtsNH8ONIVIFUTc2o/pub?gid=75204837&single=true&output=csv";
-    const menuEl = document.getElementById("menu");
+    const SPEC = { m: "30-35 шт", l: "23-25 шт", xl: "15-18 шт", xxl: "10-14 шт" };
+    const FALLBACK = [
+      ["Раки BBQ", "M, L, XL, XXL", "1 кг", "1300, 1750, 2300, 2800", ""],
+      ["Раки вершкові", "M, L, XL, XXL", "1 кг", "1300, 1750, 2300, 2800", ""],
+      ["Раки класика", "M, L, XL, XXL", "1 кг", "1300, 1750, 2300, 2800", ""],
+      ["Раки томатні", "M, L, XL, XXL", "1 кг", "1300, 1750, 2300, 2800", ""],
+      ["Раки пікантні/HOT", "M, L, XL, XXL", "1 кг", "1300, 1750, 2300, 2800", ""]
+    ];
+    const flavorsEl = document.getElementById("flavors");
+    const sizesEl = document.getElementById("sizes");
+    const noteEl = document.getElementById("note");
     function chunks(value) {
       return String(value || "").split(/[,;/|]+/).map((part) => part.trim()).filter((part) => part && part !== "-" && part !== "—");
     }
-    function weightOf(value) {
-      const text = String(value || "").trim();
-      if (!text) return "";
-      return /^\d+$/.test(text) ? text + " г" : text;
+    function titleOf(name) {
+      let text = name.replace(/^раки\s+/i, "").trim().replace(/\s*\/\s*/g, " / ");
+      if (/^bbq$/i.test(text)) return "BBQ";
+      return text.charAt(0).toUpperCase() + text.slice(1);
     }
     function numsOf(value) {
-      return String(value || "").match(/\d+/g) || [];
+      return String(value || "").split(/[,;/|]+/).map((part) => (part.match(/\d+/) || [""])[0]);
     }
-    function titleOf(name) {
-      const n = name.toLowerCase();
-      if (n.includes("bbq")) return "Раки BBQ";
-      if (n.includes("вершк")) return "Вершкові";
-      if (n.includes("класик")) return "Класика";
-      if (n.includes("томат")) return "Томатні";
-      if (n.includes("пікант") || n.includes("пикант") || n.includes("hot")) return "Пікантні/HOT";
-      return name.replace(/^раки\s+/i, "");
-    }
-    function isHalf(weight) {
-      return /0[.,]\s*5/.test(String(weight || ""));
+    function piecesOf(size, parts, index) {
+      let text = parts.length ? (parts[index] || "") : (SPEC[size.toLowerCase()] || "");
+      text = text.trim();
+      if (!text) return "";
+      return /шт/i.test(text) ? text : text + " шт";
     }
     function paint(rows) {
       const groups = [];
       const index = {};
-      rows.filter((row) => row[0].toLowerCase().includes("рак")).forEach((row) => {
+      rows.filter((row) => String(row[0] || "").toLowerCase().includes("рак")).forEach((row) => {
         if (index[row[0]] == null) { index[row[0]] = groups.length; groups.push([]); }
         groups[index[row[0]]].push(row);
       });
-      menuEl.style.gridTemplateColumns = "repeat(" + Math.max(groups.length, 1) + ", minmax(0, 1fr))";
-      menuEl.replaceChildren();
+      flavorsEl.replaceChildren();
+      sizesEl.replaceChildren();
+      if (!groups.length) return;
+      const full = groups[0].find((row) => !/0[.,]\s*5/.test(row[2])) || groups[0][0];
+      const sizes = chunks(full[1]);
+      const prices = numsOf(full[3]);
+      const counts = chunks(full[4] || "");
       groups.forEach((group) => {
-        const full = group.find((row) => !isHalf(row[2])) || group[0];
-        const half = group.find((row) => isHalf(row[2]));
-        const sizes = chunks(full[1]);
-        const fullNums = numsOf(full[3]);
-        const halfNums = half ? numsOf(half[3]) : [];
-        const col = document.createElement("section");
-        col.className = "col";
-        const heading = document.createElement("h2");
-        heading.textContent = titleOf(full[0]);
-        const list = document.createElement("div");
-        list.className = "sizes";
-        sizes.forEach((size, i) => {
-          const cell = document.createElement("div");
-          cell.className = "size";
-          const mark = document.createElement("b");
-          mark.textContent = size;
-          const tiers = document.createElement("div");
-          tiers.className = "tiers";
-          const line = (weight, price) => {
-            const row = document.createElement("div");
-            row.className = "tier";
-            const w = document.createElement("span");
-            w.className = "w";
-            w.textContent = weightOf(weight);
-            const cost = document.createElement("span");
-            cost.className = "price";
-            cost.textContent = price ? price + " грн" : "";
-            row.append(w, cost);
-            return row;
-          };
-          tiers.appendChild(line(full[2], fullNums[i]));
-          if (half) tiers.appendChild(line(half[2], halfNums[i]));
-          cell.append(mark, tiers);
-          list.appendChild(cell);
-        });
-        col.append(heading, list);
-        menuEl.appendChild(col);
+        const row = group.find((item) => !/0[.,]\s*5/.test(item[2])) || group[0];
+        const pill = document.createElement("div");
+        pill.className = "pill";
+        pill.textContent = titleOf(row[0]);
+        flavorsEl.appendChild(pill);
+      });
+      const weight = String(full[2] || "1 кг").toUpperCase();
+      noteEl.textContent = "ЦІНИ ЗА " + weight + " ДЛЯ БУДЬ-ЯКОГО СМАКУ";
+      sizes.forEach((size, i) => {
+        const card = document.createElement("article");
+        card.className = "size";
+        const mark = document.createElement("b");
+        mark.textContent = size;
+        const count = document.createElement("span");
+        count.textContent = piecesOf(size, counts, i);
+        const price = document.createElement("strong");
+        price.textContent = prices[i] ? prices[i] + " грн" : "";
+        card.append(mark, count, price);
+        sizesEl.appendChild(card);
       });
     }
     function parseCsv(text) {
@@ -184,17 +181,18 @@
       fetch(CSV + "&_=" + Date.now(), { cache: "no-store" })
         .then((res) => res.text())
         .then((text) => {
-          const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || ""]).filter((r) => r[0]);
+          const next = parseCsv(text).slice(1).map((c) => [c[0] || "", c[1] || "", c[2] || "", c[3] || "", c[4] || ""]).filter((r) => r[0]);
           const key = JSON.stringify(next);
-          if (key === shown) return;
+          if (!next.length || key === shown) return;
           shown = key;
           paint(next);
         })
         .catch(() => {});
     }
     function fit() {
-      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
-      document.documentElement.style.setProperty("--s", String(scale));
+      const root = document.documentElement;
+      root.style.setProperty("--sx", String(window.innerWidth / 1280));
+      root.style.setProperty("--sy", String(window.innerHeight / 720));
     }
     document.getElementById("logoBtn").addEventListener("click", () => {
       const root = document.documentElement;
@@ -202,20 +200,12 @@
       if (!active) { (root.requestFullscreen || root.webkitRequestFullscreen).call(root); return; }
       (document.exitFullscreen || document.webkitExitFullscreen).call(document);
     });
+    paint(FALLBACK);
     fit();
     pull();
-    setInterval(pull, 2000);
+    setInterval(pull, 120000);
     window.addEventListener("resize", fit);
-    const qrLib = document.createElement("script");
-    qrLib.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
-    qrLib.onload = () => {
-      const qr = qrcode(0, "M");
-      const link = location.protocol.startsWith("http") ? new URL("/list.html", location.href).href : new URL("list.html", location.href).href;
-      qr.addData(link);
-      qr.make();
-      document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
-    };
-    document.body.appendChild(qrLib);
+    document.addEventListener("fullscreenchange", fit);
   </script>
 </body>
 </html>
