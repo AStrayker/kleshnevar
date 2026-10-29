@@ -7,6 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Marck+Script&family=Oswald:wght@500;600;700&family=Rubik+Wet+Paint&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="bat-fly-up.png" />
+  <link rel="preload" as="image" href="bat-fly-down.png" />
+  <link rel="preload" as="image" href="bat-shock.png" />
+  <link rel="preload" as="image" href="bat-wince.png" />
+  <link rel="preload" as="image" href="bat-dizzy.png" />
+  <link rel="preload" as="image" href="bat-wake.png" />
   <style>
     :root { --hot: #ff2a18; --price: #ff2a18; --ink: #090807; }
     * { box-sizing: border-box; }
@@ -14,7 +20,7 @@
     button { font: inherit; color: inherit; cursor: pointer; }
     .stage {
       width: 1280px; height: 720px; position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%) scale(var(--s, 1));
+      transform: translate(-50%, -50%) scale(var(--sx, 1), var(--sy, 1));
       background:
         radial-gradient(320px 520px at -20px 46%, rgba(255, 78, 16, .34), transparent 68%),
         radial-gradient(300px 480px at 1300px 50%, rgba(255, 64, 10, .32), transparent 70%),
@@ -45,12 +51,16 @@
     .title-row h2::after { width: 100%; }
     h2.subhead { margin-top: 10px; }
     .kg { flex: none; border: 2px solid var(--price); border-radius: 14px; padding: 1px 12px 3px; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: .03em; line-height: 1.15; }
-    .stack { margin-top: 12px; }
+    .kg:empty { display: none; }
+    .stack { margin-top: 8px; }
+    .col.left h3 { font-size: 24px; line-height: 1.05; }
     .line { margin-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
     .line h3 { white-space: nowrap; font-size: 29px; }
     .line .price { font-size: 40px; }
     h3 { margin: 0; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 32px; line-height: 1; }
     .meta { margin: 2px 0 0; color: #dedede; font-weight: 700; font-size: 16px; line-height: 1.1; }
+    .ings { margin: 3px 0 0; color: #fff; font-weight: 700; font-size: 14px; line-height: 1.12; }
+    .ings[hidden] { display: none; }
     .price { margin: 0; color: var(--price); font-family: Oswald, sans-serif; font-weight: 700; font-size: 44px; line-height: .95; white-space: nowrap; }
     .flavors { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; margin-top: 6px; }
     .flavor { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.34); }
@@ -63,22 +73,22 @@
       -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
       mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 100%);
     }
-    .col.left .dish { max-height: 250px; }
+    .col.left .dish { max-height: 210px; }
     .col.right .dish { max-height: 188px; object-position: center 30%; }
-    .foot { position: relative; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+    .foot { position: relative; display: flex; align-items: center; justify-content: center; }
     .qrbox { position: absolute; left: -26px; bottom: -8px; z-index: 4; background: #fff; padding: 6px; line-height: 0; border-radius: 0 8px 0 0; }
     .qrbox svg { width: 176px; height: 176px; display: block; }
     .phone { color: #fff; text-decoration: none; font-family: Oswald, sans-serif; font-weight: 600; font-size: 40px; letter-spacing: .04em; }
     .stage.smack { animation: tv-shake .55s linear; }
     @keyframes tv-shake {
-      0%, 100% { transform: translate(-50%, -50%) scale(var(--s, 1)); }
-      18% { transform: translate(calc(-50% - 16px), calc(-50% + 8px)) scale(var(--s, 1)) rotate(-.7deg); }
-      36% { transform: translate(calc(-50% + 14px), calc(-50% - 7px)) scale(var(--s, 1)) rotate(.55deg); }
-      54% { transform: translate(calc(-50% - 8px), calc(-50% + 4px)) scale(var(--s, 1)) rotate(-.3deg); }
-      72% { transform: translate(calc(-50% + 4px), calc(-50% - 2px)) scale(var(--s, 1)); }
+      0%, 100% { transform: translate(-50%, -50%) scale(var(--sx, 1), var(--sy, 1)); }
+      18% { transform: translate(calc(-50% - 16px), calc(-50% + 8px)) scale(var(--sx, 1), var(--sy, 1)) rotate(-.7deg); }
+      36% { transform: translate(calc(-50% + 14px), calc(-50% - 7px)) scale(var(--sx, 1), var(--sy, 1)) rotate(.55deg); }
+      54% { transform: translate(calc(-50% - 8px), calc(-50% + 4px)) scale(var(--sx, 1), var(--sy, 1)) rotate(-.3deg); }
+      72% { transform: translate(calc(-50% + 4px), calc(-50% - 2px)) scale(var(--sx, 1), var(--sy, 1)); }
     }
-    .bats { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
-    .bat { position: absolute; left: 0; top: 0; width: 240px; height: 283px; transform-origin: center; filter: drop-shadow(0 12px 8px rgba(0,0,0,.55)); }
+    .bats { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; contain: layout paint; }
+    .bat { position: absolute; left: 0; top: 0; width: 240px; height: 283px; transform-origin: center; filter: drop-shadow(0 12px 8px rgba(0,0,0,.55)); will-change: transform; }
     .bat img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: none; }
     .bat.face-fly .up { display: block; }
     .bat.face-fly.flap .up { display: none; }
@@ -87,7 +97,7 @@
     .bat.sil .down { display: none; }
     .bat.sil.flap .up { display: none; }
     .bat.sil.flap .down { display: block; }
-    .bat.sil { width: 230px; height: 126px; filter: drop-shadow(0 6px 4px rgba(0,0,0,.8)); }
+    .bat.sil { width: 230px; height: 126px; filter: none; }
     .bat.sil svg { width: 100%; height: 100%; display: block; overflow: visible; }
     .star { position: absolute; color: #ffe14a; font-style: normal; font-size: 28px; line-height: 1; text-shadow: 0 0 8px #ff8800; opacity: 0; }
     .hit { position: absolute; width: 0; height: 0; z-index: 7; }
@@ -138,52 +148,55 @@
       <section class="col left">
         <h2>Морські мікси</h2>
         <article class="stack">
-          <h3>Морський мікс</h3>
-          <p class="meta" data-weight="mix">1 кг</p>
-          <p class="price" data-key="mix">1800 грн</p>
+          <h3 data-name="mix"></h3>
+          <p class="ings" data-ings="mix" hidden></p>
+          <p class="meta" data-weight="mix"></p>
+          <p class="price" data-key="mix"></p>
         </article>
         <article class="stack">
-          <h3>Морський мікс VIP</h3>
-          <p class="meta" data-weight="vip">1 кг</p>
-          <p class="price" data-key="vip">2200 грн</p>
+          <h3 data-name="vip"></h3>
+          <p class="ings" data-ings="vip" hidden></p>
+          <p class="meta" data-weight="vip"></p>
+          <p class="price" data-key="vip"></p>
         </article>
         <img class="dish" src="board-mix.jpg" alt="" />
       </section>
       <section class="col">
         <div class="title-row">
           <h2>Смаки на вибір</h2>
-          <span class="kg" id="kgBadge">1 кг</span>
+          <span class="kg" id="kgBadge"></span>
         </div>
         <h2 class="subhead">Креветки</h2>
         <div class="flavors">
-          <div class="flavor"><h3>Вершкові</h3><p class="price" data-key="cream">999 грн</p></div>
-          <div class="flavor"><h3>Класичні</h3><p class="price" data-key="classic">999 грн</p></div>
-          <div class="flavor"><h3>Томатний</h3><p class="price" data-key="tomato">999 грн</p></div>
-          <div class="flavor"><h3>Том Кха</h3><p class="price" data-key="tomkha">999 грн</p></div>
-          <div class="flavor"><h3>Том Ям</h3><p class="price" data-key="tomyum">999 грн</p></div>
-          <div class="flavor"><h3>Часниково-гострі</h3><p class="price" data-key="garlic">999 грн</p></div>
+          <div class="flavor"><h3 data-name="cream"></h3><p class="price" data-key="cream"></p></div>
+          <div class="flavor"><h3 data-name="classic"></h3><p class="price" data-key="classic"></p></div>
+          <div class="flavor"><h3 data-name="tomato"></h3><p class="price" data-key="tomato"></p></div>
+          <div class="flavor"><h3 data-name="tomkha"></h3><p class="price" data-key="tomkha"></p></div>
+          <div class="flavor"><h3 data-name="tomyum"></h3><p class="price" data-key="tomyum"></p></div>
+          <div class="flavor"><h3 data-name="garlic"></h3><p class="price" data-key="garlic"></p></div>
         </div>
       </section>
       <section class="col right">
         <h2>Хрумке панко</h2>
         <article class="line">
           <div>
-            <h3>Мідії Панко</h3>
-            <p class="meta"><span data-weight="mussels">200 г</span> · 28-31 шт</p>
+            <h3 data-name="mussels"></h3>
+            <p class="meta" data-portion="mussels"></p>
           </div>
-          <p class="price" data-key="mussels">275 грн</p>
+          <p class="price" data-key="mussels"></p>
         </article>
         <article class="line">
           <div>
-            <h3>Креветки панко</h3>
-            <p class="meta"><span data-weight="shrimp">200 г</span> · 9 шт</p>
+            <h3 data-name="shrimp"></h3>
+            <p class="meta" data-portion="shrimp"></p>
           </div>
-          <p class="price" data-key="shrimp">250 грн</p>
+          <p class="price" data-key="shrimp"></p>
         </article>
         <h2 class="extra">Додатково</h2>
         <article class="stack">
-          <h3>Креватка в соусі вершковом</h3>
-          <p class="price" data-key="sauce">900 грн</p>
+          <p class="meta" data-weight="sauce"></p>
+          <h3 data-name="sauce"></h3>
+          <p class="price" data-key="sauce"></p>
         </article>
         <img class="dish" src="board-panko.jpg" alt="" />
       </section>
@@ -219,6 +232,15 @@
       if (!text) return "";
       return /^\d+$/.test(text) ? text + " г" : text;
     }
+    function countOf(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+      return /шт/i.test(text) ? text : text + " шт";
+    }
+    function portionOf(row) {
+      if (!row) return "";
+      return [weightOf(row[2]), countOf(row[4])].filter(Boolean).join(" · ");
+    }
     function parseCsv(text) {
       const rows = [];
       let row = [], cell = "", quoted = false;
@@ -240,19 +262,29 @@
         const key = kind(row[0] || "");
         if (key && !map[key]) map[key] = row;
       });
+      document.querySelectorAll("[data-name]").forEach((el) => {
+        const row = map[el.dataset.name];
+        el.textContent = row ? String(row[0] || "").trim() : "";
+      });
       document.querySelectorAll("[data-key]").forEach((el) => {
         const row = map[el.dataset.key];
-        const next = row ? money(row[3]) : "";
-        if (next) el.textContent = next;
+        el.textContent = row ? money(row[3]) : "";
       });
       document.querySelectorAll("[data-weight]").forEach((el) => {
         const row = map[el.dataset.weight];
-        const next = row ? weightOf(row[2]) : "";
-        if (next) el.textContent = next;
+        el.textContent = row ? weightOf(row[2]) : "";
+      });
+      document.querySelectorAll("[data-portion]").forEach((el) => {
+        el.textContent = portionOf(map[el.dataset.portion]);
+      });
+      document.querySelectorAll("[data-ings]").forEach((el) => {
+        const row = map[el.dataset.ings];
+        const next = row ? String(row[5] || "").trim() : "";
+        el.textContent = next;
+        el.hidden = !next;
       });
       const flavor = map.cream || map.classic;
-      const kilo = flavor ? weightOf(flavor[2]) : "";
-      if (kilo) document.getElementById("kgBadge").textContent = kilo;
+      document.getElementById("kgBadge").textContent = flavor ? weightOf(flavor[2]) : "";
     }
     let shown = "";
     function pull() {
@@ -268,8 +300,9 @@
         .catch(() => {});
     }
     function fit() {
-      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
-      document.documentElement.style.setProperty("--s", String(scale));
+      const root = document.documentElement;
+      root.style.setProperty("--sx", String(window.innerWidth / 1280));
+      root.style.setProperty("--sy", String(window.innerHeight / 720));
     }
     document.getElementById("logoBtn").addEventListener("click", () => {
       const root = document.documentElement;
@@ -279,8 +312,9 @@
     });
     fit();
     pull();
-    setInterval(pull, 2000);
+    setInterval(pull, 120000);
     window.addEventListener("resize", fit);
+    document.addEventListener("fullscreenchange", fit);
     const qrLib = document.createElement("script");
     qrLib.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
     qrLib.onload = () => {
@@ -323,18 +357,16 @@
     function batNode(cls) {
       const el = document.createElement("div");
       el.className = "bat " + cls;
-      el.innerHTML = '<img class="up" src="bat-fly-up.png" alt="">' +
-        '<img class="down" src="bat-fly-down.png" alt="">' +
-        '<img class="shock" src="bat-shock.png" alt="">' +
-        '<img class="wince" src="bat-wince.png" alt="">' +
-        '<img class="daze" src="bat-dizzy.png" alt="">' +
-        '<img class="wake" src="bat-wake.png" alt="">';
+      el.innerHTML = '<img class="up" src="bat-fly-up.png" alt="" decoding="sync">' +
+        '<img class="down" src="bat-fly-down.png" alt="" decoding="sync">' +
+        '<img class="shock" src="bat-shock.png" alt="" decoding="sync">' +
+        '<img class="wince" src="bat-wince.png" alt="" decoding="sync">' +
+        '<img class="daze" src="bat-dizzy.png" alt="" decoding="sync">' +
+        '<img class="wake" src="bat-wake.png" alt="" decoding="sync">';
       return el;
     }
     function placeBat(el, x, y, sx, sy, rot, dir) {
-      el.style.left = x + "vw";
-      el.style.top = y + "vh";
-      el.style.transform = "translate(-50%, -50%) scale(" + (dir * sx) + ", " + sy + ") rotate(" + rot + "deg)";
+      el.style.transform = "translate3d(" + x + "vw," + y + "vh,0) translate(-50%,-50%) scale(" + (dir * sx) + "," + sy + ") rotate(" + rot + "deg)";
     }
     function clamp01(v) { return Math.max(0, Math.min(1, v)); }
     function lerp(a, b, t) { return a + (b - a) * t; }
@@ -383,7 +415,9 @@
           delay: i * 95 + (i % 3) * 30,
           size: 0.48 + depth * 0.28,
           amp: 4 + (i % 4) * 1.6,
-          phase: i * 0.9
+          phase: i * 0.9,
+          flap: null,
+          on: null
         };
       });
     }
@@ -397,10 +431,18 @@
         const gone = dir > 0 ? x > 128 : x < -28;
         const born = tt > 0;
         if (!gone) flying = true;
-        bat.el.style.visibility = born && !gone ? "visible" : "hidden";
+        const show = born && !gone;
+        if (bat.on !== show) {
+          bat.on = show;
+          bat.el.style.visibility = show ? "visible" : "hidden";
+        }
         const bank = Math.cos(tt / 260 + bat.phase) * 10;
         placeBat(bat.el, x, y, bat.size, bat.size, bank, dir);
-        bat.el.classList.toggle("flap", Math.floor(tt / 70) % 2 === 0);
+        const flap = Math.floor(tt / 70) % 2 === 0;
+        if (bat.flap !== flap) {
+          bat.flap = flap;
+          bat.el.classList.toggle("flap", flap);
+        }
       });
       return flying;
     }
@@ -453,10 +495,14 @@
         const star = document.createElement("i");
         star.className = "star";
         star.textContent = "★";
+        star.style.left = impact.x + "vw";
+        star.style.top = impact.y + "vh";
         layer.appendChild(star);
         return star;
       });
       let smashed = false;
+      let lastFace = "";
+      let lastFlap = null;
       const started = performance.now();
       function finish() {
         layer.replaceChildren();
@@ -508,10 +554,17 @@
           flapEvery = 60;
         }
         const face = t < 700 ? "fly" : t < 1000 ? "shock" : t < 1400 ? "wince" : t < 2150 ? "dizzy" : t < 2320 ? "wince" : t < 2680 ? "wake" : "fly";
-        hero.classList.remove("face-fly", "face-shock", "face-wince", "face-dizzy", "face-wake");
-        hero.classList.add("face-" + face);
+        if (lastFace !== face) {
+          lastFace = face;
+          hero.classList.remove("face-fly", "face-shock", "face-wince", "face-dizzy", "face-wake");
+          hero.classList.add("face-" + face);
+        }
         placeBat(hero, x, y, sx, sy, rot, dir);
-        hero.classList.toggle("flap", Math.floor(t / flapEvery) % 2 === 0);
+        const flap = Math.floor(t / flapEvery) % 2 === 0;
+        if (lastFlap !== flap) {
+          lastFlap = flap;
+          hero.classList.toggle("flap", flap);
+        }
         if (t >= 1000 && !smashed) {
           smashed = true;
           shakeStage();
@@ -532,8 +585,7 @@
           star.style.opacity = show ? String(fadeIn * fadeOut) : "0";
           const ang = t / 190 + i * 2.094;
           const rad = 78 + i * 14;
-          star.style.left = "calc(" + impact.x + "vw + " + Math.cos(ang) * rad + "px)";
-          star.style.top = "calc(" + impact.y + "vh + " + Math.sin(ang) * rad * 0.62 + "px)";
+          star.style.transform = "translate(" + Math.cos(ang) * rad + "px," + Math.sin(ang) * rad * 0.62 + "px)";
         });
         if (t < 4500) requestAnimationFrame(frame);
         else finish();
@@ -567,6 +619,32 @@
     }
     pollFx();
     setInterval(pollFx, 1500);
+    const BAT_SRC = ["bat-fly-up.png", "bat-fly-down.png", "bat-shock.png", "bat-wince.png", "bat-dizzy.png", "bat-wake.png"];
+    function warmBats() {
+      Promise.all(BAT_SRC.map((src) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.src = src;
+        return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+      })).then(() => {
+        const holder = document.createElement("div");
+        holder.setAttribute("aria-hidden", "true");
+        holder.style.cssText = "position:fixed;left:-420px;top:0;width:240px;height:283px;overflow:hidden;pointer-events:none;";
+        const node = batNode("hero face-fly");
+        holder.appendChild(node);
+        document.body.appendChild(holder);
+        const faces = ["face-fly", "face-fly flap", "face-shock", "face-wince", "face-dizzy", "face-wake"];
+        let i = 0;
+        const tick = () => {
+          node.className = "bat hero " + faces[i];
+          i += 1;
+          if (i < faces.length) requestAnimationFrame(tick);
+          else requestAnimationFrame(() => holder.remove());
+        };
+        requestAnimationFrame(tick);
+      });
+    }
+    warmBats();
     const preview = new URLSearchParams(location.search);
     if (preview.has("boom1")) playBoom("pass");
     else if (preview.has("boom")) playBoom("hit");
