@@ -10,7 +10,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Морський мікс у вершково-Том Ям соусі",
           "price": 1800.0,
           "unit": "порц.",
-          "meta": "порція 1 кг",
+          "meta": "порція 1,5 кг",
           "photo": "assets/menu/mix.jpg"
         },
         {
@@ -18,7 +18,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Морський мікс у вершково-Том Ям соусі VIP",
           "price": 2200.0,
           "unit": "порц.",
-          "meta": "порція 1 кг",
+          "meta": "порція 1,5 кг",
           "photo": "assets/menu/mix-vip.jpg"
         },
         {
