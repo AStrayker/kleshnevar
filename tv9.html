@@ -20,7 +20,7 @@
         radial-gradient(280px 640px at 1320px 50%, rgba(255, 56, 8, .4), transparent 70%),
         radial-gradient(520px 120px at 50% 100%, rgba(120, 32, 6, .45), transparent 72%),
         var(--ink);
-      display: grid; grid-template-rows: 78px auto auto auto auto auto minmax(250px, 1fr);
+      display: grid; grid-template-rows: 78px auto auto auto auto auto minmax(220px, 1fr);
       padding: 6px 22px 0;
       user-select: none;
     }
@@ -36,11 +36,11 @@
     .navline i { display: block; height: 2px; width: 48px; background: var(--hot); font-style: normal; }
     .raki { position: relative; z-index: 1; margin: 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 82px; line-height: .82; letter-spacing: .14em; }
     .raki::before { content: ""; position: absolute; z-index: -1; left: 16%; right: 16%; top: 54%; height: 14px; background: var(--hot); border-radius: 8px; transform: rotate(-1.6deg); }
-    .pick { margin: 2px 0 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 500; font-size: 20px; letter-spacing: .2em; }
-    .flavors { display: flex; justify-content: center; gap: 12px; margin-top: 6px; }
-    .pill { position: relative; flex: 1 1 0; min-width: 0; border: 2px solid rgba(255,255,255,.7); border-radius: 16px; padding: 7px 8px 12px; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 600; font-size: 26px; line-height: 1; white-space: nowrap; }
-    .pill::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 5px; height: 4px; background: var(--hot); border-radius: 4px; transform: rotate(-2deg); }
-    .note { margin: 6px 0 0; text-align: center; color: var(--hot); font-family: Oswald, sans-serif; font-weight: 500; font-size: 18px; letter-spacing: .16em; }
+    .pick { margin: 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 500; font-size: 20px; line-height: 1; letter-spacing: .2em; }
+    .flavors { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: center; margin: 6px -16px 10px; }
+    .pill { position: relative; flex: 0 0 auto; border: 0; padding: 0 0 12px; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 56px; line-height: 1; white-space: nowrap; }
+    .pill::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 0; height: 4px; background: var(--hot); border-radius: 4px; transform: rotate(-2deg); }
+    .note { margin: 6px 0 0; text-align: center; color: var(--hot); font-family: Oswald, sans-serif; font-weight: 500; font-size: 18px; line-height: 1; letter-spacing: .16em; }
     .sizes { position: relative; z-index: 2; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); margin: 2px 0 -18px; text-align: center; }
     .size b { display: block; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 71px; line-height: .82; letter-spacing: .01em; text-shadow: 0 3px 0 rgba(0,0,0,.45); }
     .size span { display: block; margin-top: 8px; color: #fff; font-weight: 800; font-size: 28px; line-height: 1; }
@@ -48,7 +48,7 @@
     .size strong::after { content: ""; display: block; height: 5px; margin-top: 3px; background: var(--hot); border-radius: 4px; transform: rotate(-1.5deg); }
     .dish {
       width: calc(100% + 44px); height: 100%; margin: 0 -22px; min-height: 0; display: block;
-      object-fit: cover; object-position: center 62%;
+      object-fit: cover; object-position: center 42%;
       -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 100%);
       mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 100%);
     }
@@ -91,7 +91,7 @@
     <div class="flavors" id="flavors"></div>
     <p class="note" id="note"></p>
     <div class="sizes" id="sizes"></div>
-    <img class="dish" src="board-cray.jpg" alt="" />
+    <img class="dish" src="board-broth.jpg" alt="" />
     <div class="qrbox" id="qr"></div>
     <footer class="foot">
       <span class="order">ЗАМОВЛЕННЯ</span>
