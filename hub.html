@@ -62,7 +62,7 @@
         <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
       </svg>
     </div>
-    <p class="count" id="count" aria-live="polite">2 784</p>
+    <p class="count" id="count" aria-live="polite">2 786</p>
     <p class="label">підписників</p>
     <nav class="actions" aria-label="Посилання">
       <div class="btn split">
@@ -85,7 +85,7 @@
   </main>
   <script>
     const countEl = document.getElementById("count");
-    const TT = "https://r.jina.ai/https://www.tiktok.com/@kleshnevar";
+    const LIVE = "https://kleshnevar-followers-production.up.railway.app/followers";
     let shown = null;
     let fileStamp = 0;
     let tiktokSeenAt = 0;
@@ -139,19 +139,11 @@
       results.forEach(remember);
     }
 
-    async function refreshTikTok() {
-      const started = Date.now();
+    async function refreshLive() {
       try {
-        const response = await fetch(TT, { headers: { "X-No-Cache": "true" }, cache: "no-store" });
-        if (!response.ok || fileStamp > started) return;
-        const match = (await response.text()).match(/Following\s+\*\*(\d[\d\s.,]*)\*\*\s*Followers\b/i);
-        if (!match || fileStamp > started) return;
-        const value = Number(match[1].replace(/\D/g, ""));
-        if (!(value > 0)) return;
-        if (parts.tiktok > 0 && (value > parts.tiktok * 3 || value * 3 < parts.tiktok)) return;
-        parts.tiktok = value;
-        tiktokSeenAt = Date.now();
-        publish();
+        const response = await fetch(LIVE, { cache: "no-store" });
+        if (!response.ok) return;
+        remember(await response.json());
       } catch (error) {}
     }
 
@@ -162,9 +154,9 @@
 
     fit();
     refreshSaved();
-    refreshTikTok();
+    refreshLive();
+    setInterval(refreshLive, 4000);
     setInterval(refreshSaved, 60000);
-    setInterval(refreshTikTok, 30000);
     window.addEventListener("resize", fit);
   </script>
 </body>
