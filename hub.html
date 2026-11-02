@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Клешневар</title>
+  <link rel="icon" href="ico.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --red: #ff2a18; --ink: #000; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: var(--ink); color: #fff; font-family: Manrope, system-ui, sans-serif; overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    .stage {
+      width: 420px; height: 760px; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(var(--s, 1));
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 28px 28px 32px; gap: 0;
+    }
+    .avatar {
+      width: 132px; height: 132px; border-radius: 50%;
+      border: 3px solid var(--red);
+      box-shadow: 0 0 0 8px rgba(255, 42, 24, .16);
+      display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 50% 42%, #2a0c09, #070707 72%);
+    }
+    .avatar svg { width: 78px; height: 78px; }
+    .count {
+      margin: 22px 0 0; font-family: Unbounded, sans-serif; font-weight: 700;
+      font-size: 64px; line-height: .9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+    }
+    .label { margin: 8px 0 0; color: #bdbdbd; font-weight: 700; font-size: 16px; letter-spacing: .16em; text-transform: uppercase; }
+    .actions { width: 100%; margin-top: 34px; display: flex; flex-direction: column; gap: 12px; }
+    .btn {
+      min-height: 62px; border-radius: 18px; border: 1px solid rgba(255,255,255,.14);
+      background: #121212; display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 0 16px; font-weight: 800; font-size: 16px; letter-spacing: .01em; text-align: center;
+    }
+    .btn svg { width: 22px; height: 22px; flex: none; }
+    .btn:active { background: #1c1c1c; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; padding: 0; overflow: hidden; }
+    .split a {
+      min-height: 62px; display: flex; align-items: center; justify-content: center;
+      padding: 8px 10px; text-align: center; line-height: 1.15;
+    }
+    .split a + a { border-left: 1px solid rgba(255,255,255,.16); }
+    .split a:first-child { color: #fff; }
+    .split a:last-child { color: #fff; }
+    .ig svg, .tt svg, .review svg { color: var(--red); }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <div class="avatar" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="44" fill="none" stroke="#ff2a18" stroke-width="3.5"/>
+        <path d="M34 34c-10-8-18-1-14 8 3 6 10 6 13 1M36 30c2-8 12-8 12 0M66 34c10-8 18-1 14 8-3 6-10 6-13 1M64 30c-2-8-12-8-12 0" fill="none" stroke="#ff2a18" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="50" cy="46" rx="9" ry="13" fill="#ff2a18"/>
+        <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
+      </svg>
+    </div>
+    <p class="count" id="count" aria-live="polite">—</p>
+    <p class="label">підписників</p>
+    <nav class="actions" aria-label="Посилання">
+      <div class="btn split">
+        <a href="index.html#krevetky">Меню закладу</a>
+        <a href="index.html#vitryna">Повний асортимент</a>
+      </div>
+      <a class="btn ig" href="https://www.instagram.com/kleshnevar_km_/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Наша сторінка в Instagram
+      </a>
+      <a class="btn tt" href="https://www.tiktok.com/@kleshnevar" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.5 3c.4 2.6 1.9 4.4 4.5 4.7v3.1c-1.5 0-2.9-.5-4.1-1.3v6.2c0 3.4-2.6 6.1-6.2 6.1S2.5 19.1 2.5 15.7c0-3.3 2.5-6 5.8-6.1v3.2c-.5.2-1 .6-1 1.4 0 1.2 1 2.1 2.2 2.1s2.1-1 2.1-2.2V3h2.9z"/></svg>
+        Наша сторінка в TikTok
+      </a>
+      <a class="btn review" id="review" href="https://www.google.com/maps/search/?api=1&amp;query=Kleshnevar%20%D0%BF%D1%80%D0%BE%D1%81%D0%BF.%20%D0%A8%D0%B5%D0%B2%D1%87%D0%B5%D0%BD%D0%BA%D0%B0%2031%2F32%20%D0%9A%D0%B0%D0%BC%27%D1%8F%D0%BD%D1%81%D1%8C%D0%BA%D0%B5" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2l2.4 5.1 5.6.7-4.1 3.8 1.1 5.5L12 15.8 7 18.3l1.1-5.5L4 9l5.6-.7L12 3.2z"/></svg>
+        Залишити відгук про заклад
+      </a>
+    </nav>
+  </main>
+  <script>
+    const IG = "https://r.jina.ai/https://www.instagram.com/kleshnevar_km_/";
+    const TT = "https://r.jina.ai/https://www.tiktok.com/@kleshnevar";
+    const countEl = document.getElementById("count");
+    let busy = false;
+    let shown = null;
+
+    function followersFrom(text) {
+      const match = String(text || "").match(/(\d[\d\s.,]*)\**\s*followers\b/i);
+      if (!match) return null;
+      const value = Number(match[1].replace(/[^\d]/g, ""));
+      return Number.isFinite(value) ? value : null;
+    }
+
+    function format(value) {
+      return value.toLocaleString("uk-UA");
+    }
+
+    async function readCount(url, browser) {
+      const headers = { "X-No-Cache": "true" };
+      if (browser) headers["X-Engine"] = "browser";
+      const response = await fetch(url, { headers: headers, cache: "no-store" });
+      if (!response.ok) throw new Error(String(response.status));
+      const count = followersFrom(await response.text());
+      if (count == null) throw new Error("no count");
+      return count;
+    }
+
+    async function refresh() {
+      if (busy) return;
+      busy = true;
+      try {
+        const [instagram, tiktok] = await Promise.all([
+          readCount(IG, true),
+          readCount(TT, false).catch(() => readCount(TT, true))
+        ]);
+        const total = instagram + tiktok;
+        if (total !== shown) {
+          shown = total;
+          countEl.textContent = format(total);
+        }
+      } catch (error) {
+      } finally {
+        busy = false;
+      }
+    }
+
+    function fit() {
+      const scale = Math.min(window.innerWidth / 420, window.innerHeight / 760);
+      document.documentElement.style.setProperty("--s", String(scale));
+    }
+
+    fit();
+    refresh();
+    setInterval(refresh, 30000);
+    window.addEventListener("resize", fit);
+  </script>
+</body>
+</html>
