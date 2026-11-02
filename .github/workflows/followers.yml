@@ -2,7 +2,7 @@ name: Update follower count
 
 on:
   schedule:
-    - cron: "17,47 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:

@@ -62,7 +62,7 @@
         <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
       </svg>
     </div>
-    <p class="count" id="count" aria-live="polite">2 765</p>
+    <p class="count" id="count" aria-live="polite">2 784</p>
     <p class="label">підписників</p>
     <nav class="actions" aria-label="Посилання">
       <div class="btn split">
@@ -85,33 +85,37 @@
   </main>
   <script>
     const countEl = document.getElementById("count");
-    const memoryKey = "kleshnevar-followers";
+    const TT = "https://r.jina.ai/https://www.tiktok.com/@kleshnevar";
     let shown = null;
-    let shownUpdated = 0;
+    let fileStamp = 0;
+    let tiktokSeenAt = 0;
+    const parts = { instagram: 0, tiktok: 0 };
 
     function format(value) {
       return value.toLocaleString("uk-UA");
     }
 
-    function payloadTotal(data) {
+    function show(total) {
+      if (!Number.isFinite(total) || total <= 0 || total === shown) return;
+      shown = total;
+      countEl.textContent = format(total);
+    }
+
+    function publish() {
+      if (parts.instagram > 0 && parts.tiktok > 0) show(parts.instagram + parts.tiktok);
+    }
+
+    function remember(data) {
       const instagram = Number(data && data.instagram);
       const tiktok = Number(data && data.tiktok);
       const total = Number(data && data.total);
-      if (!(instagram > 0 && tiktok > 0 && total === instagram + tiktok)) return null;
-      return { total: total, updated: Date.parse(data.updated) || 0 };
-    }
-
-    function show(item) {
-      if (!item) return;
-      if (shown != null && item.updated < shownUpdated && item.total !== shown) return;
-      if (item.total === shown) {
-        shownUpdated = Math.max(shownUpdated, item.updated);
-        return;
-      }
-      shown = item.total;
-      shownUpdated = item.updated;
-      countEl.textContent = format(item.total);
-      try { localStorage.setItem(memoryKey, String(item.total)); } catch (error) {}
+      const updated = Date.parse(data && data.updated) || 0;
+      if (!(instagram > 0 && tiktok > 0 && total === instagram + tiktok)) return;
+      if (updated < fileStamp) return;
+      fileStamp = updated;
+      parts.instagram = instagram;
+      if (updated >= tiktokSeenAt) parts.tiktok = tiktok;
+      publish();
     }
 
     async function readJson(url) {
@@ -127,17 +131,28 @@
       return JSON.parse(atob(String(data.content || "").replace(/\s/g, "")));
     }
 
-    async function refresh() {
+    async function refreshSaved() {
       const results = await Promise.all([
         readJson("followers.json?t=" + Date.now()),
         readGithub()
       ].map(function (job) { return job.catch(function () { return null; }); }));
-      let best = null;
-      results.forEach(function (data) {
-        const item = payloadTotal(data);
-        if (item && (!best || item.updated >= best.updated)) best = item;
-      });
-      show(best);
+      results.forEach(remember);
+    }
+
+    async function refreshTikTok() {
+      const started = Date.now();
+      try {
+        const response = await fetch(TT, { headers: { "X-No-Cache": "true" }, cache: "no-store" });
+        if (!response.ok || fileStamp > started) return;
+        const match = (await response.text()).match(/Following\s+\*\*(\d[\d\s.,]*)\*\*\s*Followers\b/i);
+        if (!match || fileStamp > started) return;
+        const value = Number(match[1].replace(/\D/g, ""));
+        if (!(value > 0)) return;
+        if (parts.tiktok > 0 && (value > parts.tiktok * 3 || value * 3 < parts.tiktok)) return;
+        parts.tiktok = value;
+        tiktokSeenAt = Date.now();
+        publish();
+      } catch (error) {}
     }
 
     function fit() {
@@ -145,13 +160,11 @@
       document.documentElement.style.setProperty("--s", String(scale));
     }
 
-    try {
-      const cached = Number(localStorage.getItem(memoryKey));
-      if (cached > 0) show({ total: cached, updated: 0 });
-    } catch (error) {}
     fit();
-    refresh();
-    setInterval(refresh, 120000);
+    refreshSaved();
+    refreshTikTok();
+    setInterval(refreshSaved, 60000);
+    setInterval(refreshTikTok, 30000);
     window.addEventListener("resize", fit);
   </script>
 </body>

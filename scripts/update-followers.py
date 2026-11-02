@@ -23,10 +23,14 @@ def digits(value):
 
 
 def instagram_count(text):
-    match = re.search(r'og:description" content="([\d,\.]+)\s+Followers', text, re.I)
-    if not match:
-        match = re.search(r"([\d,\.]+)\s+Followers,\s+\d+\s+Following", text, re.I)
-    count = digits(match.group(1)) if match else None
+    match = re.search(
+        r'\\?"username\\?":\\?"kleshnevar_km_\\?"[\s\S]{0,2500}?\\?"follower_count\\?":(\d+)',
+        text,
+    )
+    count = int(match.group(1)) if match else None
+    if count is None:
+        preview = re.search(r'og:description" content="([\d,\.]+)\s+Followers', text, re.I)
+        count = digits(preview.group(1)) if preview else None
     if count is None or not 100 <= count <= 5_000_000:
         return None
     return count
