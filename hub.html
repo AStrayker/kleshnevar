@@ -62,7 +62,7 @@
         <path d="M41 58h18l-3 7H44zM43 65h14l-3 6h-8zM46 71h8l-4 9-4-9z" fill="#ff2a18"/>
       </svg>
     </div>
-    <p class="count" id="count" aria-live="polite">—</p>
+    <p class="count" id="count" aria-live="polite">2 765</p>
     <p class="label">підписників</p>
     <nav class="actions" aria-label="Посилання">
       <div class="btn split">
@@ -84,78 +84,60 @@
     </nav>
   </main>
   <script>
-    const IG = "https://r.jina.ai/https://www.instagram.com/kleshnevar_km_/";
-    const TT = "https://r.jina.ai/https://www.tiktok.com/@kleshnevar";
     const countEl = document.getElementById("count");
     const memoryKey = "kleshnevar-followers";
-    let busy = false;
     let shown = null;
-
-    function followersFrom(text) {
-      const source = String(text || "");
-      const patterns = [
-        /Following\s+\*\*(\d[\d\s.,]*)\*\*\s*followers\b/i,
-        /\*\*(\d[\d\s.,]*)\*\*\s*followers\b/i,
-        /\[(\d[\d\s.,]*)\s+followers\]/i,
-        /(\d[\d\s.,]*)\s+followers\b/i
-      ];
-      for (const pattern of patterns) {
-        const match = source.match(pattern);
-        if (!match) continue;
-        const value = Number(match[1].replace(/[^\d]/g, ""));
-        if (value > 0 && value < 5000000) return value;
-      }
-      return null;
-    }
+    let shownUpdated = 0;
 
     function format(value) {
       return value.toLocaleString("uk-UA");
     }
 
-    function show(total, force) {
-      if (!Number.isFinite(total) || total <= 0) return;
-      if (!force && shown && Math.abs(total - shown) / shown > 0.5) return;
-      if (total === shown) return;
-      shown = total;
-      countEl.textContent = format(total);
-      try { localStorage.setItem(memoryKey, String(total)); } catch (error) {}
+    function payloadTotal(data) {
+      const instagram = Number(data && data.instagram);
+      const tiktok = Number(data && data.tiktok);
+      const total = Number(data && data.total);
+      if (!(instagram > 0 && tiktok > 0 && total === instagram + tiktok)) return null;
+      return { total: total, updated: Date.parse(data.updated) || 0 };
     }
 
-    async function readSaved() {
-      try {
-        const response = await fetch("followers.json?t=" + Date.now(), { cache: "no-store" });
-        if (!response.ok) return;
-        const data = await response.json();
-        const instagram = Number(data.instagram);
-        const tiktok = Number(data.tiktok);
-        const total = Number(data.total);
-        if (instagram > 0 && tiktok > 0 && total === instagram + tiktok) show(total, true);
-      } catch (error) {}
-    }
-
-    async function readCount(url, browser) {
-      const headers = { "X-No-Cache": "true" };
-      if (browser) headers["X-Engine"] = "browser";
-      const response = await fetch(url, { headers: headers, cache: "no-store" });
-      if (!response.ok) throw new Error(String(response.status));
-      const count = followersFrom(await response.text());
-      if (count == null) throw new Error("no count");
-      return count;
-    }
-
-    async function refreshLive() {
-      if (busy) return;
-      busy = true;
-      try {
-        const [instagram, tiktok] = await Promise.all([
-          readCount(IG, true),
-          readCount(TT, false).catch(function () { return readCount(TT, true); })
-        ]);
-        if (instagram >= 100 && tiktok >= 1) show(instagram + tiktok, false);
-      } catch (error) {
-      } finally {
-        busy = false;
+    function show(item) {
+      if (!item) return;
+      if (shown != null && item.updated < shownUpdated && item.total !== shown) return;
+      if (item.total === shown) {
+        shownUpdated = Math.max(shownUpdated, item.updated);
+        return;
       }
+      shown = item.total;
+      shownUpdated = item.updated;
+      countEl.textContent = format(item.total);
+      try { localStorage.setItem(memoryKey, String(item.total)); } catch (error) {}
+    }
+
+    async function readJson(url) {
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error(String(response.status));
+      return response.json();
+    }
+
+    async function readGithub() {
+      const response = await fetch("https://api.github.com/repos/AStrayker/kleshnevar/contents/followers.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(String(response.status));
+      const data = await response.json();
+      return JSON.parse(atob(String(data.content || "").replace(/\s/g, "")));
+    }
+
+    async function refresh() {
+      const results = await Promise.all([
+        readJson("followers.json?t=" + Date.now()),
+        readGithub()
+      ].map(function (job) { return job.catch(function () { return null; }); }));
+      let best = null;
+      results.forEach(function (data) {
+        const item = payloadTotal(data);
+        if (item && (!best || item.updated >= best.updated)) best = item;
+      });
+      show(best);
     }
 
     function fit() {
@@ -165,13 +147,11 @@
 
     try {
       const cached = Number(localStorage.getItem(memoryKey));
-      if (cached > 0) show(cached, true);
+      if (cached > 0) show({ total: cached, updated: 0 });
     } catch (error) {}
     fit();
-    readSaved();
-    refreshLive();
-    setInterval(readSaved, 30000);
-    setInterval(refreshLive, 120000);
+    refresh();
+    setInterval(refresh, 120000);
     window.addEventListener("resize", fit);
   </script>
 </body>
