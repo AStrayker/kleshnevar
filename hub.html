@@ -87,18 +87,50 @@
     const IG = "https://r.jina.ai/https://www.instagram.com/kleshnevar_km_/";
     const TT = "https://r.jina.ai/https://www.tiktok.com/@kleshnevar";
     const countEl = document.getElementById("count");
+    const memoryKey = "kleshnevar-followers";
     let busy = false;
     let shown = null;
 
     function followersFrom(text) {
-      const match = String(text || "").match(/(\d[\d\s.,]*)\**\s*followers\b/i);
-      if (!match) return null;
-      const value = Number(match[1].replace(/[^\d]/g, ""));
-      return Number.isFinite(value) ? value : null;
+      const source = String(text || "");
+      const patterns = [
+        /Following\s+\*\*(\d[\d\s.,]*)\*\*\s*followers\b/i,
+        /\*\*(\d[\d\s.,]*)\*\*\s*followers\b/i,
+        /\[(\d[\d\s.,]*)\s+followers\]/i,
+        /(\d[\d\s.,]*)\s+followers\b/i
+      ];
+      for (const pattern of patterns) {
+        const match = source.match(pattern);
+        if (!match) continue;
+        const value = Number(match[1].replace(/[^\d]/g, ""));
+        if (value > 0 && value < 5000000) return value;
+      }
+      return null;
     }
 
     function format(value) {
       return value.toLocaleString("uk-UA");
+    }
+
+    function show(total, force) {
+      if (!Number.isFinite(total) || total <= 0) return;
+      if (!force && shown && Math.abs(total - shown) / shown > 0.5) return;
+      if (total === shown) return;
+      shown = total;
+      countEl.textContent = format(total);
+      try { localStorage.setItem(memoryKey, String(total)); } catch (error) {}
+    }
+
+    async function readSaved() {
+      try {
+        const response = await fetch("followers.json?t=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) return;
+        const data = await response.json();
+        const instagram = Number(data.instagram);
+        const tiktok = Number(data.tiktok);
+        const total = Number(data.total);
+        if (instagram > 0 && tiktok > 0 && total === instagram + tiktok) show(total, true);
+      } catch (error) {}
     }
 
     async function readCount(url, browser) {
@@ -111,19 +143,15 @@
       return count;
     }
 
-    async function refresh() {
+    async function refreshLive() {
       if (busy) return;
       busy = true;
       try {
         const [instagram, tiktok] = await Promise.all([
           readCount(IG, true),
-          readCount(TT, false).catch(() => readCount(TT, true))
+          readCount(TT, false).catch(function () { return readCount(TT, true); })
         ]);
-        const total = instagram + tiktok;
-        if (total !== shown) {
-          shown = total;
-          countEl.textContent = format(total);
-        }
+        if (instagram >= 100 && tiktok >= 1) show(instagram + tiktok, false);
       } catch (error) {
       } finally {
         busy = false;
@@ -135,9 +163,15 @@
       document.documentElement.style.setProperty("--s", String(scale));
     }
 
+    try {
+      const cached = Number(localStorage.getItem(memoryKey));
+      if (cached > 0) show(cached, true);
+    } catch (error) {}
     fit();
-    refresh();
-    setInterval(refresh, 30000);
+    readSaved();
+    refreshLive();
+    setInterval(readSaved, 30000);
+    setInterval(refreshLive, 120000);
     window.addEventListener("resize", fit);
   </script>
 </body>
