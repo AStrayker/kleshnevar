@@ -35,12 +35,6 @@
     { id: "XXL", label: "XXL", price: 2800, pcs: "10–14 шт/кг" },
   ];
   const SHRIMP_PRICE = 899;
-  const TARA_PRICE = 6;
-  const BOTTLES = [
-    { liters: 1, label: "1 л" },
-    { liters: 1.5, label: "1,5 л" },
-    { liters: 2, label: "2 л" },
-  ];
 
   let cart = JSON.parse(localStorage.getItem("kv-cart") || "[]");
   let db = null;
@@ -55,19 +49,6 @@
   function lineSum(item) {
     const qty = item.qty != null ? item.qty : item.kg;
     return qty * item.price;
-  }
-  function taraOf(item) {
-    return item && item.bottles ? item.bottles * TARA_PRICE : 0;
-  }
-  function cartSum() {
-    return Math.round(cart.reduce((s, i) => s + lineSum(i) + taraOf(i), 0) * 100) / 100;
-  }
-  function litersText(n) {
-    const v = Math.round(Number(n) * 10) / 10;
-    return new Intl.NumberFormat("uk-UA", {
-      minimumFractionDigits: Number.isInteger(v) ? 0 : 1,
-      maximumFractionDigits: 1,
-    }).format(v);
   }
   function saveCart() {
     localStorage.setItem("kv-cart", JSON.stringify(cart));
@@ -274,8 +255,6 @@
       const valEl = stepBtn.parentElement.querySelector(".qty-val");
       const next = Math.max(1, Math.round((+valEl.textContent || 1) + +stepBtn.dataset.step));
       valEl.textContent = String(next);
-      const card = stepBtn.closest(".card");
-      if (card && card.querySelector(".tara-calc")) paintTara(card);
     }
   });
 
@@ -321,44 +300,17 @@
 
   function addItem(item) {
     const found = cart.find((x) => x.id === item.id);
-    if (found) {
-      found.kg = Math.round((Number(found.kg) + Number(item.kg)) * 10) / 10;
-      if (item.bottles) found.bottles = (found.bottles || 0) + item.bottles;
-    } else cart.push(item);
+    if (found) found.kg = found.kg + item.kg;
+    else cart.push(item);
     saveCart();
     toast("Додано в кошик");
-  }
-
-  function orderItems() {
-    const items = [];
-    cart.forEach((i) => {
-      items.push({
-        id: i.id,
-        title: i.title,
-        extra: i.bottles ? i.extra + " · " + i.bottles + " × " + i.bottleLabel : i.extra,
-        kg: i.kg,
-        unit: i.unit || "кг",
-        price: i.price,
-      });
-      if (i.bottles) {
-        items.push({
-          id: "tara-" + i.id,
-          title: "Тара " + i.bottleLabel,
-          extra: i.title,
-          kg: i.bottles,
-          unit: "шт",
-          price: TARA_PRICE,
-        });
-      }
-    });
-    return items;
   }
 
   function renderCart() {
     const list = $("#cartList");
     const count = $("#cartCount");
     const head = $("#cartHeadSum");
-    const sum = cartSum();
+    const sum = cart.reduce((s, i) => s + lineSum(i), 0);
     if (cart.length) {
       count.hidden = false;
       count.textContent = String(cart.length);
@@ -377,29 +329,13 @@
       list.innerHTML = '<p class="empty">Кошик порожній</p>';
       return;
     }
-    const taraItems = cart.filter((i) => i.bottles > 0);
-    const taraTotal = taraItems.reduce((s, i) => s + taraOf(i), 0);
-    const taraBlock = taraItems.length
-      ? `<div class="cart-item">
-          <div>
-            <b>Тара</b>
-            ${taraItems
-              .map(
-                (i) =>
-                  `<small>${esc(i.title)} · ${i.bottles} × ${esc(i.bottleLabel)} × ${money(TARA_PRICE)}</small>`
-              )
-              .join("")}
-          </div>
-          <div style="text-align:right"><b>${money(taraTotal)}</b></div>
-        </div>`
-      : "";
     list.innerHTML = cart
       .map(
         (i, idx) => `
       <div class="cart-item">
         <div>
-          <b>${esc(i.title)}</b>
-          <small>${esc(i.extra)} · ${i.unit === "л" ? litersText(i.qty != null ? i.qty : i.kg) : (i.qty != null ? i.qty : i.kg)} ${esc(i.unit || "кг")} × ${money(i.price)}</small>
+          <b>${i.title}</b>
+          <small>${i.extra} · ${i.qty != null ? i.qty : i.kg} ${i.unit || "кг"} × ${money(i.price)}</small>
         </div>
         <div style="text-align:right">
           <b>${money(lineSum(i))}</b>
@@ -407,7 +343,7 @@
         </div>
       </div>`
       )
-      .join("") + taraBlock;
+      .join("");
     list.querySelectorAll("[data-del]").forEach((b) =>
       b.addEventListener("click", () => {
         cart.splice(+b.dataset.del, 1);
@@ -421,7 +357,7 @@
     if (!cart.length) return toast("Кошик порожній");
     const fd = new FormData(e.target);
     const type = fd.get("type");
-    const sum = cartSum();
+    const sum = Math.round(cart.reduce((s, i) => s + lineSum(i), 0) * 100) / 100;
     if (type === "delivery" && sum < C.minOrder) {
       return toast("Мінімальне замовлення на доставку — " + C.minOrder + " грн");
     }
@@ -432,7 +368,7 @@
       type,
       address: fd.get("address").trim(),
       comment: fd.get("comment").trim(),
-      items: orderItems(),
+      items: cart,
       sum,
       status: "new",
     };
@@ -499,37 +435,7 @@
     return null;
   }
 
-  function readBottle(card) {
-    const liters = Number(card.querySelector(".bottle").value);
-    const bottle = BOTTLES.find((b) => b.liters === liters) || BOTTLES[0];
-    const count = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
-    return {
-      liters: bottle.liters,
-      label: bottle.label,
-      count,
-      volume: Math.round(bottle.liters * count * 10) / 10,
-    };
-  }
-
-  function paintTara(card) {
-    const calc = card.querySelector(".tara-calc");
-    const item = findCatalogItem(card.dataset.id);
-    if (!calc || !item) return;
-    const pack = readBottle(card);
-    const drink = Math.round(item.price * pack.volume * 100) / 100;
-    calc.textContent =
-      pack.count + " × " + pack.label + " = " + litersText(pack.volume) +
-      " л · напій " + money(drink) + " · тара " + money(pack.count * TARA_PRICE);
-  }
-
   function catalogCard(item) {
-    const drink = item.unit === "л";
-    const bottleSelect = drink
-      ? `<select class="select bottle" aria-label="Обʼєм пляшки">
-          ${BOTTLES.map((b) => `<option value="${b.liters}">Пляшка ${b.label} · тара ${money(TARA_PRICE)}</option>`).join("")}
-        </select>`
-      : "";
-    const calc = drink ? `<p class="tara-calc"></p>` : "";
     return `
       <article class="card" data-id="${esc(item.id)}">
         <div class="card-photo" style="background-image:url('${esc(item.photo)}')"></div>
@@ -537,14 +443,12 @@
           <h3>${esc(item.name)}</h3>
           <p class="meta">${esc(item.meta)}</p>
           <div class="price">${money(item.price)} / ${esc(item.unit)}</div>
-          ${bottleSelect}
           <div class="qty">
             <button type="button" data-step="-1">−</button>
             <span class="qty-val">1</span>
             <button type="button" data-step="1">+</button>
-            <span class="meta">${drink ? "пляш." : esc(item.unit)}</span>
+            <span class="meta">${esc(item.unit)}</span>
           </div>
-          ${calc}
           <button class="add-btn add-extra" type="button">Додати в кошик</button>
         </div>
       </article>`;
@@ -588,21 +492,6 @@
     const card = add.closest(".card");
     const item = findCatalogItem(card.dataset.id);
     if (!item) return;
-    if (card.querySelector(".bottle")) {
-      const pack = readBottle(card);
-      addItem({
-        id: item.id + "@" + pack.liters,
-        title: item.name,
-        extra: item.meta,
-        kg: pack.volume,
-        unit: "л",
-        price: item.price,
-        bottles: pack.count,
-        bottleLiters: pack.liters,
-        bottleLabel: pack.label,
-      });
-      return;
-    }
     const qty = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
     addItem({
       id: item.id,
@@ -614,13 +503,7 @@
     });
   });
 
-  document.addEventListener("change", (e) => {
-    if (!e.target.classList || !e.target.classList.contains("bottle")) return;
-    paintTara(e.target.closest(".card"));
-  });
-
   renderCatalog();
-  $$(".tara-calc").forEach((el) => paintTara(el.closest(".card")));
   initFirebase();
   renderCart();
 })();
