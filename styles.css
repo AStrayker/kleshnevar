@@ -341,6 +341,17 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
 .price { font-family: "Unbounded", sans-serif; color: var(--accent-2); font-size: 18px; line-height: 1.2; }
 .card-body .qty { margin-top: auto; }
 .qty .meta { margin: 0 0 0 auto; white-space: nowrap; }
+.tara-note { display: none; }
+@media (min-width: 981px) {
+  .qty-drink > .meta { margin-left: 0; }
+  .qty-drink > .tara-note {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
 .row-between { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .select {
   width: 100%;

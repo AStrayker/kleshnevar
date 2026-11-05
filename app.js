@@ -50,6 +50,26 @@
     const qty = item.qty != null ? item.qty : item.kg;
     return qty * item.price;
   }
+  const desktopDrinks = window.matchMedia("(min-width: 981px)");
+  function taraCost(liters) {
+    const bottles = Math.ceil(Math.round(liters * 10) / 10 / 2 - 1e-9);
+    return Math.max(1, bottles) * 6;
+  }
+  function payable(item) {
+    const qty = item.qty != null ? item.qty : item.kg;
+    return lineSum(item) + (item.tara ? taraCost(qty) : 0);
+  }
+  function litersText(n) {
+    const v = Math.round(Number(n) * 10) / 10;
+    return new Intl.NumberFormat("uk-UA", {
+      minimumFractionDigits: Number.isInteger(v) ? 0 : 1,
+      maximumFractionDigits: 1,
+    }).format(v);
+  }
+  function parseQty(text) {
+    const n = Number(String(text).replace(",", ".").replace(/[^\d.]/g, ""));
+    return Number.isFinite(n) ? n : 1;
+  }
   function saveCart() {
     localStorage.setItem("kv-cart", JSON.stringify(cart));
     renderCart();
@@ -251,11 +271,19 @@
 
   document.addEventListener("click", (e) => {
     const stepBtn = e.target.closest(".qty [data-step]");
-    if (stepBtn) {
-      const valEl = stepBtn.parentElement.querySelector(".qty-val");
-      const next = Math.max(1, Math.round((+valEl.textContent || 1) + +stepBtn.dataset.step));
-      valEl.textContent = String(next);
-    }
+    if (!stepBtn) return;
+    const qtyBox = stepBtn.closest(".qty");
+    const valEl = qtyBox.querySelector(".qty-val");
+    const drinkDesktop = qtyBox.classList.contains("qty-drink") && desktopDrinks.matches;
+    const current = parseQty(valEl.textContent);
+    const rawStep = +stepBtn.dataset.step;
+    const step = drinkDesktop ? rawStep : Math.sign(rawStep) || 1;
+    const min = drinkDesktop ? 0.5 : 1;
+    let next = Math.round((current + step) * 10) / 10;
+    if (!drinkDesktop) next = Math.max(min, Math.round(next));
+    else if (next < min) next = min;
+    valEl.textContent = drinkDesktop ? litersText(next) : String(next);
+    if (drinkDesktop) qtyBox.querySelector(".tara-note").textContent = money(taraCost(next)) + "/тара";
   });
 
   $$(".add-shrimp").forEach((btn) => {
@@ -300,8 +328,10 @@
 
   function addItem(item) {
     const found = cart.find((x) => x.id === item.id);
-    if (found) found.kg = found.kg + item.kg;
-    else cart.push(item);
+    if (found) {
+      found.kg = Math.round((Number(found.kg) + Number(item.kg)) * 10) / 10;
+      if (item.tara) found.tara = true;
+    } else cart.push(item);
     saveCart();
     toast("Додано в кошик");
   }
@@ -310,7 +340,7 @@
     const list = $("#cartList");
     const count = $("#cartCount");
     const head = $("#cartHeadSum");
-    const sum = cart.reduce((s, i) => s + lineSum(i), 0);
+    const sum = cart.reduce((s, i) => s + payable(i), 0);
     if (cart.length) {
       count.hidden = false;
       count.textContent = String(cart.length);
@@ -335,10 +365,10 @@
       <div class="cart-item">
         <div>
           <b>${i.title}</b>
-          <small>${i.extra} · ${i.qty != null ? i.qty : i.kg} ${i.unit || "кг"} × ${money(i.price)}</small>
+          <small>${i.extra} · ${i.unit === "л" ? litersText(i.qty != null ? i.qty : i.kg) : (i.qty != null ? i.qty : i.kg)} ${i.unit || "кг"} × ${money(i.price)}${i.tara ? " · тара " + money(taraCost(i.qty != null ? i.qty : i.kg)) : ""}</small>
         </div>
         <div style="text-align:right">
-          <b>${money(lineSum(i))}</b>
+          <b>${money(payable(i))}</b>
           <div><button data-del="${idx}" style="color:#ff8a8a;font-size:12px;margin-top:6px">прибрати</button></div>
         </div>
       </div>`
@@ -357,7 +387,7 @@
     if (!cart.length) return toast("Кошик порожній");
     const fd = new FormData(e.target);
     const type = fd.get("type");
-    const sum = Math.round(cart.reduce((s, i) => s + lineSum(i), 0) * 100) / 100;
+    const sum = Math.round(cart.reduce((s, i) => s + payable(i), 0) * 100) / 100;
     if (type === "delivery" && sum < C.minOrder) {
       return toast("Мінімальне замовлення на доставку — " + C.minOrder + " грн");
     }
@@ -368,7 +398,11 @@
       type,
       address: fd.get("address").trim(),
       comment: fd.get("comment").trim(),
-      items: cart,
+      items: cart.map((i) => {
+        if (!i.tara) return i;
+        const tara = taraCost(i.qty != null ? i.qty : i.kg);
+        return Object.assign({}, i, { extra: i.extra + " · тара " + tara + " грн" });
+      }),
       sum,
       status: "new",
     };
@@ -436,6 +470,21 @@
   }
 
   function catalogCard(item) {
+    const drink = item.unit === "л";
+    const qty = drink
+      ? `<div class="qty qty-drink">
+            <button type="button" data-step="-0.5">−</button>
+            <span class="qty-val">1</span>
+            <button type="button" data-step="0.5">+</button>
+            <span class="meta">л</span>
+            <span class="tara-note">6 грн/тара</span>
+          </div>`
+      : `<div class="qty">
+            <button type="button" data-step="-1">−</button>
+            <span class="qty-val">1</span>
+            <button type="button" data-step="1">+</button>
+            <span class="meta">${esc(item.unit)}</span>
+          </div>`;
     return `
       <article class="card" data-id="${esc(item.id)}">
         <div class="card-photo" style="background-image:url('${esc(item.photo)}')"></div>
@@ -443,12 +492,7 @@
           <h3>${esc(item.name)}</h3>
           <p class="meta">${esc(item.meta)}</p>
           <div class="price">${money(item.price)} / ${esc(item.unit)}</div>
-          <div class="qty">
-            <button type="button" data-step="-1">−</button>
-            <span class="qty-val">1</span>
-            <button type="button" data-step="1">+</button>
-            <span class="meta">${esc(item.unit)}</span>
-          </div>
+          ${qty}
           <button class="add-btn add-extra" type="button">Додати в кошик</button>
         </div>
       </article>`;
@@ -492,7 +536,9 @@
     const card = add.closest(".card");
     const item = findCatalogItem(card.dataset.id);
     if (!item) return;
-    const qty = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
+    const drinkDesktop = card.querySelector(".qty-drink") && desktopDrinks.matches;
+    const raw = parseQty(card.querySelector(".qty-val").textContent);
+    const qty = drinkDesktop ? Math.max(0.5, Math.round(raw * 2) / 2) : Math.max(1, Math.round(raw));
     addItem({
       id: item.id,
       title: item.name,
@@ -500,6 +546,7 @@
       kg: qty,
       unit: item.unit,
       price: item.price,
+      tara: drinkDesktop || undefined,
     });
   });
 
