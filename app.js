@@ -474,7 +474,7 @@
     const qty = drink
       ? `<div class="qty qty-drink">
             <button type="button" data-step="-0.5">−</button>
-            <span class="qty-val">1</span>
+            <span class="qty-val">0,5</span>
             <button type="button" data-step="0.5">+</button>
             <span class="meta">л</span>
             <span class="tara-note">6 грн/тара</span>
@@ -485,12 +485,16 @@
             <button type="button" data-step="1">+</button>
             <span class="meta">${esc(item.unit)}</span>
           </div>`;
+    const half = drink
+      ? `<div class="price price-half">${money(item.price / 2)} / 0,5 л</div>`
+      : "";
     return `
       <article class="card" data-id="${esc(item.id)}">
         <div class="card-photo" style="background-image:url('${esc(item.photo)}')"></div>
         <div class="card-body">
           <h3>${esc(item.name)}</h3>
           <p class="meta">${esc(item.meta)}</p>
+          ${half}
           <div class="price">${money(item.price)} / ${esc(item.unit)}</div>
           ${qty}
           <button class="add-btn add-extra" type="button">Додати в кошик</button>
@@ -551,6 +555,11 @@
   });
 
   renderCatalog();
+  if (!desktopDrinks.matches) {
+    $$(".qty-drink .qty-val").forEach((el) => {
+      el.textContent = "1";
+    });
+  }
   initFirebase();
   renderCart();
 })();

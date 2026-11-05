@@ -339,6 +339,7 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
 }
 .meta { color: var(--muted); font-size: 13px; }
 .price { font-family: "Unbounded", sans-serif; color: var(--accent-2); font-size: 18px; line-height: 1.2; }
+.price-half { font-size: 14px; margin-bottom: 2px; }
 .card-body .qty { margin-top: auto; }
 .qty .meta { margin: 0 0 0 auto; white-space: nowrap; }
 .tara-note { display: none; }
