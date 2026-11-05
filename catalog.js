@@ -168,12 +168,12 @@ window.KLESHNEVAR_CATALOG = {
     {
       "id": "napoi",
       "title": "Напої",
-      "note": "Пиво, сидр і лимонад — ціна за 1 л",
+      "note": "Пиво, сидр і лимонад — ціна за 1 л. Тара 6 грн за пляшку 1, 1,5 або 2 л.",
       "items": [
         {
           "id": "beer-stella",
           "name": "Пиво \"Stella Artois\"",
-          "price": 110.0,
+          "price": 99.0,
           "unit": "л",
           "meta": "розлив",
           "photo": "assets/menu/beer-pale.jpg"
@@ -189,7 +189,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "beer-opillya",
           "name": "Пиво \"Опілля Корифей\"",
-          "price": 80.0,
+          "price": 69.0,
           "unit": "л",
           "meta": "розлив",
           "photo": "assets/menu/beer-lager.jpg"
@@ -213,7 +213,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "beer-lager",
           "name": "Пиво \"Вайсбург Лагер\"",
-          "price": 83.0,
+          "price": 71.0,
           "unit": "л",
           "meta": "розлив",
           "photo": "assets/menu/beer-lager.jpg"
@@ -221,7 +221,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "beer-blanche",
           "name": "Пиво \"Вайсбург Бланш\"",
-          "price": 87.0,
+          "price": 75.0,
           "unit": "л",
           "meta": "пшеничне",
           "photo": "assets/menu/beer-wheat.jpg"
@@ -229,7 +229,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "beer-dunkel",
           "name": "Пиво \"Вайсбург Дункель\"",
-          "price": 89.0,
+          "price": 76.0,
           "unit": "л",
           "meta": "темне",
           "photo": "assets/menu/beer-dark.jpg"
@@ -411,7 +411,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "p-59",
           "name": "Арахіс з Беконом",
-          "price": 19.7,
+          "price": 19.9,
           "unit": "шт",
           "meta": "упаковка",
           "photo": "assets/menu/peanuts-bacon.jpg",
@@ -420,7 +420,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "p-60",
           "name": "Арахіс васабі",
-          "price": 19.4,
+          "price": 19.9,
           "unit": "шт",
           "meta": "упаковка",
           "photo": "assets/menu/peanuts-wasabi.jpg",
@@ -474,7 +474,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "p-66",
           "name": "Кільця кукурузи ГОНЗО \"Цибуля\" 150г",
-          "price": 60.0,
+          "price": 62.0,
           "unit": "шт",
           "meta": "150г",
           "photo": "assets/menu/corn-rings-onion.jpg",
@@ -1140,7 +1140,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "p-167",
           "name": "Густера чищена",
-          "price": 30.0,
+          "price": 39.0,
           "unit": "100 г",
           "meta": "Риба",
           "photo": "assets/menu/fish-silver-bream.jpg?v=3",
@@ -1194,18 +1194,18 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "tartar",
           "name": "Соус Тартар",
-          "price": 30.0,
+          "price": 15.0,
           "unit": "порц.",
-          "meta": "20 г",
+          "meta": "35 г",
           "photo": "assets/menu/tartar.jpg",
           "group": "Соуси"
         },
         {
           "id": "p-185",
           "name": "Соус BBQ",
-          "price": 30.0,
-          "unit": "шт",
-          "meta": "порція",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
           "photo": "assets/menu/sauce.jpg",
           "group": "Соуси"
         }
