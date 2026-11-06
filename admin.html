@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Клешневар — товари і статистика</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="icon" href="ico.svg" />
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="index2.html"><img class="brand-logo" src="assets/logo-word.png" alt="Kleshnevar" /></a>
+    <div class="header-actions">
+      <a class="account-btn" href="index2.html">На сайт</a>
+    </div>
+  </header>
+  <main class="admin-page">
+    <h1 style="font-family:Unbounded,sans-serif;font-size:40px">Товари і статистика</h1>
+    <p class="meta" id="gate">Потрібен вхід адміністратора.</p>
+    <form class="auth-card" id="loginBox" style="margin:18px 0">
+      <input type="email" name="email" required placeholder="Email" />
+      <input type="password" name="password" required minlength="6" placeholder="Пароль" />
+      <button class="btn btn-primary" type="submit">Увійти</button>
+      <button class="btn btn-ghost" type="button" id="googleBtn">Увійти через Google</button>
+      <button class="linkish" type="button" id="resetPass">Нагадати пароль</button>
+      <p class="hint" id="authError"></p>
+    </form>
+    <div id="panel" hidden>
+      <div class="admin-tools">
+        <button class="btn btn-primary" type="button" id="publishBtn">Опублікувати меню</button>
+        <button class="btn btn-ghost" type="button" id="logoutBtn">Вийти</button>
+      </div>
+      <h2>Усі товари</h2>
+      <div style="overflow:auto">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Фото</th><th>Назва</th><th>Ціна</th><th>Тара</th><th>Вага</th><th>Розділ</th><th></th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:28px">Статистика відвідувань</h2>
+      <form id="pageForm" class="admin-tools">
+        <input name="path" placeholder="link1.html" style="height:46px;border-radius:12px;border:1px solid var(--line);background:#0d0d0f;color:#fff;padding:0 12px" />
+        <button class="btn btn-primary" type="submit">Додати сторінку</button>
+      </form>
+      <div id="stats"></div>
+      <h2 style="margin-top:28px">Адміністратори</h2>
+      <form id="adminForm" class="admin-tools">
+        <input name="email" type="email" placeholder="email користувача" style="height:46px;border-radius:12px;border:1px solid var(--line);background:#0d0d0f;color:#fff;padding:0 12px" />
+        <button class="btn btn-primary" type="submit">Зробити адміном</button>
+      </form>
+      <div id="admins"></div>
+      <p class="meta" id="status"></p>
+    </div>
+  </main>
+  <script src="catalog.js"></script>
+  <script src="config.secrets.example.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

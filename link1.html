@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <!-- Перенаправление через 0 секунд -->
-    <meta http-equiv="refresh" content="0; url=https://www.instagram.com/kleshnevar_km_/">
-    <title>Перенаправление...</title>
+  <meta charset="UTF-8" />
+  <title>Клешневар</title>
 </head>
 <body>
-    <p>Если перенаправление не произошло автоматически, <a href="https://www.instagram.com/kleshnevar_km_/">нажмите здесь</a>.</p>
+  <p>Переходимо в Instagram… <a href="https://www.instagram.com/kleshnevar_km_/">Відкрити</a></p>
+  <script>
+    window.KV_TRACK_THEN = function () {
+      location.replace("https://www.instagram.com/kleshnevar_km_/");
+    };
+    setTimeout(window.KV_TRACK_THEN, 2500);
+  </script>
+  <script src="config.secrets.example.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="track.js"></script>
 </body>
 </html>

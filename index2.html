@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Клешневар — раки та креветки з доставкою</title>
+  <meta name="description" content="Клешневар — гарячі раки та креветки в авторських бульйонах. Том Ям, BBQ, вершкові. Доставка та самовивіз. Тел. +38 096 044 47 65." />
+  <meta name="theme-color" content="#070708" />
+
+  <!-- Open Graph / шаринг -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="og:site_name" content="Клешневар" />
+  <meta property="og:title" content="Клешневар — раки та креветки" />
+  <meta property="og:description" content="Гарячі раки M–XXL та креветки в бульйонах Том Ям, BBQ, вершкових і гострих. Замовляйте онлайн." />
+  <meta property="og:image" content="assets/og.jpg" />
+  <meta property="og:url" content="" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Клешневар — раки та креветки" />
+  <meta name="twitter:description" content="Гарячі раки та креветки в авторських бульйонах. Доставка." />
+  <meta name="twitter:image" content="assets/og.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Permanent+Marker&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="icon" href="ico.svg" />
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="swipe-edge" id="swipeEdge" aria-hidden="true"></div>
+
+  <header class="header" id="header">
+    <a class="brand" href="#top" data-scroll="top" aria-label="Kleshnevar">
+      <img class="brand-logo" src="assets/logo-word.png" alt="Kleshnevar" />
+    </a>
+    <div class="header-actions">
+      <button class="account-btn" id="accountBtn" type="button">Увійти</button>
+      <button class="cart-pill" id="cartBtn" aria-label="Кошик">
+        <span class="cart-pill-sum" id="cartHeadSum" hidden></span>
+        <span class="cart-pill-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount" hidden>0</span>
+        </span>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="drawer" id="menu" aria-label="Навігація">
+    <button class="icon-btn" id="closeMenu" aria-label="Закрити" style="align-self:flex-end">✕</button>
+    <nav>
+      <a href="#top" data-scroll="top">Головна</a>
+      <a href="#krevetky" data-scroll="krevetky" data-nav="krevetky">Креветки</a>
+      <a href="#raky" data-scroll="raky" data-nav="raky">Раки</a>
+      <a href="#kuhnia" data-scroll="kuhnia" data-nav="kuhnia">Мікси та панко</a>
+      <a href="#zhyvi" data-scroll="zhyvi" data-nav="zhyvi">Живі раки</a>
+      <a href="#zamorozka" data-scroll="zamorozka" data-nav="zamorozka">Заморозка</a>
+      <a href="#napoi" data-scroll="napoi" data-nav="napoi">Напої</a>
+      <a href="#vitryna" data-scroll="vitryna" data-nav="vitryna">Вітрина</a>
+      <a href="#dostavka" data-scroll="dostavka">Доставка</a>
+      <a href="admin.html" id="adminLink" hidden>Товари і статистика</a>
+    </nav>
+    <button class="btn btn-primary" id="showMapBtn" style="margin-top:22px">Показати на карті</button>
+    <div class="drawer-bottom">
+      <h4>Наші сторінки</h4>
+      <div class="socials">
+        <a id="igLink" target="_blank" rel="noopener">Instagram</a>
+        <a id="ttLink" target="_blank" rel="noopener">TikTok</a>
+        <a id="tgLink" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer cart-drawer" id="cartPanel" aria-label="Кошик">
+    <div class="row-between">
+      <h2 style="font-family:Unbounded,sans-serif">Кошик</h2>
+      <button class="icon-btn" id="closeCart" aria-label="Закрити">✕</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-total"><span>Разом</span><span id="cartSum">0 грн</span></div>
+    <form class="checkout" id="orderForm">
+      <input name="name" required placeholder="Імʼя" autocomplete="name" />
+      <input name="phone" required placeholder="Телефон" autocomplete="tel" inputmode="tel" />
+      <select name="type" required>
+        <option value="delivery">Доставка</option>
+        <option value="pickup">Самовивіз</option>
+      </select>
+      <input name="address" placeholder="Адреса доставки" />
+      <textarea name="comment" placeholder="Коментар до замовлення"></textarea>
+      <p class="hint" id="minHint"></p>
+      <button class="btn btn-primary" type="submit" id="submitBtn">Оформити замовлення</button>
+    </form>
+  </aside>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Клішня.<br>Вогонь.<br>Бульйон.</h1>
+        <p>Свіжі раки M–XXL, креветки, морські мікси, риба з вітрини та розливне пиво. Гарячими — до дверей.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#krevetky" data-scroll="krevetky">Дивитись меню</a>
+          <a class="btn btn-ghost" id="callBtn" href="tel:+380636503959">Зателефонувати</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="krevetky">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Креветки</h2>
+          <p>899 грн/кг · обирайте бульйон</p>
+        </div>
+        <div class="grid" id="shrimpGrid"></div>
+      </div>
+    </section>
+
+    <section id="raky">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Раки</h2>
+          <p>Розмір, кількість штук на кілограм і бульйон на ваш смак</p>
+        </div>
+        <div class="grid" id="crayGrid"></div>
+      </div>
+    </section>
+
+    <section id="kuhnia">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Мікси та панко</h2>
+          <p>Мікси і панко</p>
+        </div>
+        <div class="grid" id="kuhniaGrid"></div>
+      </div>
+    </section>
+
+    <section id="zhyvi">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Живі раки</h2>
+          <p>Ціна за 100 г</p>
+        </div>
+        <div class="grid" id="zhyviGrid"></div>
+      </div>
+    </section>
+
+    <section id="zamorozka">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Заморозка</h2>
+          <p>Ціна за 100 г</p>
+        </div>
+        <div class="grid" id="zamorozkaGrid"></div>
+      </div>
+    </section>
+
+    <section id="napoi">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Напої</h2>
+          <p>Пиво, сидр і лимонад — ціна за 1 літр</p>
+        </div>
+        <div class="grid" id="napoiGrid"></div>
+      </div>
+    </section>
+
+    <section id="vitryna">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Вітрина</h2>
+          <p>Риба та морепродукти на вагу — за 100 г. Снеки — за упаковку.</p>
+        </div>
+        <div id="vitrynaRoot"></div>
+      </div>
+    </section>
+
+    <section id="dostavka">
+      <div class="wrap info-grid">
+        <article class="info-card">
+          <h3>Доставка</h3>
+          <p id="deliveryText"></p>
+          <p style="margin-top:10px" id="hoursText"></p>
+        </article>
+        <article class="info-card">
+          <h3>Контакти</h3>
+          <div class="contact-list">
+            <a id="phoneLink"></a>
+            <span id="addressText"></span>
+            <span id="hoursText2"></span>
+          </div>
+          <div class="cta-row" style="justify-content:flex-start;margin-top:18px">
+            <a class="btn btn-primary" id="routeBtn" target="_blank" rel="noopener">Побудувати маршрут</a>
+            <button class="btn btn-ghost" id="mapBtn2">Показати на карті</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> Клешневар. Смачного.</footer>
+  <div class="edit-bar" id="editBar" hidden>
+    <button type="button" id="editToggle">Редагування</button>
+    <a href="admin.html">Усі товари</a>
+  </div>
+  <div class="auth-modal" id="authModal" hidden>
+    <form class="auth-card" id="authForm">
+      <h2 id="authTitle">Вхід</h2>
+      <input type="email" name="email" required placeholder="Email" autocomplete="username" />
+      <input type="password" name="password" required minlength="6" placeholder="Пароль" autocomplete="current-password" />
+      <button class="btn btn-primary" type="submit" id="authSubmit">Увійти</button>
+      <button class="btn btn-ghost" type="button" id="googleBtn">Увійти через Google</button>
+      <button class="linkish" type="button" id="toggleAuth">Немає акаунта? Зареєструватися</button>
+      <button class="linkish" type="button" id="resetPass">Нагадати пароль</button>
+      <button class="linkish" type="button" id="closeAuth">Закрити</button>
+      <p class="hint" id="authError"></p>
+    </form>
+  </div>
+  <div class="auth-modal" id="profileModal" hidden>
+    <form class="auth-card" id="profileForm">
+      <h2>Профіль</h2>
+      <input name="name" placeholder="Імʼя" autocomplete="name" />
+      <input name="phone" placeholder="Телефон" autocomplete="tel" />
+      <input name="address" placeholder="Адреса" autocomplete="street-address" />
+      <button class="btn btn-primary" type="submit">Зберегти</button>
+      <h3>Мої замовлення</h3>
+      <div id="orderHistory"><p class="meta">Поки немає замовлень.</p></div>
+      <button class="btn btn-ghost" type="button" id="claimAdmin" hidden>Стати адміністратором</button>
+      <button class="linkish" type="button" id="logoutBtn">Вийти</button>
+      <button class="linkish" type="button" id="closeProfile">Закрити</button>
+    </form>
+  </div>
+  <div class="auth-modal" id="editModal" hidden>
+    <form class="auth-card" id="editForm">
+      <h2>Картка товару</h2>
+      <input name="name" required placeholder="Назва" />
+      <input name="price" required type="number" min="0" step="0.01" placeholder="Ціна" />
+      <select name="unit"></select>
+      <input name="meta" placeholder="Вага або опис" />
+      <input name="photo" placeholder="Посилання на фото" />
+      <input name="file" type="file" accept="image/*" />
+      <div class="thumb-preview" id="editPreview"></div>
+      <div class="edit-sizes" id="editSizes"></div>
+      <button class="btn btn-primary" type="submit">Зберегти картку</button>
+      <button class="linkish" type="button" id="closeEdit">Закрити</button>
+    </form>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script src="catalog.js"></script>
+  <script src="config.js"></script>
+  <script src="config.secrets.example.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
+  <script src="app2.js"></script>
+  <script src="track.js"></script>
+</body>
+</html>
