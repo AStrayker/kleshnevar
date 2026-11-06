@@ -52,8 +52,10 @@
   }
   const desktopDrinks = window.matchMedia("(min-width: 981px)");
   function taraCost(liters) {
-    const bottles = Math.ceil(Math.round(liters * 10) / 10 / 2 - 1e-9);
-    return Math.max(1, bottles) * 6;
+    const halves = Math.max(1, Math.round(Number(liters) * 2));
+    const full = Math.floor(halves / 4);
+    const rem = halves % 4;
+    return full * 9 + (rem ? 5 + rem : 0);
   }
   function payable(item) {
     const qty = item.qty != null ? item.qty : item.kg;
