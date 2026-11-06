@@ -9,7 +9,7 @@ window.KLESHNEVAR = {
   instagram: "https://www.instagram.com/kleshnevar_km_/",
   tiktok: "https://www.tiktok.com/@kleshnevar",
   telegram: "https://t.me/",
-  workHours: "будні 10-21, у вихідні 11-22",
+  workHours: "будні з 10:00 до 20:30, у вихідні з 11:00 до 21:30",
   minOrder: 999,
   deliveryNote:
     "Доставка згідно з тарифами перевізника.",
