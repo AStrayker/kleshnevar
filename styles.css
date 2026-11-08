@@ -342,16 +342,19 @@ section { padding: 88px 20px; position: relative; z-index: 2; }
 .price-half { font-size: 14px; margin-bottom: 2px; }
 .card-body .qty { margin-top: auto; }
 .qty .meta { margin: 0 0 0 auto; white-space: nowrap; }
-.tara-note { display: none; }
+.qty-drink > .tara-note {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+@media (max-width: 980px) {
+  .qty-drink { flex-wrap: wrap; }
+  .qty-drink > .tara-note { flex: 1 0 100%; text-align: right; }
+}
 @media (min-width: 981px) {
   .qty-drink > .meta { margin-left: 0; }
-  .qty-drink > .tara-note {
-    display: block;
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
 }
 .row-between { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .select {

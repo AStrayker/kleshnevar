@@ -276,7 +276,8 @@
     if (!stepBtn) return;
     const qtyBox = stepBtn.closest(".qty");
     const valEl = qtyBox.querySelector(".qty-val");
-    const drinkDesktop = qtyBox.classList.contains("qty-drink") && desktopDrinks.matches;
+    const drink = qtyBox.classList.contains("qty-drink");
+    const drinkDesktop = drink && desktopDrinks.matches;
     const current = parseQty(valEl.textContent);
     const rawStep = +stepBtn.dataset.step;
     const step = drinkDesktop ? rawStep : Math.sign(rawStep) || 1;
@@ -285,7 +286,7 @@
     if (!drinkDesktop) next = Math.max(min, Math.round(next));
     else if (next < min) next = min;
     valEl.textContent = drinkDesktop ? litersText(next) : String(next);
-    if (drinkDesktop) qtyBox.querySelector(".tara-note").textContent = money(taraCost(next)) + "/тара";
+    if (drink) qtyBox.querySelector(".tara-note").textContent = money(taraCost(next)) + "/тара";
   });
 
   $$(".add-shrimp").forEach((btn) => {
@@ -542,7 +543,8 @@
     const card = add.closest(".card");
     const item = findCatalogItem(card.dataset.id);
     if (!item) return;
-    const drinkDesktop = card.querySelector(".qty-drink") && desktopDrinks.matches;
+    const drink = card.querySelector(".qty-drink");
+    const drinkDesktop = drink && desktopDrinks.matches;
     const raw = parseQty(card.querySelector(".qty-val").textContent);
     const qty = drinkDesktop ? Math.max(0.5, Math.round(raw * 2) / 2) : Math.max(1, Math.round(raw));
     addItem({
@@ -552,14 +554,15 @@
       kg: qty,
       unit: item.unit,
       price: item.price,
-      tara: drinkDesktop || undefined,
+      tara: drink ? true : undefined,
     });
   });
 
   renderCatalog();
   if (!desktopDrinks.matches) {
-    $$(".qty-drink .qty-val").forEach((el) => {
-      el.textContent = "1";
+    $$(".qty-drink").forEach((box) => {
+      box.querySelector(".qty-val").textContent = "1";
+      box.querySelector(".tara-note").textContent = money(taraCost(1)) + "/тара";
     });
   }
   initFirebase();
