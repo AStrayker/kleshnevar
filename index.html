@@ -3,6 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <script>
+  (function () {
+    var BUILD = "261108a";
+    function formBusy() {
+      var form = document.getElementById("orderForm");
+      if (!form) return false;
+      var fields = form.querySelectorAll("input, textarea");
+      for (var i = 0; i < fields.length; i++) {
+        var el = fields[i];
+        if (el.type === "radio" || el.type === "checkbox" || el.type === "hidden") continue;
+        if ((el.value || "").trim()) return true;
+      }
+      var btn = document.getElementById("submitBtn");
+      return !!(btn && btn.disabled);
+    }
+    function reload(remote) {
+      try {
+        if (sessionStorage.getItem("kv-reloaded") === remote) return;
+        if (formBusy()) return;
+        sessionStorage.setItem("kv-reloaded", remote);
+        var u = new URL(location.href);
+        u.searchParams.set("v", remote);
+        location.replace(u.href);
+      } catch (e) {}
+    }
+    function check() {
+      fetch("version.txt?t=" + Date.now(), { cache: "no-store", credentials: "same-origin" })
+        .then(function (r) { return r.ok ? r.text() : ""; })
+        .then(function (raw) {
+          var remote = (raw || "").trim();
+          if (!remote || remote === BUILD) return;
+          try { localStorage.setItem("kv-build", remote); } catch (e) {}
+          reload(remote);
+        })
+        .catch(function () {});
+    }
+    try {
+      var stored = localStorage.getItem("kv-build");
+      if (stored && stored !== BUILD) reload(stored);
+    } catch (e) {}
+    check();
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible") check();
+    });
+    window.addEventListener("pageshow", function (e) {
+      if (e.persisted) check();
+    });
+  })();
+  </script>
   <title>Клешневар — раки та креветки з доставкою</title>
   <meta name="description" content="Клешневар — гарячі раки та креветки в авторських бульйонах. Том Ям, BBQ, вершкові. Доставка та самовивіз. Тел. +38 096 044 47 65." />
   <meta name="theme-color" content="#070708" />
@@ -23,7 +73,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Permanent+Marker&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=261108a" />
   <link rel="icon" href="ico.svg" />
 </head>
 <body>
@@ -201,14 +251,14 @@
     </section>
   </main>
 
-  <footer>© <span id="year"></span> Кleshnevar. Смачного.</footer>
+  <footer>© <span id="year"></span> Клешневар. Смачного.</footer>
   <div class="toast" id="toast"></div>
 
-  <script src="catalog.js"></script>
-  <script src="config.js"></script>
-  <script src="config.secrets.js"></script>
+  <script src="catalog.js?v=261108a"></script>
+  <script src="config.js?v=261108a"></script>
+  <script src="config.secrets.js?v=261108a"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=261108a"></script>
 </body>
 </html>

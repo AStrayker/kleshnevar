@@ -169,7 +169,7 @@ window.KLESHNEVAR_CATALOG = {
           "price": 250.0,
           "unit": "100 г",
           "meta": "заморозка",
-          "photo": "assets/menu/crab-claws.jpg?v=3"
+          "photo": "assets/menu/lobster-cooked.jpg?v=1"
         }
       ]
     },
