@@ -60,7 +60,6 @@
     const qty = item.qty != null ? item.qty : item.kg;
     return qty * item.price;
   }
-  const desktopDrinks = window.matchMedia("(min-width: 981px)");
   function taraCost(liters) {
     const halves = Math.max(1, Math.round(Number(liters) * 2));
     const full = Math.floor(halves / 4);
@@ -593,12 +592,6 @@
         grid.innerHTML = items.map(renderItem).join("");
       }
     });
-    if (!desktopDrinks.matches) {
-      $$(".qty-drink").forEach((box) => {
-        box.querySelector(".qty-val").textContent = "1";
-        box.querySelector(".tara-note").textContent = money(taraCost(1)) + "/тара";
-      });
-    }
   }
   function scheduleSave() {
     clearTimeout(scheduleSave.timer);
@@ -762,15 +755,14 @@
       const qtyBox = stepBtn.closest(".qty");
       const valEl = qtyBox.querySelector(".qty-val");
       const drink = qtyBox.classList.contains("qty-drink");
-      const drinkDesktop = drink && desktopDrinks.matches;
       const current = parseQty(valEl.textContent);
       const rawStep = +stepBtn.dataset.step;
-      const step = drinkDesktop ? rawStep : Math.sign(rawStep) || 1;
-      const min = drinkDesktop ? 0.5 : 1;
+      const step = drink ? rawStep : Math.sign(rawStep) || 1;
+      const min = drink ? 0.5 : 1;
       let next = Math.round((current + step) * 10) / 10;
-      if (!drinkDesktop) next = Math.max(min, Math.round(next));
-      else if (next < min) next = min;
-      valEl.textContent = drinkDesktop ? litersText(next) : String(next);
+      if (next < min) next = min;
+      if (!drink) next = Math.round(next);
+      valEl.textContent = drink ? litersText(next) : String(next);
       if (drink) qtyBox.querySelector(".tara-note").textContent = money(taraCost(next)) + "/тара";
       return;
     }
@@ -999,9 +991,8 @@
     const item = findItem(card.dataset.id);
     if (!item) return;
     const drink = card.querySelector(".qty-drink");
-    const drinkDesktop = drink && desktopDrinks.matches;
     const raw = parseQty(card.querySelector(".qty-val").textContent);
-    const qty = drinkDesktop ? Math.max(0.5, Math.round(raw * 2) / 2) : Math.max(1, Math.round(raw));
+    const qty = drink ? Math.max(0.5, Math.round(raw * 2) / 2) : Math.max(1, Math.round(raw));
     addItem({
       id: item.id,
       title: item.name,
