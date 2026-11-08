@@ -93,7 +93,7 @@ window.KLESHNEVAR_CATALOG = {
       "items": [
         {
           "id": "sq-rings",
-          "name": "Кільця кальмара",
+          "name": "Кільця кальмара (заморозка)",
           "price": 50.0,
           "unit": "100 г",
           "meta": "заморозка",
@@ -117,7 +117,7 @@ window.KLESHNEVAR_CATALOG = {
         },
         {
           "id": "tiger-tail",
-          "name": "Тигровий хвіст",
+          "name": "Тигровий хвост 16/20",
           "price": 63.0,
           "unit": "100 г",
           "meta": "заморозка",
@@ -162,6 +162,14 @@ window.KLESHNEVAR_CATALOG = {
           "unit": "100 г",
           "meta": "заморозка",
           "photo": "assets/menu/crab-claws.jpg?v=3"
+        },
+        {
+          "id": "p-195",
+          "name": "Лобстер варено-морожений",
+          "price": 250.0,
+          "unit": "100 г",
+          "meta": "заморозка",
+          "photo": "assets/menu/crab-claws.jpg?v=3"
         }
       ]
     },
@@ -190,6 +198,14 @@ window.KLESHNEVAR_CATALOG = {
           "id": "beer-opillya",
           "name": "Пиво \"Опілля Корифей\"",
           "price": 69.0,
+          "unit": "л",
+          "meta": "розлив",
+          "photo": "assets/menu/beer-lager.jpg"
+        },
+        {
+          "id": "beer-opillya-xmas",
+          "name": "Пиво \"Опілля Різдвяне\"",
+          "price": 76.0,
           "unit": "л",
           "meta": "розлив",
           "photo": "assets/menu/beer-lager.jpg"
@@ -887,7 +903,7 @@ window.KLESHNEVAR_CATALOG = {
         },
         {
           "id": "p-138",
-          "name": "Рапан",
+          "name": "Ус Моря",
           "price": 100.0,
           "unit": "100 г",
           "meta": "на вагу",
@@ -1201,8 +1217,152 @@ window.KLESHNEVAR_CATALOG = {
           "group": "Соуси"
         },
         {
-          "id": "p-185",
-          "name": "Соус BBQ",
+          "id": "p-184",
+          "name": "Кільця кукурудзяні ГОНЗО кальмар 150г",
+          "price": 62.0,
+          "unit": "шт",
+          "meta": "150г",
+          "photo": "assets/menu/corn-rings-squid.jpg",
+          "group": "Снек"
+        },
+        {
+          "id": "p-191",
+          "name": "Чіпси Прінглс Міні \"Техас BBQ\" 40г",
+          "price": 77.0,
+          "unit": "шт",
+          "meta": "40г",
+          "photo": "assets/menu/pack-pringles-paprika.jpg?v=4",
+          "group": "Чіпси"
+        },
+        {
+          "id": "p-192",
+          "name": "Чіпси Прінглс Міні \"Хот Спайс\" 40г",
+          "price": 77.0,
+          "unit": "шт",
+          "meta": "40г",
+          "photo": "assets/menu/pack-pringles-hot.jpg?v=4",
+          "group": "Чіпси"
+        },
+        {
+          "id": "p-193",
+          "name": "Креветка сметана та зелень",
+          "price": 98.0,
+          "unit": "100 г",
+          "meta": "на вагу",
+          "photo": "assets/menu/meat-shrimp.jpg",
+          "group": "Морепродукти"
+        },
+        {
+          "id": "p-194",
+          "name": "Мідія Теріякі",
+          "price": 76.5,
+          "unit": "100 г",
+          "meta": "на вагу",
+          "photo": "assets/menu/mussels-jar.jpg",
+          "group": "Морепродукти"
+        },
+        {
+          "id": "p-196",
+          "name": "Креветка Том Ям",
+          "price": 98.0,
+          "unit": "100 г",
+          "meta": "на вагу",
+          "photo": "assets/menu/shrimp-peeled.jpg",
+          "group": "Морепродукти"
+        },
+        {
+          "id": "p-197",
+          "name": "Щупальці восьминіга в/о лодка",
+          "price": 107.0,
+          "unit": "100 г",
+          "meta": "на вагу",
+          "photo": "assets/menu/octopus.jpg",
+          "group": "Морепродукти"
+        },
+        {
+          "id": "p-199",
+          "name": "Ікра мойви",
+          "price": 189.0,
+          "unit": "100 г",
+          "meta": "Рибка",
+          "photo": "assets/menu/fish-roe-snack.jpg",
+          "group": "Рибка"
+        },
+        {
+          "id": "p-200",
+          "name": "Ікра корюшки",
+          "price": 189.0,
+          "unit": "100 г",
+          "meta": "Рибка",
+          "photo": "assets/menu/fish-roe-snack.jpg",
+          "group": "Рибка"
+        },
+        {
+          "id": "p-201",
+          "name": "Ікра тарань",
+          "price": 199.0,
+          "unit": "100 г",
+          "meta": "Рибка",
+          "photo": "assets/menu/fish-roe-snack.jpg",
+          "group": "Рибка"
+        },
+        {
+          "id": "p-206",
+          "name": "Коктейль \"Класичний\"",
+          "price": 77.0,
+          "unit": "100 г",
+          "meta": "Рибка",
+          "photo": "assets/menu/mussels-jar.jpg",
+          "group": "Рибка"
+        },
+        {
+          "id": "p-189",
+          "name": "Скумбрія Г/К б/г",
+          "price": 89.0,
+          "unit": "100 г",
+          "meta": "Риба",
+          "photo": "assets/menu/fish-mackerel-blue.jpg?v=3",
+          "group": "Риба"
+        },
+        {
+          "id": "p-202",
+          "name": "Тарань ср.",
+          "price": 84.0,
+          "unit": "100 г",
+          "meta": "Риба",
+          "photo": "assets/menu/fish-roach.jpg",
+          "group": "Риба"
+        },
+        {
+          "id": "p-203",
+          "name": "Камбала",
+          "price": 165.0,
+          "unit": "100 г",
+          "meta": "Риба",
+          "photo": "assets/menu/fish-bream.jpg",
+          "group": "Риба"
+        },
+        {
+          "id": "p-204",
+          "name": "Тарань VIP ікраний",
+          "price": 135.0,
+          "unit": "100 г",
+          "meta": "Риба",
+          "photo": "assets/menu/fish-roach-roe.jpg",
+          "group": "Риба"
+        },
+        {
+          "id": "p-186",
+          "name": "Соус Барбекю",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
+          "photo": "assets/menu/sauce.jpg",
+          "group": "Соуси"
+        },
+        {
+          "id": "p-187",
+          "name": "Соус солодкий чілі",
           "price": 15.0,
           "unit": "порц.",
           "meta": "35 г",

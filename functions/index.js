@@ -50,7 +50,12 @@ exports.onOrderCreated = functions.firestore
   .onCreate(async (snap) => {
     const o = snap.data();
     const items = (o.items || [])
-      .map((i) => `• ${i.title} (${i.extra}) — ${i.kg} кг`)
+      .map((i) => {
+        const unit = i.unit || "кг";
+        const qty = i.qty != null ? i.qty : i.kg;
+        const amount = unit === "100 г" ? `${qty * 100} г` : `${qty} ${unit === "1 кг" ? "кг" : unit}`;
+        return `• ${i.title} (${i.extra}) — ${amount}`;
+      })
       .join("\n");
     const text =
       `<b>Нове замовлення Клешневар</b>\n` +
