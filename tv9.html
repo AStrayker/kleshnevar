@@ -39,6 +39,7 @@
     .pick { margin: 0; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 500; font-size: 20px; line-height: 1; letter-spacing: .2em; }
     .flavors { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: center; margin: 6px -16px 10px; }
     .pill { position: relative; flex: 0 0 auto; border: 0; padding: 0 0 12px; text-align: center; color: #fff; font-family: Oswald, sans-serif; font-weight: 700; font-size: 56px; line-height: 1; white-space: nowrap; }
+    .flavors[data-count="6"] .pill { font-size: 38px; padding-bottom: 10px; }
     .pill::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 0; height: 4px; background: var(--hot); border-radius: 4px; transform: rotate(-2deg); }
     .note { margin: 6px 0 0; text-align: center; color: var(--hot); font-family: Oswald, sans-serif; font-weight: 500; font-size: 18px; line-height: 1; letter-spacing: .16em; }
     .sizes { position: relative; z-index: 2; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); margin: 2px 0 -18px; text-align: center; }
@@ -128,7 +129,13 @@
       if (!text) return "";
       return /шт/i.test(text) ? text : text + " шт";
     }
+    function withTabasco(rows) {
+      if (rows.some((row) => /табаско/i.test(row[0] || ""))) return rows;
+      const sample = rows.find((row) => /рак/i.test(row[0] || "") && !/0[.,]\s*5/.test(row[2] || "")) || FALLBACK[0];
+      return rows.concat([["Раки в соусі табаско", sample[1], sample[2], sample[3], sample[4] || ""]]);
+    }
     function paint(rows) {
+      rows = withTabasco(rows);
       const groups = [];
       const index = {};
       rows.filter((row) => String(row[0] || "").toLowerCase().includes("рак")).forEach((row) => {
@@ -149,6 +156,7 @@
         pill.textContent = titleOf(row[0]);
         flavorsEl.appendChild(pill);
       });
+      flavorsEl.dataset.count = String(groups.length);
       const weight = String(full[2] || "1 кг").toUpperCase();
       noteEl.textContent = "ЦІНИ ЗА " + weight + " ДЛЯ БУДЬ-ЯКОГО СМАКУ";
       sizes.forEach((size, i) => {
