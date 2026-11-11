@@ -198,6 +198,11 @@
           <h3 data-name="sauce"></h3>
           <p class="price" data-key="sauce"></p>
         </article>
+        <article class="stack">
+          <p class="meta" data-weight="sauceyum"></p>
+          <h3 data-name="sauceyum"></h3>
+          <p class="price" data-key="sauceyum"></p>
+        </article>
         <img class="dish" src="board-panko.jpg" alt="" />
       </section>
     </main>
@@ -262,6 +267,11 @@
         const key = kind(row[0] || "");
         if (key && !map[key]) map[key] = row;
       });
+      if (map.sauce) {
+        map.sauce = map.sauce.slice();
+        map.sauce[3] = "1199";
+      }
+      map.sauceyum = ["Креветка в соусі Том Ям", "", (map.sauce && map.sauce[2]) || "1 кг", "1199", "", ""];
       document.querySelectorAll("[data-name]").forEach((el) => {
         const row = map[el.dataset.name];
         el.textContent = row ? String(row[0] || "").trim() : "";
