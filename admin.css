@@ -44,6 +44,10 @@
 }
 .auth-card textarea { height: 80px; padding: 10px 12px; resize: vertical; }
 .auth-card .btn { width: 100%; }
+#loginBox[hidden],
+#panel[hidden],
+#gate[hidden],
+#leaveBtn[hidden] { display: none !important; }
 .linkish {
   background: none;
   border: 0;
@@ -95,7 +99,12 @@
 }
 .title-edit { outline: 1px dashed #ffb347; outline-offset: 4px; }
 .edit-sizes { display: grid; gap: 8px; }
+.edit-sizes[hidden], #addSizeRow[hidden] { display: none !important; }
 .edit-sizes label { display: grid; gap: 4px; color: var(--muted); font-size: 13px; }
+.tara-line, .size-line { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center; }
+.size-line { grid-template-columns: 0.7fr 1.1fr 0.9fr auto; }
+.tara-line button, .size-line button { height: 46px; width: 42px; border-radius: 12px; border: 1px solid var(--line); background: #0d0d0f; color: #fff; font-size: 18px; }
+html, body { touch-action: manipulation; }
 .order-row, .stat-row, .admin-row {
   display: grid;
   gap: 4px;
@@ -112,5 +121,37 @@
   font-size: 14px;
 }
 .admin-table img { width: 64px; height: 48px; object-fit: cover; border-radius: 8px; background: #000; }
-.admin-tools { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 22px; }
+.admin-tools { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 22px; align-items: center; }
+.admin-tools input, .admin-tools select {
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #0d0d0f;
+  color: #fff;
+  padding: 0 12px;
+}
+.cell-edit { cursor: pointer; border-bottom: 1px dashed rgba(255, 179, 71, 0.75); }
+.cell-edit input, .cell-edit select {
+  width: 100%;
+  min-width: 72px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0d0d0f;
+  color: #fff;
+  padding: 0 8px;
+}
+.photo-btn { padding: 0; border: 0; background: none; cursor: pointer; }
+.row-hidden { opacity: 0.45; }
+.row-actions { display: flex; gap: 6px; }
+.row-actions button {
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
 .thumb-preview { width: 100%; height: 140px; border-radius: 12px; background: #000 center/cover no-repeat; }

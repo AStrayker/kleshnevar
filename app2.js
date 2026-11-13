@@ -60,15 +60,20 @@
     const qty = item.qty != null ? item.qty : item.kg;
     return qty * item.price;
   }
-  function taraCost(liters) {
-    const halves = Math.max(1, Math.round(Number(liters) * 2));
+  function taraCost(liters, table) {
+    const n = Number(liters);
+    if (table && table.length) {
+      const row = table.find((entry) => Math.abs(Number(entry.liters) - n) < 0.01);
+      if (row) return Number(row.price) || 0;
+    }
+    const halves = Math.max(1, Math.round(n * 2));
     const full = Math.floor(halves / 4);
     const rem = halves % 4;
     return full * 9 + (rem ? 5 + rem : 0);
   }
   function payable(item) {
     const qty = item.qty != null ? item.qty : item.kg;
-    return lineSum(item) + (item.tara ? taraCost(qty) : 0);
+    return lineSum(item) + (item.tara ? taraCost(qty, item.taraTable) : 0);
   }
   function litersText(n) {
     const v = Math.round(Number(n) * 10) / 10;
@@ -246,6 +251,7 @@
     if (found) {
       found.kg = Math.round((Number(found.kg) + Number(item.kg)) * 10) / 10;
       if (item.tara) found.tara = true;
+      if (item.taraTable) found.taraTable = item.taraTable;
     } else cart.push(item);
     saveCart();
     toast("Додано в кошик");
@@ -280,7 +286,7 @@
       <div class="cart-item">
         <div>
           <b>${i.title}</b>
-          <small>${i.extra} · ${i.unit === "л" ? litersText(i.qty != null ? i.qty : i.kg) : (i.qty != null ? i.qty : i.kg)} ${i.unit || "кг"} × ${money(i.price)}${i.tara ? " · тара " + money(taraCost(i.qty != null ? i.qty : i.kg)) : ""}</small>
+          <small>${i.extra} · ${i.unit === "л" ? litersText(i.qty != null ? i.qty : i.kg) : (i.qty != null ? i.qty : i.kg)} ${i.unit || "кг"} × ${money(i.price)}${i.tara ? " · тара " + money(taraCost(i.qty != null ? i.qty : i.kg, i.taraTable)) : ""}</small>
         </div>
         <div style="text-align:right">
           <b>${money(payable(i))}</b>
@@ -315,7 +321,7 @@
       comment: fd.get("comment").trim(),
       items: cart.map((i) => {
         if (!i.tara) return i;
-        const tara = taraCost(i.qty != null ? i.qty : i.kg);
+        const tara = taraCost(i.qty != null ? i.qty : i.kg, i.taraTable);
         return Object.assign({}, i, { extra: i.extra + " · тара " + tara + " грн" });
       }),
       sum,
@@ -506,14 +512,14 @@
       <button class="add-btn add-cray" type="button">Додати в кошик</button>`);
   }
   function catalogCard(item) {
-    const drink = item.unit === "л";
+    const drink = item.unit === "л" || item.kind === "drink";
     const qty = drink
       ? `<div class="qty qty-drink">
             <button type="button" data-step="-0.5">−</button>
             <span class="qty-val">0,5</span>
             <button type="button" data-step="0.5">+</button>
             <span class="meta">л</span>
-            <span class="tara-note">6 грн/тара</span>
+            <span class="tara-note">${money(taraCost(0.5, item.taraPrices))}/тара</span>
           </div>`
       : `<div class="qty">
             <button type="button" data-step="-1">−</button>
@@ -600,7 +606,7 @@
   async function saveLive() {
     if (!db || !isAdmin) {
       toast("Зберегти може лише адміністратор");
-      return;
+      return false;
     }
     const sections = JSON.parse(JSON.stringify(live.sections || []));
     lastWrite = JSON.stringify(sections);
@@ -609,10 +615,12 @@
         sections,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
+      return true;
     } catch (err) {
       lastWrite = "";
       console.warn(err);
       toast("Не вдалося зберегти меню");
+      return false;
     }
   }
   function moveItem(id, sectionId, group) {
@@ -684,9 +692,6 @@
         await ensureUser(person);
         const adminDoc = await db.collection("admins").doc(person.uid).get();
         isAdmin = adminDoc.exists;
-        const lock = await db.collection("meta").doc("adminsLock").get();
-        const claim = $("#claimAdmin");
-        if (claim) claim.hidden = isAdmin || lock.exists;
       } catch (err) {
         console.warn(err);
       }
@@ -728,24 +733,125 @@
     $("#profileModal").hidden = false;
     try { await loadOrders(); } catch (err) { console.warn(err); }
   }
+  function fillUnits(current) {
+    const units = ["шт", "кг", "г", "л"];
+    if (current && units.indexOf(current) < 0) units.push(current);
+    const form = $("#editForm");
+    form.unit.innerHTML = units.map((unit) => `<option value="${esc(unit)}"${unit === current ? " selected" : ""}>${esc(unit)}</option>`).join("");
+  }
+  function fillSections(selected) {
+    const sel = $("#cardSection");
+    sel.innerHTML = ((live && live.sections) || []).map((section) =>
+      `<option value="${esc(section.id)}"${section.id === selected ? " selected" : ""}>${esc(section.title || section.id)}</option>`
+    ).join("");
+  }
+  function defaultTara() {
+    return [0.5, 1, 1.5, 2].map((liters) => ({ liters, price: taraCost(liters) }));
+  }
+  function taraLine(liters, price) {
+    return `<div class="tara-line"><input data-liters type="number" min="0.1" step="0.1" value="${Number(liters)}" aria-label="Літраж"><input data-tara type="number" min="0" step="0.01" value="${Number(price)}" aria-label="Ціна тари"><button type="button" data-remove-row aria-label="Прибрати">×</button></div>`;
+  }
+  function sizeLine(size) {
+    return `<div class="size-line" data-size-id="${esc(size.id || "")}"><input data-size-label value="${esc(size.label || "")}" placeholder="Розмір" aria-label="Розмір"><input data-size-pcs value="${esc(size.pcs || "")}" placeholder="Шт/кг" aria-label="Кількість"><input data-size-price type="number" min="0" step="0.01" value="${size.price != null ? size.price : ""}" placeholder="Ціна" aria-label="Ціна за кг"><button type="button" data-remove-row aria-label="Прибрати">×</button></div>`;
+  }
+  function readTaraRows(root) {
+    return [...root.querySelectorAll(".tara-line")].map((row) => ({
+      liters: Number(String(row.querySelector("[data-liters]").value).replace(",", ".")),
+      price: Number(String(row.querySelector("[data-tara]").value).replace(",", ".")),
+    })).filter((row) => row.liters > 0 && Number.isFinite(row.price));
+  }
+  function readSizeRows(root) {
+    return [...root.querySelectorAll(".size-line")].map((row, index) => {
+      const label = row.querySelector("[data-size-label]").value.trim();
+      return {
+        id: row.dataset.sizeId || label.replace(/\s+/g, "") || ("s" + index),
+        label: label || ("S" + (index + 1)),
+        pcs: row.querySelector("[data-size-pcs]").value.trim(),
+        price: Number(String(row.querySelector("[data-size-price]").value).replace(",", ".")) || 0,
+      };
+    }).filter((size) => size.label);
+  }
+  function cardKindOf(item) {
+    if (item.kind === "cray") return "cray";
+    if (item.kind === "drink" || item.unit === "л") return "drink";
+    return "plain";
+  }
+  function syncKindPanels() {
+    const form = $("#editForm");
+    const kind = form.kind.value;
+    $("#editTara").hidden = kind !== "drink";
+    $("#editSizes").hidden = kind !== "cray";
+    $("#addSizeRow").hidden = kind !== "cray";
+    if (kind === "drink") {
+      form.unit.value = "л";
+      if (!$("#taraRows").children.length) {
+        $("#taraRows").innerHTML = defaultTara().map((row) => taraLine(row.liters, row.price)).join("");
+      }
+    }
+    if (kind === "cray") {
+      form.unit.value = "кг";
+      if (!$("#editSizes").children.length) {
+        $("#editSizes").innerHTML = SIZES.map((size) => sizeLine(size)).join("");
+      }
+      if (!form.price.value) form.price.value = String(SIZES[0].price);
+    }
+  }
+  function paintPreview(url) {
+    $("#editPreview").style.backgroundImage = url ? "url('" + String(url).replace(/'/g, "") + "')" : "";
+  }
+  function placeItem(item, sectionId) {
+    const current = findSectionOf(item.id);
+    const dest = ((live && live.sections) || []).find((section) => section.id === sectionId) || ((live && live.sections) || [])[0];
+    if (!dest) return;
+    if (current && current.id === sectionId) {
+      if ((dest.grouped || dest.id === "vitryna") && !item.group) item.group = "Інше";
+      return;
+    }
+    if (current) current.items = current.items.filter((entry) => entry.id !== item.id);
+    if (dest.grouped || dest.id === "vitryna") {
+      if (!item.group) item.group = "Інше";
+    } else {
+      delete item.group;
+    }
+    dest.items = dest.items || [];
+    dest.items.push(item);
+  }
+  function openNewCard() {
+    if (!isAdmin) return;
+    if (!live) live = buildSeed();
+    editingId = null;
+    const form = $("#editForm");
+    form.reset();
+    $("#editTitle").textContent = "Нова картка";
+    fillUnits("шт");
+    fillSections(((live.sections || [])[0] || {}).id || "");
+    form.kind.value = "plain";
+    $("#taraRows").innerHTML = "";
+    $("#editSizes").innerHTML = "";
+    paintPreview("");
+    syncKindPanels();
+    $("#editModal").hidden = false;
+  }
   function openEdit(id) {
     const item = findItem(id);
     if (!item) return;
     editingId = id;
     const form = $("#editForm");
+    $("#editTitle").textContent = "Картка товару";
     form.name.value = item.name || "";
     form.price.value = item.price != null ? item.price : "";
     form.meta.value = item.meta || "";
     form.photo.value = item.photo || "";
     form.file.value = "";
-    const units = ["шт", "кг", "г", "л"];
-    if (item.unit && units.indexOf(item.unit) < 0) units.push(item.unit);
-    form.unit.innerHTML = units.map((unit) => `<option value="${esc(unit)}"${unit === item.unit ? " selected" : ""}>${esc(unit)}</option>`).join("");
-    $("#editPreview").style.backgroundImage = item.photo ? "url('" + String(item.photo).replace(/'/g, "") + "')" : "";
-    const sizes = $("#editSizes");
-    sizes.innerHTML = (item.sizes || []).map((size) =>
-      `<label>${esc(size.label)} ціна за кг<input data-size="${esc(size.id)}" type="number" min="0" step="0.01" value="${size.price}"></label>`
-    ).join("");
+    fillUnits(item.unit || "шт");
+    fillSections((findSectionOf(id) || {}).id || "");
+    form.kind.value = cardKindOf(item);
+    const tara = item.taraPrices && item.taraPrices.length ? item.taraPrices : defaultTara();
+    $("#taraRows").innerHTML = tara.map((row) => taraLine(row.liters, row.price)).join("");
+    const sizes = item.sizes && item.sizes.length ? item.sizes : SIZES.map((size) => Object.assign({}, size));
+    $("#editSizes").innerHTML = sizes.map((size) => sizeLine(size)).join("");
+    paintPreview(item.photo || "");
+    syncKindPanels();
     $("#editModal").hidden = false;
   }
 
@@ -763,7 +869,12 @@
       if (next < min) next = min;
       if (!drink) next = Math.round(next);
       valEl.textContent = drink ? litersText(next) : String(next);
-      if (drink) qtyBox.querySelector(".tara-note").textContent = money(taraCost(next)) + "/тара";
+      if (drink) {
+        const card = qtyBox.closest(".card");
+        const item = card ? findItem(card.dataset.id) : null;
+        const note = qtyBox.querySelector(".tara-note");
+        if (note) note.textContent = money(taraCost(next, item && item.taraPrices)) + "/тара";
+      }
       return;
     }
     const shrimp = e.target.closest(".add-shrimp");
@@ -919,45 +1030,61 @@
     }
   });
   $("#logoutBtn").addEventListener("click", () => auth.signOut());
-  $("#claimAdmin").addEventListener("click", async () => {
-    if (!user) return;
-    try {
-      const batch = db.batch();
-      batch.set(db.collection("admins").doc(user.uid), {
-        email: user.email || "",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-      batch.set(db.collection("meta").doc("adminsLock"), {
-        owner: user.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-      await batch.commit();
-      isAdmin = true;
-      $("#claimAdmin").hidden = true;
-      paintAccount();
-      renderMenu();
-      toast("Ви адміністратор");
-    } catch (err) {
-      console.warn(err);
-      toast("Адміністратора вже призначено");
-    }
-  });
   $("#editToggle").addEventListener("click", () => {
     editMode = !editMode;
     $("#editToggle").textContent = editMode ? "Готово" : "Редагування";
     renderMenu();
   });
+  $("#addCardBtn").addEventListener("click", openNewCard);
+  $("#cardKind").addEventListener("change", syncKindPanels);
+  $("#addTaraRow").addEventListener("click", () => {
+    $("#taraRows").insertAdjacentHTML("beforeend", taraLine(0.5, taraCost(0.5)));
+  });
+  $("#addSizeRow").addEventListener("click", () => {
+    $("#editSizes").insertAdjacentHTML("beforeend", sizeLine({ id: "s" + Date.now(), label: "", pcs: "", price: "" }));
+  });
+  $("#editModal").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-remove-row]");
+    if (!btn) return;
+    const row = btn.closest(".tara-line, .size-line");
+    if (row) row.remove();
+  });
+  $("#editForm [name=photo]").addEventListener("input", () => {
+    paintPreview($("#editForm").photo.value.trim());
+  });
   $("#editForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const item = findItem(editingId);
-    if (!item || !isAdmin) return;
+    if (!isAdmin) return;
+    if (!live) live = buildSeed();
     const fd = new FormData(e.target);
+    const kindPick = String(fd.get("kind") || "plain");
+    const sectionId = String(fd.get("section") || "");
+    let item = editingId ? findItem(editingId) : null;
+    const creating = !item;
+    if (creating) item = { id: "item-" + Date.now() };
     item.name = String(fd.get("name") || "").trim();
     item.price = Number(fd.get("price"));
-    item.unit = String(fd.get("unit") || item.unit || "");
+    item.unit = String(fd.get("unit") || "");
     item.meta = String(fd.get("meta") || "").trim();
     const photo = String(fd.get("photo") || "").trim();
     if (photo) item.photo = photo;
+    if (kindPick === "drink") {
+      item.kind = "drink";
+      item.unit = "л";
+      item.taraPrices = readTaraRows($("#taraRows"));
+      delete item.sizes;
+    } else if (kindPick === "cray") {
+      item.kind = "cray";
+      item.unit = "кг";
+      item.sizes = readSizeRows($("#editSizes"));
+      if (!item.sizes.length) item.sizes = SIZES.map((size) => Object.assign({}, size));
+      if (item.sizes[0]) item.price = item.sizes[0].price;
+      delete item.taraPrices;
+    } else if (item.kind === "drink" || item.kind === "cray") {
+      delete item.kind;
+      delete item.taraPrices;
+      delete item.sizes;
+    }
     const file = e.target.file.files && e.target.file.files[0];
     try {
       if (file) {
@@ -966,17 +1093,13 @@
         await ref.put(file, { contentType: file.type || "image/jpeg" });
         item.photo = await ref.getDownloadURL();
       }
-      if (item.sizes) {
-        item.sizes.forEach((size) => {
-          const input = e.target.querySelector('[data-size="' + size.id + '"]');
-          if (input) size.price = Number(input.value);
-        });
-        item.price = item.sizes[0] ? item.sizes[0].price : item.price;
-      }
+      placeItem(item, sectionId);
+      editingId = item.id;
       renderMenu();
-      await saveLive();
+      const saved = await saveLive();
+      if (!saved) return;
       $("#editModal").hidden = true;
-      toast("Картку збережено");
+      toast(creating ? "Картку додано" : "Картку збережено");
     } catch (err) {
       console.warn(err);
       toast("Не вдалося зберегти картку");
@@ -1001,8 +1124,21 @@
       unit: item.unit,
       price: item.price,
       tara: drink ? true : undefined,
+      taraTable: drink && item.taraPrices && item.taraPrices.length ? item.taraPrices : undefined,
     });
   });
+
+  window.addEventListener("wheel", (e) => {
+    if (e.ctrlKey) e.preventDefault();
+  }, { passive: false });
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && ["+", "-", "=", "_", "0", "Add", "Subtract"].indexOf(e.key) >= 0) e.preventDefault();
+  });
+  document.addEventListener("gesturestart", (e) => e.preventDefault(), { passive: false });
+  document.addEventListener("gesturechange", (e) => e.preventDefault(), { passive: false });
+  document.addEventListener("touchmove", (e) => {
+    if (e.touches && e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
 
   live = buildSeed();
   renderMenu();

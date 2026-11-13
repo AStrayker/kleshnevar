@@ -164,6 +164,14 @@ window.KLESHNEVAR_CATALOG = {
           "photo": "assets/menu/crab-claws.jpg?v=3"
         },
         {
+          "id": "crab-clusters",
+          "name": "Краб кластери",
+          "price": 220.0,
+          "unit": "100 г",
+          "meta": "заморозка",
+          "photo": "assets/menu/crab-clusters.jpg"
+        },
+        {
           "id": "p-195",
           "name": "Лобстер варено-морожений",
           "price": 250.0,
@@ -1349,6 +1357,96 @@ window.KLESHNEVAR_CATALOG = {
           "unit": "100 г",
           "meta": "Риба",
           "photo": "assets/menu/fish-roach-roe.jpg",
+          "group": "Риба"
+        },
+        {
+          "id": "p-207",
+          "name": "Коса паприка",
+          "price": 65.0,
+          "unit": "шт",
+          "meta": "100 г",
+          "photo": "assets/menu/kosa-paprika.jpg",
+          "group": "Сир"
+        },
+        {
+          "id": "p-208",
+          "name": "М'ясні слайси \"Сальса\"",
+          "price": 170.0,
+          "unit": "100 г",
+          "meta": "0,5 кг",
+          "photo": "assets/menu/meat-salsa.jpg",
+          "group": "Рибка"
+        },
+        {
+          "id": "p-209",
+          "name": "Ікра мінтая",
+          "price": 720.0,
+          "unit": "шт",
+          "meta": "0,5 кг",
+          "photo": "assets/menu/roe-pollock.jpg",
+          "group": "Ікра"
+        },
+        {
+          "id": "p-210",
+          "name": "Ікра плотви",
+          "price": 540.0,
+          "unit": "шт",
+          "meta": "0,5 кг",
+          "photo": "assets/menu/roe-roach.jpg",
+          "group": "Ікра"
+        },
+        {
+          "id": "p-211",
+          "name": "Ікра тарані",
+          "price": 560.0,
+          "unit": "шт",
+          "meta": "банка",
+          "photo": "assets/menu/roe-ram.jpg",
+          "group": "Ікра"
+        },
+        {
+          "id": "p-212",
+          "name": "Ікра товстолоба",
+          "price": 1550.0,
+          "unit": "шт",
+          "meta": "0,5 кг",
+          "photo": "assets/menu/roe-carp.jpg",
+          "group": "Ікра"
+        },
+        {
+          "id": "p-213",
+          "name": "Ікра скумбрії",
+          "price": 90.0,
+          "unit": "100 г",
+          "meta": "вагова",
+          "photo": "assets/menu/roe-mackerel.jpg",
+          "group": "Ікра"
+        },
+        {
+          "id": "p-214",
+          "name": "Окунь холодного копчення",
+          "price": 2990.0,
+          "unit": "шт",
+          "meta": "ціла риба",
+          "photo": "assets/menu/perch-smoked.jpg",
+          "group": "Риба"
+        },
+        {
+          "id": "p-215",
+          "name": "Стейк товстолоба в'ялений",
+          "price": 110.0,
+          "unit": "100 г",
+          "meta": "в'ялений",
+          "photo": "assets/menu/carp-steak-dried.jpg",
+          "group": "Риба"
+        },
+        {
+          "id": "p-216",
+          "name": "Дорадо в'ялена",
+          "price": 450.0,
+          "unit": "шт",
+          "meta": "в'ялена",
+          "photo": "assets/menu/dorado-dried.jpg",
           "group": "Риба"
         },
         {

@@ -28,11 +28,7 @@ service cloud.firestore {
 
     match /admins/{uid} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
-      allow create: if isAdmin()
-        || (signedIn()
-          && request.auth.uid == uid
-          && !exists(/databases/$(database)/documents/meta/adminsLock));
-      allow update, delete: if isAdmin();
+      allow create, update, delete: if false;
     }
 
     match /meta/{id} {
