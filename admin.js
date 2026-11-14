@@ -56,7 +56,7 @@
           kind: "shrimp",
           name: "Креветки",
           meta: flavor,
-          price: 899,
+          price: 999,
           unit: "кг",
           photo: shrimpPhotos[flavor] || "",
         })),

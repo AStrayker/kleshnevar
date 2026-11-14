@@ -34,7 +34,7 @@
     { id: "XL", label: "XL", price: 2300, pcs: "15–18 шт/кг" },
     { id: "XXL", label: "XXL", price: 2800, pcs: "10–14 шт/кг" },
   ];
-  const SHRIMP_PRICE = 899;
+  const SHRIMP_PRICE = 999;
 
   let cart = JSON.parse(localStorage.getItem("kv-cart") || "[]");
   let db = null;
