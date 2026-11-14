@@ -116,6 +116,7 @@
         if (!snap.exists) return;
         const next = JSON.stringify(snap.data().sections || []);
         live = { sections: snap.data().sections || [] };
+        ensureSauceSection(live.sections);
         ensureSauceShrimp(live.sections);
         if (next === lastWrite) return;
         lastWrite = next;
@@ -460,6 +461,38 @@
     });
     ensureSauceShrimp(sections);
     return { sections };
+  }
+  function ensureSauceSection(sections) {
+    if (!sections) return;
+    let sousy = sections.find((section) => section.id === "sousy");
+    if (!sousy) {
+      const seed = ((window.KLESHNEVAR_CATALOG && window.KLESHNEVAR_CATALOG.sections) || []).find((section) => section.id === "sousy");
+      sousy = seed ? JSON.parse(JSON.stringify(seed)) : {
+        id: "sousy",
+        title: "Соуси",
+        note: "Гарячі соуси — 1 кг. Порційні — 35 г.",
+        items: [],
+      };
+      const after = sections.findIndex((section) => section.id === "kuhnia");
+      sections.splice(after >= 0 ? after + 1 : sections.length, 0, sousy);
+    }
+    sousy.items = sousy.items || [];
+    const sauceIds = new Set(["shrimp-cream-sauce", "shrimp-tomyum-sauce", "tartar", "p-186", "p-187"]);
+    sections.forEach((section) => {
+      if (section.id === "sousy" || section.id === "krevetky") return;
+      section.items = (section.items || []).filter((item) => {
+        const name = String(item.name || "");
+        const move = sauceIds.has(item.id) || name.indexOf("Соус ") === 0 || name === "Креветка соус Вершковий" || name === "Креветка соус Том Ям" || name === "Креветки соус вершковий";
+        if (!move) return true;
+        if (!sousy.items.some((entry) => entry.id === item.id)) sousy.items.push(item);
+        return false;
+      });
+    });
+    const seed = ((window.KLESHNEVAR_CATALOG && window.KLESHNEVAR_CATALOG.sections) || []).find((section) => section.id === "sousy");
+    if (!seed) return;
+    seed.items.forEach((item) => {
+      if (!sousy.items.some((entry) => entry.id === item.id)) sousy.items.push(JSON.parse(JSON.stringify(item)));
+    });
   }
   function ensureSauceShrimp(sections) {
     const section = (sections || []).find((entry) => entry.id === "krevetky");

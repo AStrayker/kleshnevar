@@ -36,22 +36,53 @@ window.KLESHNEVAR_CATALOG = {
           "unit": "порц.",
           "meta": "порція 200 г",
           "photo": "assets/menu/shrimp-panko.jpg"
-        },
+        }
+      ]
+    },
+    {
+      "id": "sousy",
+      "title": "Соуси",
+      "note": "Гарячі соуси — 1 кг. Порційні — 35 г.",
+      "items": [
         {
           "id": "shrimp-cream-sauce",
-          "name": "Креветка соус Вершковий",
+          "name": "Креветки соус вершковий",
           "price": 1199.0,
-          "unit": "порц.",
-          "meta": "порція 1 кг",
-          "photo": "assets/menu/shrimp-cream.jpg"
+          "unit": "кг",
+          "meta": "1 кг",
+          "photo": "assets/shrimp-cream.jpg"
         },
         {
           "id": "shrimp-tomyum-sauce",
           "name": "Креветка соус Том Ям",
           "price": 1199.0,
-          "unit": "порц.",
-          "meta": "порція 1 кг",
+          "unit": "кг",
+          "meta": "1 кг",
           "photo": "assets/shrimp-tomyum.jpg"
+        },
+        {
+          "id": "tartar",
+          "name": "Соус Тартар",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
+          "photo": "assets/menu/tartar.jpg"
+        },
+        {
+          "id": "p-186",
+          "name": "Соус Барбекю",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
+          "photo": "assets/menu/sauce.jpg"
+        },
+        {
+          "id": "p-187",
+          "name": "Соус солодкий чілі",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
+          "photo": "assets/menu/sauce.jpg"
         }
       ]
     },
@@ -1224,15 +1255,6 @@ window.KLESHNEVAR_CATALOG = {
           "group": "Морепродукти"
         },
         {
-          "id": "tartar",
-          "name": "Соус Тартар",
-          "price": 15.0,
-          "unit": "порц.",
-          "meta": "35 г",
-          "photo": "assets/menu/tartar.jpg",
-          "group": "Соуси"
-        },
-        {
           "id": "p-184",
           "name": "Кільця кукурудзяні ГОНЗО кальмар 150г",
           "price": 62.0,
@@ -1457,24 +1479,6 @@ window.KLESHNEVAR_CATALOG = {
           "photo": "assets/menu/dorado-dried.jpg",
           "group": "Риба"
         },
-        {
-          "id": "p-186",
-          "name": "Соус Барбекю",
-          "price": 15.0,
-          "unit": "порц.",
-          "meta": "35 г",
-          "photo": "assets/menu/sauce.jpg",
-          "group": "Соуси"
-        },
-        {
-          "id": "p-187",
-          "name": "Соус солодкий чілі",
-          "price": 15.0,
-          "unit": "порц.",
-          "meta": "35 г",
-          "photo": "assets/menu/sauce.jpg",
-          "group": "Соуси"
-        }
       ],
       "grouped": true
     }
