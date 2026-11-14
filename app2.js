@@ -470,34 +470,48 @@
       sousy = seed ? JSON.parse(JSON.stringify(seed)) : {
         id: "sousy",
         title: "Соуси",
-        note: "Гарячі соуси — 1 кг. Порційні — 35 г.",
+        note: "Порційні соуси — 35 г.",
         items: [],
       };
       const after = sections.findIndex((section) => section.id === "kuhnia");
       sections.splice(after >= 0 ? after + 1 : sections.length, 0, sousy);
     }
     sousy.items = sousy.items || [];
-    const sauceIds = new Set(["shrimp-cream-sauce", "shrimp-tomyum-sauce", "tartar", "p-186", "p-187", "sauce-sweet-sour", "sauce-garlic"]);
+    if (!sousy.note || sousy.note.indexOf("Гарячі соуси") === 0) sousy.note = "Порційні соуси — 35 г.";
+    const sauceIds = new Set(["tartar", "p-186", "p-187", "sauce-sweet-sour", "sauce-garlic"]);
     sections.forEach((section) => {
       if (section.id === "sousy" || section.id === "krevetky") return;
       section.items = (section.items || []).filter((item) => {
         const name = String(item.name || "");
-        const move = sauceIds.has(item.id) || name.indexOf("Соус ") === 0 || name === "Креветка соус Вершковий" || name === "Креветка соус Том Ям" || name === "Креветки соус вершковий";
-        if (!move) return true;
+        const move = sauceIds.has(item.id) || name.indexOf("Соус ") === 0;
+        if (!move || isHotShrimpSauce(item)) return !isHotShrimpSauce(item);
         if (!sousy.items.some((entry) => entry.id === item.id)) sousy.items.push(item);
         return false;
       });
     });
+    sections.forEach((section) => {
+      if (section.id === "krevetky") return;
+      section.items = (section.items || []).filter((item) => !isHotShrimpSauce(item));
+    });
     const seed = ((window.KLESHNEVAR_CATALOG && window.KLESHNEVAR_CATALOG.sections) || []).find((section) => section.id === "sousy");
     if (!seed) return;
     seed.items.forEach((item) => {
+      if (isHotShrimpSauce(item)) return;
       if (!sousy.items.some((entry) => entry.id === item.id)) sousy.items.push(JSON.parse(JSON.stringify(item)));
     });
+  }
+  function isHotShrimpSauce(item) {
+    const id = String((item && item.id) || "");
+    if (id === "shrimp-cream-sauce" || id === "shrimp-tomyum-sauce" || id === "sauce-cream" || id === "sauce-tomyum") return true;
+    const name = String((item && item.name) || "");
+    return name === "Креветки соус вершковий" || name === "Креветка соус Вершковий" || name === "Креветка соус Том Ям" || name === "Креветки соус Том Ям";
   }
   function ensureSauceShrimp(sections) {
     const section = (sections || []).find((entry) => entry.id === "krevetky");
     if (!section) return;
     section.items = section.items || [];
+    const canonical = new Set(SHRIMP_SAUCES.map((item) => item.id));
+    section.items = section.items.filter((item) => !isHotShrimpSauce(item) || canonical.has(item.id));
     (sections || []).forEach((entry) => {
       (entry.items || []).forEach((item) => {
         if ((item.id === "shrimp-cream-sauce" || item.id === "shrimp-sauce-cream") && Number(item.price) === 900) item.price = 1199;

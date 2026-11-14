@@ -42,24 +42,8 @@ window.KLESHNEVAR_CATALOG = {
     {
       "id": "sousy",
       "title": "Соуси",
-      "note": "Гарячі соуси — 1 кг. Порційні — 35 г.",
+      "note": "Порційні соуси — 35 г.",
       "items": [
-        {
-          "id": "shrimp-cream-sauce",
-          "name": "Креветки соус вершковий",
-          "price": 1199.0,
-          "unit": "кг",
-          "meta": "1 кг",
-          "photo": "assets/shrimp-cream.jpg"
-        },
-        {
-          "id": "shrimp-tomyum-sauce",
-          "name": "Креветка соус Том Ям",
-          "price": 1199.0,
-          "unit": "кг",
-          "meta": "1 кг",
-          "photo": "assets/shrimp-tomyum.jpg"
-        },
         {
           "id": "tartar",
           "name": "Соус Тартар",
