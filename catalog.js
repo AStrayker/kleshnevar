@@ -40,7 +40,7 @@ window.KLESHNEVAR_CATALOG = {
         {
           "id": "shrimp-cream-sauce",
           "name": "Креветка соус Вершковий",
-          "price": 900.0,
+          "price": 1199.0,
           "unit": "порц.",
           "meta": "порція 1 кг",
           "photo": "assets/menu/shrimp-cream.jpg"

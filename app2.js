@@ -36,7 +36,7 @@
   ];
   const SHRIMP_PRICE = 999;
   const SHRIMP_SAUCES = [
-    { id: "shrimp-sauce-cream", name: "Креветки соус вершковий", price: 900, photo: "assets/shrimp-cream.jpg" },
+    { id: "shrimp-sauce-cream", name: "Креветки соус вершковий", price: 1199, photo: "assets/shrimp-cream.jpg" },
     { id: "shrimp-sauce-tomyum", name: "Креветка соус Том Ям", price: 1199, photo: "assets/shrimp-tomyum.jpg" },
   ];
 
@@ -465,8 +465,17 @@
     const section = (sections || []).find((entry) => entry.id === "krevetky");
     if (!section) return;
     section.items = section.items || [];
+    (sections || []).forEach((entry) => {
+      (entry.items || []).forEach((item) => {
+        if ((item.id === "shrimp-cream-sauce" || item.id === "shrimp-sauce-cream") && Number(item.price) === 900) item.price = 1199;
+      });
+    });
     SHRIMP_SAUCES.forEach((item) => {
-      if (section.items.some((entry) => entry.id === item.id)) return;
+      const found = section.items.find((entry) => entry.id === item.id);
+      if (found) {
+        if (Number(found.price) === 900) found.price = item.price;
+        return;
+      }
       section.items.push({
         id: item.id,
         kind: "shrimp",

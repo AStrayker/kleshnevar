@@ -36,7 +36,7 @@
   ];
   const SHRIMP_PRICE = 999;
   const SHRIMP_SAUCES = [
-    { id: "sauce-cream", title: "Креветки соус вершковий", price: 900, photo: "assets/shrimp-cream.jpg" },
+    { id: "sauce-cream", title: "Креветки соус вершковий", price: 1199, photo: "assets/shrimp-cream.jpg" },
     { id: "sauce-tomyum", title: "Креветка соус Том Ям", price: 1199, photo: "assets/shrimp-tomyum.jpg" },
   ];
 
