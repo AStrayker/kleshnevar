@@ -477,7 +477,7 @@
       sections.splice(after >= 0 ? after + 1 : sections.length, 0, sousy);
     }
     sousy.items = sousy.items || [];
-    const sauceIds = new Set(["shrimp-cream-sauce", "shrimp-tomyum-sauce", "tartar", "p-186", "p-187"]);
+    const sauceIds = new Set(["shrimp-cream-sauce", "shrimp-tomyum-sauce", "tartar", "p-186", "p-187", "sauce-sweet-sour", "sauce-garlic"]);
     sections.forEach((section) => {
       if (section.id === "sousy" || section.id === "krevetky") return;
       section.items = (section.items || []).filter((item) => {

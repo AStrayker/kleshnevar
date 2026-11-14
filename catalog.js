@@ -83,6 +83,22 @@ window.KLESHNEVAR_CATALOG = {
           "unit": "порц.",
           "meta": "35 г",
           "photo": "assets/menu/sauce.jpg"
+        },
+        {
+          "id": "sauce-sweet-sour",
+          "name": "Соус кисло-солодкий",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
+          "photo": "assets/menu/sauce.jpg"
+        },
+        {
+          "id": "sauce-garlic",
+          "name": "Соус часниковий",
+          "price": 15.0,
+          "unit": "порц.",
+          "meta": "35 г",
+          "photo": "assets/menu/sauce.jpg"
         }
       ]
     },
