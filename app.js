@@ -35,6 +35,10 @@
     { id: "XXL", label: "XXL", price: 2800, pcs: "10–14 шт/кг" },
   ];
   const SHRIMP_PRICE = 999;
+  const SHRIMP_SAUCES = [
+    { id: "sauce-cream", title: "Креветки соус вершковий", price: 900, photo: "assets/shrimp-cream.jpg" },
+    { id: "sauce-tomyum", title: "Креветка соус Том Ям", price: 1199, photo: "assets/shrimp-tomyum.jpg" },
+  ];
 
   let cart = JSON.parse(localStorage.getItem("kv-cart") || "[]");
   let db = null;
@@ -239,6 +243,25 @@
         <button class="add-btn add-shrimp">Додати в кошик</button>
       </div>
     </article>`
+  ).join("") + SHRIMP_SAUCES.map(
+    (item) => `
+    <article class="card" data-sauce="${item.id}" data-title="${item.title}" data-price="${item.price}">
+      <div class="card-photo" style="background-image:url('${item.photo}')"></div>
+      <div class="card-body">
+        <div class="row-between">
+          <h3>${item.title}</h3>
+          <div class="price">${money(item.price)}/кг</div>
+        </div>
+        <p class="meta">1 кг</p>
+        <div class="qty">
+          <button type="button" data-step="-1">−</button>
+          <span class="qty-val">1</span>
+          <button type="button" data-step="1">+</button>
+          <span class="meta">кг</span>
+        </div>
+        <button class="add-btn add-shrimp">Додати в кошик</button>
+      </div>
+    </article>`
   ).join("");
 
   function sizeOptions() {
@@ -290,8 +313,19 @@
   $$(".add-shrimp").forEach((btn) => {
     btn.addEventListener("click", () => {
       const card = btn.closest(".card");
-      const flavor = card.dataset.shrimp;
       const kg = Math.max(1, Math.round(+card.querySelector(".qty-val").textContent || 1));
+      if (card.dataset.sauce) {
+        addItem({
+          id: "shrimp-" + card.dataset.sauce,
+          title: card.dataset.title,
+          extra: "1 кг",
+          kg,
+          price: Number(card.dataset.price),
+          unit: "кг",
+        });
+        return;
+      }
+      const flavor = card.dataset.shrimp;
       addItem({
         id: "shrimp-" + flavor,
         title: "Креветки",

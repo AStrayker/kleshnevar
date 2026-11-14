@@ -85,6 +85,23 @@
 .edit-bar a { background: rgba(255,255,255,0.08); }
 .is-editing [data-drop] { outline: 1px dashed rgba(255,179,71,0.45); outline-offset: 6px; min-height: 88px; }
 .is-editing .card { cursor: grab; }
+.section-handle { display: none; }
+.section-handle[hidden] { display: none !important; }
+.is-editing .section-handle {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  margin-bottom: 8px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px dashed #ffb347;
+  background: rgba(255,179,71,0.12);
+  color: #ffb347;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: grab;
+}
+.is-editing section.section-over { outline: 2px solid #ffb347; outline-offset: 8px; }
 .card-hidden { opacity: 0.55; outline: 2px dashed #ffb347; }
 .hidden-flag, .edit-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .edit-tools button, .hidden-flag {

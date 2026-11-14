@@ -44,6 +44,14 @@ window.KLESHNEVAR_CATALOG = {
           "unit": "порц.",
           "meta": "порція 1 кг",
           "photo": "assets/menu/shrimp-cream.jpg"
+        },
+        {
+          "id": "shrimp-tomyum-sauce",
+          "name": "Креветка соус Том Ям",
+          "price": 1199.0,
+          "unit": "порц.",
+          "meta": "порція 1 кг",
+          "photo": "assets/shrimp-tomyum.jpg"
         }
       ]
     },

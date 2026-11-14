@@ -35,6 +35,10 @@
     { id: "XXL", label: "XXL", price: 2800, pcs: "10–14 шт/кг" },
   ];
   const SHRIMP_PRICE = 999;
+  const SHRIMP_SAUCES = [
+    { id: "shrimp-sauce-cream", name: "Креветки соус вершковий", price: 900, photo: "assets/shrimp-cream.jpg" },
+    { id: "shrimp-sauce-tomyum", name: "Креветка соус Том Ям", price: 1199, photo: "assets/shrimp-tomyum.jpg" },
+  ];
 
   let cart = JSON.parse(localStorage.getItem("kv-cart") || "[]");
   let db = null;
@@ -48,6 +52,7 @@
   let authMode = "login";
   let editingId = null;
   let lastWrite = "";
+  let draggingSectionId = "";
 
   function money(n) {
     const v = Math.round(Number(n) * 100) / 100;
@@ -111,6 +116,7 @@
         if (!snap.exists) return;
         const next = JSON.stringify(snap.data().sections || []);
         live = { sections: snap.data().sections || [] };
+        ensureSauceShrimp(live.sections);
         if (next === lastWrite) return;
         lastWrite = next;
         renderMenu();
@@ -422,7 +428,15 @@
           price: SHRIMP_PRICE,
           unit: "кг",
           photo: SHRIMP_PHOTOS[flavor] || "",
-        })),
+        })).concat(SHRIMP_SAUCES.map((item) => ({
+          id: item.id,
+          kind: "shrimp",
+          name: item.name,
+          meta: "1 кг",
+          price: item.price,
+          unit: "кг",
+          photo: item.photo,
+        }))),
       },
       {
         id: "raky",
@@ -444,7 +458,25 @@
     ((window.KLESHNEVAR_CATALOG && window.KLESHNEVAR_CATALOG.sections) || []).forEach((section) => {
       sections.push(JSON.parse(JSON.stringify(section)));
     });
+    ensureSauceShrimp(sections);
     return { sections };
+  }
+  function ensureSauceShrimp(sections) {
+    const section = (sections || []).find((entry) => entry.id === "krevetky");
+    if (!section) return;
+    section.items = section.items || [];
+    SHRIMP_SAUCES.forEach((item) => {
+      if (section.items.some((entry) => entry.id === item.id)) return;
+      section.items.push({
+        id: item.id,
+        kind: "shrimp",
+        name: item.name,
+        meta: "1 кг",
+        price: item.price,
+        unit: "кг",
+        photo: item.photo,
+      });
+    });
   }
   function findItem(id) {
     for (const section of (live && live.sections) || []) {
@@ -562,13 +594,67 @@
         h2.classList.toggle("title-edit", !!(editMode && isAdmin));
       }
       sec.dataset.drop = section.id;
+      ensureSectionHandle(sec, section);
     }
     const nav = document.querySelector('[data-nav="' + section.id + '"]');
     if (nav) nav.textContent = section.title || nav.textContent;
   }
+  function ensureSectionHandle(sec, section) {
+    const head = sec.querySelector(".sec-head");
+    if (!head) return;
+    let handle = head.querySelector(".section-handle");
+    if (editMode && isAdmin) {
+      if (!handle) {
+        handle = document.createElement("button");
+        handle.type = "button";
+        handle.className = "section-handle";
+        handle.textContent = "Перетягнути розділ";
+        handle.draggable = true;
+        head.insertBefore(handle, head.firstChild);
+      }
+      handle.hidden = false;
+      handle.dataset.dragSection = section.id;
+    } else if (handle) {
+      handle.hidden = true;
+    }
+  }
+  function orderSections() {
+    const anchor = document.getElementById("dostavka");
+    const main = anchor && anchor.parentElement;
+    if (main && anchor) {
+      (live.sections || []).forEach((section) => {
+        const el = document.getElementById(section.id);
+        if (el) main.insertBefore(el, anchor);
+      });
+    }
+    const nav = document.querySelector("#menu nav");
+    const delivery = nav && nav.querySelector('[data-scroll="dostavka"]');
+    if (nav && delivery) {
+      (live.sections || []).forEach((section) => {
+        const link = nav.querySelector('[data-nav="' + section.id + '"]');
+        if (link) nav.insertBefore(link, delivery);
+      });
+    }
+  }
+  function moveSection(id, beforeId) {
+    if (!live || !id || !beforeId || id === beforeId || beforeId === "dostavka") return;
+    const list = live.sections || [];
+    const from = list.findIndex((section) => section.id === id);
+    if (from < 0) return;
+    const [moved] = list.splice(from, 1);
+    const dest = list.findIndex((section) => section.id === beforeId);
+    if (dest < 0) {
+      list.splice(from, 0, moved);
+      return;
+    }
+    list.splice(dest, 0, moved);
+    renderMenu();
+    scheduleSave();
+  }
   function renderMenu() {
     if (!live) live = buildSeed();
     document.body.classList.toggle("is-editing", !!(editMode && isAdmin));
+    orderSections();
     live.sections.forEach((section) => {
       paintSection(section);
       const items = visibleItems(section);
@@ -936,6 +1022,14 @@
     if (price && size) price.textContent = money(size.price) + "/кг";
   });
   document.addEventListener("dragstart", (e) => {
+    const handle = e.target.closest(".section-handle");
+    if (handle && editMode && isAdmin) {
+      draggingSectionId = handle.dataset.dragSection || "";
+      e.dataTransfer.setData("text/plain", "section:" + draggingSectionId);
+      e.dataTransfer.effectAllowed = "move";
+      return;
+    }
+    draggingSectionId = "";
     const card = e.target.closest(".card[data-id]");
     if (!editMode || !isAdmin || !card || e.target.closest("button,select,input,a")) {
       if (e.target.closest("button,select,input,a")) e.preventDefault();
@@ -944,15 +1038,38 @@
     e.dataTransfer.setData("text/plain", card.dataset.id);
     e.dataTransfer.effectAllowed = "move";
   });
+  document.addEventListener("dragend", () => {
+    draggingSectionId = "";
+    document.querySelectorAll(".section-over").forEach((el) => el.classList.remove("section-over"));
+  });
   document.addEventListener("dragover", (e) => {
-    if (editMode && isAdmin && e.target.closest("[data-drop]")) e.preventDefault();
+    if (!editMode || !isAdmin) return;
+    if (draggingSectionId) {
+      const target = e.target.closest("main > section[id]");
+      if (!target || target.id === "dostavka") return;
+      e.preventDefault();
+      document.querySelectorAll(".section-over").forEach((el) => el.classList.remove("section-over"));
+      if (target.id !== draggingSectionId) target.classList.add("section-over");
+      return;
+    }
+    if (e.target.closest("[data-drop]")) e.preventDefault();
   });
   document.addEventListener("drop", (e) => {
+    if (!editMode || !isAdmin) return;
+    if (draggingSectionId) {
+      const target = e.target.closest("main > section[id]");
+      e.preventDefault();
+      const id = draggingSectionId;
+      draggingSectionId = "";
+      document.querySelectorAll(".section-over").forEach((el) => el.classList.remove("section-over"));
+      if (target && target.id !== "dostavka") moveSection(id, target.id);
+      return;
+    }
     const zone = e.target.closest("[data-drop]");
-    if (!editMode || !isAdmin || !zone) return;
+    if (!zone) return;
     e.preventDefault();
     const id = e.dataTransfer.getData("text/plain");
-    if (id) moveItem(id, zone.dataset.drop, zone.dataset.group || "");
+    if (id && id.indexOf("section:") !== 0) moveItem(id, zone.dataset.drop, zone.dataset.group || "");
   });
   document.addEventListener("focusout", (e) => {
     const h2 = e.target.closest && e.target.closest(".sec-head h2[data-section]");

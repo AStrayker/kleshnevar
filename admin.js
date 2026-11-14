@@ -59,7 +59,10 @@
           price: 999,
           unit: "кг",
           photo: shrimpPhotos[flavor] || "",
-        })),
+        })).concat([
+          { id: "shrimp-sauce-cream", kind: "shrimp", name: "Креветки соус вершковий", meta: "1 кг", price: 900, unit: "кг", photo: "assets/shrimp-cream.jpg" },
+          { id: "shrimp-sauce-tomyum", kind: "shrimp", name: "Креветка соус Том Ям", meta: "1 кг", price: 1199, unit: "кг", photo: "assets/shrimp-tomyum.jpg" },
+        ]),
       },
       {
         id: "raky",
