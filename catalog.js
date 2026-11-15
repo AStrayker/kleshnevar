@@ -26,7 +26,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Мідії Панко",
           "price": 275.0,
           "unit": "порц.",
-          "meta": "порція 200 г",
+          "meta": "порція 200 г · 28–31 шт",
           "photo": "assets/menu/mussels-panko.jpg"
         },
         {
@@ -34,7 +34,7 @@ window.KLESHNEVAR_CATALOG = {
           "name": "Креветка Панко",
           "price": 250.0,
           "unit": "порц.",
-          "meta": "порція 200 г",
+          "meta": "порція 200 г · 9 шт",
           "photo": "assets/menu/shrimp-panko.jpg"
         }
       ]

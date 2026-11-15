@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache" />
   <script>
   (function () {
-    var BUILD = "261114a";
+    var BUILD = "261115a";
     function formBusy() {
       var form = document.getElementById("orderForm");
       if (!form) return false;
@@ -106,12 +106,12 @@
       <a href="#top" data-scroll="top">Головна</a>
       <a href="#krevetky" data-scroll="krevetky">Креветки</a>
       <a href="#raky" data-scroll="raky">Раки</a>
-      <a href="#kuhnia" data-scroll="kuhnia">Мікси та панко</a>
+      <a href="#napoi" data-scroll="napoi">Напої</a>
       <a href="#sousy" data-scroll="sousy">Соуси</a>
+      <a href="#vitryna" data-scroll="vitryna">Вітрина</a>
+      <a href="#kuhnia" data-scroll="kuhnia">Мікси та панко</a>
       <a href="#zhyvi" data-scroll="zhyvi">Живі раки</a>
       <a href="#zamorozka" data-scroll="zamorozka">Заморозка</a>
-      <a href="#napoi" data-scroll="napoi">Напої</a>
-      <a href="#vitryna" data-scroll="vitryna">Вітрина</a>
       <a href="#dostavka" data-scroll="dostavka">Доставка</a>
     </nav>
     <button class="btn btn-primary" id="showMapBtn" style="margin-top:22px">Показати на карті</button>
@@ -179,13 +179,13 @@
       </div>
     </section>
 
-    <section id="kuhnia">
+    <section id="napoi">
       <div class="wrap">
         <div class="sec-head">
-          <h2>Мікси та панко</h2>
-          <p>Мікси і панко</p>
+          <h2>Напої</h2>
+          <p>Пиво, сидр і лимонад — ціна за 1 літр</p>
         </div>
-        <div class="grid" id="kuhniaGrid"></div>
+        <div class="grid" id="napoiGrid"></div>
       </div>
     </section>
 
@@ -196,6 +196,26 @@
           <p>Порційні соуси — 35 г.</p>
         </div>
         <div class="grid" id="sousyGrid"></div>
+      </div>
+    </section>
+
+    <section id="vitryna">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Вітрина</h2>
+          <p>Риба та морепродукти на вагу — за 100 г. Снеки — за упаковку.</p>
+        </div>
+        <div id="vitrynaRoot"></div>
+      </div>
+    </section>
+
+    <section id="kuhnia">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Мікси та панко</h2>
+          <p>Мікси і панко</p>
+        </div>
+        <div class="grid" id="kuhniaGrid"></div>
       </div>
     </section>
 
@@ -216,26 +236,6 @@
           <p>Ціна за 100 г</p>
         </div>
         <div class="grid" id="zamorozkaGrid"></div>
-      </div>
-    </section>
-
-    <section id="napoi">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2>Напої</h2>
-          <p>Пиво, сидр і лимонад — ціна за 1 літр</p>
-        </div>
-        <div class="grid" id="napoiGrid"></div>
-      </div>
-    </section>
-
-    <section id="vitryna">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2>Вітрина</h2>
-          <p>Риба та морепродукти на вагу — за 100 г. Снеки — за упаковку.</p>
-        </div>
-        <div id="vitrynaRoot"></div>
       </div>
     </section>
 
@@ -265,7 +265,7 @@
   <footer>© <span id="year"></span> Клешневар. Смачного.</footer>
   <div class="toast" id="toast"></div>
 
-  <script src="catalog.js?v=261114a"></script>
+  <script src="catalog.js?v=261115a"></script>
   <script src="config.js?v=261108c"></script>
   <script src="config.secrets.js?v=261108c"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
